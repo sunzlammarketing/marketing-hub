@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const channels = [
+  { icon: '✉️', label: 'Email', value: 'hello@marketinghub.vn', href: 'mailto:hello@marketinghub.vn' },
+  { icon: '📘', label: 'Facebook', value: 'facebook.com/marketinghub', href: '#' },
+  { icon: '💼', label: 'LinkedIn', value: 'linkedin.com/company/marketinghub', href: '#' },
+];
+---
+
+<BaseLayout
+  title="Liên hệ"
+  description="Liên hệ với Marketing Hub để hợp tác, góp ý hoặc đặt câu hỏi về marketing."
+>
+  <section class="contact">
+    <div class="container contact-grid">
+      <div class="contact-left">
+        <span class="badge">📬 Liên hệ</span>
+        <h1>Kết nối với chúng tôi</h1>
+        <p>
+          Bạn có câu hỏi, góp ý, hoặc muốn hợp tác? Hãy gửi tin nhắn cho chúng
+          tôi — chúng tôi luôn sẵn lòng lắng nghe và phản hồi sớm nhất có thể.
+        </p>
+
+        <div class="channels">
+          {channels.map((c) => (
+            <a href={c.href} class="channel">
+              <span class="ch-icon">{c.icon}</span>
+              <div>
+                <b>{c.label}</b>
+                <span>{c.value}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="contact-right">
+        <form id="contact-form" novalidate>
+          <div class="field">
+            <label for="name">Họ và tên</label>
+            <input type="text" id="name" name="name" placeholder="Nguyễn Văn A" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="ban@email.com" required />
+          </div>
+          <div class="field">
+            <label for="subject">Chủ đề</label>
+            <input type="text" id="subject" name="subject" placeholder="Tôi muốn hỏi về..." />
+          </div>
+          <div class="field">
+            <label for="message">Nội dung</label>
+            <textarea id="message" name="message" rows="5" placeholder="Nhập nội dung tin nhắn của bạn..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">
+            Gửi tin nhắn →
+          </button>
+          <p id="form-note" class="form-note" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding-block: 64px;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .contact-left h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 16px 0 12px;
+  }
+  .contact-left > p {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    margin: 0 0 28px;
+  }
+  .channels {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink);
+    transition: 0.15s;
+  }
+  .channel:hover {
+    text-decoration: none;
+    border-color: var(--brand);
+    transform: translateX(3px);
+  }
+  .ch-icon {
+    font-size: 1.4rem;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: var(--brand-soft);
+  }
+  .channel b {
+    display: block;
+    font-size: 0.95rem;
+  }
+  .channel span {
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+  }
+
+  .contact-right {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+  }
+  .field {
+    margin-bottom: 18px;
+  }
+  .field label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 7px;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.98rem;
+    transition: border-color 0.15s;
+    resize: vertical;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--brand);
+  }
+  .form-note {
+    margin: 14px 0 0;
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 1.2em;
+  }
+  .form-note.ok {
+    color: #16a34a;
+  }
+  .form-note.err {
+    color: #dc2626;
+  }
+  @media (max-width: 780px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const note = document.getElementById('form-note')!;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = (data.get('name') as string)?.trim();
+    const email = (data.get('email') as string)?.trim();
+    const message = (data.get('message') as string)?.trim();
+
+    if (!name || !email || !message) {
+      note.className = 'form-note err';
+      note.textContent = 'Vui lòng điền đầy đủ họ tên, email và nội dung.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      note.className = 'form-note err';
+      note.textContent = 'Email không hợp lệ. Vui lòng kiểm tra lại.';
+      return;
+    }
+
+    // Demo: chưa kết nối backend. Thay bằng API/dịch vụ form thật khi triển khai.
+    note.className = 'form-note ok';
+    note.textContent = `Cảm ơn ${name}! Tin nhắn của bạn đã được ghi nhận (demo).`;
+    form.reset();
+  });
+</script>

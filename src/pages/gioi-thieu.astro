@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const values = [
+  {
+    icon: '🎯',
+    title: 'Thực chiến, không lý thuyết suông',
+    text: 'Mọi bài viết đều hướng tới việc áp dụng được ngay, kèm ví dụ và bước làm cụ thể.',
+  },
+  {
+    icon: '🇻🇳',
+    title: 'Dành cho người Việt',
+    text: 'Nội dung viết bằng tiếng Việt, phù hợp với bối cảnh thị trường và nền tảng người Việt hay dùng.',
+  },
+  {
+    icon: '🆓',
+    title: 'Miễn phí & dễ tiếp cận',
+    text: 'Kiến thức nên được chia sẻ. Toàn bộ nội dung trên Marketing Hub đều miễn phí.',
+  },
+  {
+    icon: '📈',
+    title: 'Cập nhật liên tục',
+    text: 'Marketing thay đổi từng ngày. Chúng tôi cập nhật kiến thức mới để bạn không tụt lại.',
+  },
+];
+---
+
+<BaseLayout
+  title="Giới thiệu"
+  description="Marketing Hub là nơi chia sẻ kiến thức Marketing thực chiến, dễ hiểu và miễn phí cho người Việt."
+>
+  <section class="intro">
+    <div class="container">
+      <span class="badge">👋 Về chúng tôi</span>
+      <h1>Chúng tôi tin marketing tốt <span class="grad">nên dễ học</span></h1>
+      <p class="lead">
+        Marketing Hub ra đời với một mục tiêu đơn giản: biến những kiến thức
+        marketing tưởng chừng phức tạp thành thứ ai cũng có thể hiểu và áp dụng —
+        dù bạn là chủ shop online, freelancer hay người mới vào nghề.
+      </p>
+    </div>
+  </section>
+
+  <section class="container" style="padding-block:16px 56px">
+    <div class="values">
+      {values.map((v) => (
+        <div class="value-card">
+          <span class="v-icon">{v.icon}</span>
+          <h3>{v.title}</h3>
+          <p>{v.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="story-section">
+    <div class="container story">
+      <h2>Câu chuyện của chúng tôi</h2>
+      <p>
+        Có quá nhiều kiến thức marketing ngoài kia, nhưng phần lớn hoặc quá hàn
+        lâm, hoặc chỉ là những "mẹo" rời rạc thiếu nền tảng. Người mới bắt đầu
+        thường bối rối không biết học từ đâu.
+      </p>
+      <p>
+        Chúng tôi tạo ra Marketing Hub để lấp khoảng trống đó — một nơi trình bày
+        kiến thức có hệ thống, đi từ căn bản đến nâng cao, luôn kèm ví dụ thực tế
+        và có thể áp dụng ngay. Không hứa hẹn "làm giàu sau một đêm", chỉ có
+        những kiến thức nền tảng vững chắc giúp bạn đi đường dài.
+      </p>
+      <blockquote>
+        "Marketing không phải là nghệ thuật bán thứ bạn làm ra, mà là nghệ thuật
+        tạo ra thứ khách hàng thật sự cần."
+      </blockquote>
+      <div class="story-cta">
+        <a href="/blog" class="btn btn-primary">Khám phá bài viết →</a>
+        <a href="/lien-he" class="btn btn-ghost">Liên hệ với chúng tôi</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: 64px 24px;
+    text-align: center;
+  }
+  .intro h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    margin: 16px auto 20px;
+    max-width: 760px;
+  }
+  .grad {
+    background: linear-gradient(120deg, var(--brand), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .values {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .value-card {
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .v-icon {
+    font-size: 1.8rem;
+  }
+  .value-card h3 {
+    margin: 12px 0 6px;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .value-card p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+  .story-section {
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    padding-block: 64px;
+  }
+  .story {
+    max-width: 720px;
+  }
+  .story h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    margin: 0 0 16px;
+  }
+  .story p {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+  }
+  .story blockquote {
+    border-left: 4px solid var(--brand);
+    margin: 28px 0;
+    padding: 8px 24px;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .story-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  @media (max-width: 860px) {
+    .values {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .values {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

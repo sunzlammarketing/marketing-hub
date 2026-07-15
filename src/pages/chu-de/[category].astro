@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { categories, getCategory } from '../../data/categories';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return categories.map((c) => ({ params: { category: c.slug } }));
+}
+
+const { category } = Astro.params;
+const cat = getCategory(category!)!;
+const posts = (await getCollection('blog'))
+  .filter((p) => p.data.category === category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title={cat.name} description={cat.description}>
+  <section class="page-head" style={`--c:${cat.color}`}>
+    <div class="container">
+      <span class="cat-icon">{cat.icon}</span>
+      <h1>{cat.name}</h1>
+      <p>{cat.description}</p>
+      <span class="count">{posts.length} bài viết</span>
+    </div>
+  </section>
+
+  <section class="container" style="padding-block:48px 64px">
+    {posts.length > 0 ? (
+      <div class="grid grid-3">
+        {posts.map((p) => (
+          <PostCard
+            slug={p.slug}
+            title={p.data.title}
+            description={p.data.description}
+            pubDate={p.data.pubDate}
+            category={p.data.category}
+            readingTime={p.data.readingTime}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">Chưa có bài viết nào trong chủ đề này. Hãy quay lại sau nhé!</p>
+    )}
+
+    <div style="text-align:center;margin-top:48px">
+      <a href="/chu-de" class="btn btn-ghost">← Xem tất cả chủ đề</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: 56px 36px;
+    text-align: center;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--c) 10%, var(--bg)),
+      var(--bg)
+    );
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    font-size: 2rem;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--c) 16%, transparent);
+    margin-bottom: 12px;
+  }
+  .page-head h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: var(--c);
+  }
+  .page-head p {
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+  .count {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+  }
+  .empty {
+    text-align: center;
+    color: var(--ink-faint);
+    padding: 48px;
+  }
+</style>

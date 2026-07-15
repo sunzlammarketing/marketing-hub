@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { categories } from '../data/categories';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const featured = posts[0];
+const recent = posts.slice(1, 7);
+---
+
+<BaseLayout title="Marketing Hub">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <span class="badge">📚 Kiến thức Marketing thực chiến</span>
+      <h1>
+        Học Marketing <span class="grad">bài bản</span>,<br />
+        áp dụng được <span class="grad">ngay hôm nay</span>
+      </h1>
+      <p class="hero-sub">
+        Nơi chia sẻ kiến thức Marketing dễ hiểu, thực tế và miễn phí cho
+        người Việt — từ SEO, Content, Quảng cáo đến Thương hiệu.
+      </p>
+      <div class="hero-actions">
+        <a href="/blog" class="btn btn-primary">Bắt đầu đọc →</a>
+        <a href="/chu-de" class="btn btn-ghost">Khám phá chủ đề</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>{posts.length}+</b><span>Bài viết</span></div>
+        <div><b>{categories.length}</b><span>Chủ đề</span></div>
+        <div><b>100%</b><span>Miễn phí</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Khám phá theo chủ đề</h2>
+      <p class="section-sub">
+        Chọn lĩnh vực bạn quan tâm và đào sâu vào những bài viết chất lượng.
+      </p>
+      <div class="cat-grid">
+        {categories.map((c) => (
+          <a href={`/chu-de/${c.slug}`} class="cat-card" style={`--c:${c.color}`}>
+            <span class="cat-icon">{c.icon}</span>
+            <span class="cat-name">{c.name}</span>
+            <span class="cat-desc">{c.description}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  {featured && (
+    <section class="section featured-section">
+      <div class="container">
+        <h2 class="section-title">Bài viết nổi bật</h2>
+        <p class="section-sub">Bài viết mới nhất, đáng đọc nhất tuần này.</p>
+        <div class="featured-wrap">
+          <PostCard
+            slug={featured.slug}
+            title={featured.data.title}
+            description={featured.data.description}
+            pubDate={featured.data.pubDate}
+            category={featured.data.category}
+            readingTime={featured.data.readingTime}
+            featured={true}
+          />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Recent -->
+  <section class="section">
+    <div class="container">
+      <div class="row-head">
+        <div>
+          <h2 class="section-title">Bài viết mới nhất</h2>
+          <p class="section-sub" style="margin-bottom:0">
+            Cập nhật kiến thức marketing đều đặn mỗi tuần.
+          </p>
+        </div>
+        <a href="/blog" class="btn btn-ghost">Xem tất cả →</a>
+      </div>
+      <div class="grid grid-3" style="margin-top:32px">
+        {recent.map((p) => (
+          <PostCard
+            slug={p.slug}
+            title={p.data.title}
+            description={p.data.description}
+            pubDate={p.data.pubDate}
+            category={p.data.category}
+            readingTime={p.data.readingTime}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Đừng bỏ lỡ kiến thức mới</h2>
+        <p>
+          Ghé thăm thường xuyên hoặc kết nối với chúng tôi để cập nhật những
+          bài viết marketing mới nhất.
+        </p>
+        <a href="/lien-he" class="btn btn-primary">Kết nối ngay →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: 72px 40px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60% 50% at 50% 0%, var(--brand-soft), transparent 70%);
+    z-index: -1;
+  }
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin: 6px 0 0;
+  }
+  .grad {
+    background: linear-gradient(120deg, var(--brand), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 600px;
+    margin: 0;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-stats div {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-stats b {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .hero-stats span {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
+  }
+  .cat-card:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: color-mix(in srgb, var(--c) 45%, var(--border));
+  }
+  .cat-icon {
+    font-size: 1.8rem;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+  }
+  .cat-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+  .cat-desc {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  .featured-section {
+    background: var(--bg-soft);
+    border-block: 1px solid var(--border);
+  }
+  .featured-wrap {
+    max-width: 720px;
+  }
+
+  .row-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .cta-box {
+    text-align: center;
+    padding: 56px 24px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #fff;
+  }
+  .cta-box h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 800;
+    margin: 0 0 10px;
+  }
+  .cta-box p {
+    max-width: 500px;
+    margin: 0 auto 24px;
+    opacity: 0.95;
+  }
+  .cta-box .btn-primary {
+    background: #fff;
+    color: var(--brand-dark);
+  }
+  .cta-box .btn-primary:hover {
+    background: #f0f0f0;
+  }
+
+  @media (max-width: 860px) {
+    .cat-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .cat-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-stats {
+      gap: 28px;
+    }
+  }
+</style>

@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Tìm kiếm"
+  description="Tìm kiếm bài viết Marketing theo từ khóa, chủ đề hoặc tag."
+>
+  <section class="search-head">
+    <div class="container">
+      <h1>Tìm kiếm bài viết</h1>
+      <p>Nhập từ khóa để tìm bài viết theo tiêu đề, mô tả, chủ đề hoặc tag.</p>
+      <div class="search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="search"
+          id="q"
+          placeholder="Ví dụ: SEO, Facebook Ads, content, email..."
+          autocomplete="off"
+          autofocus
+        />
+      </div>
+      <div class="suggests">
+        <span>Gợi ý:</span>
+        <button data-term="SEO">SEO</button>
+        <button data-term="content">Content</button>
+        <button data-term="Facebook">Facebook Ads</button>
+        <button data-term="email">Email</button>
+        <button data-term="thương hiệu">Thương hiệu</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" style="padding-bottom:64px">
+    <p id="status" class="status"></p>
+    <div class="grid grid-3" id="results"></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .search-head {
+    padding-block: 56px 40px;
+    text-align: center;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .search-head h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  .search-head p {
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 4px 18px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 999px;
+    color: var(--ink-faint);
+    transition: border-color 0.15s;
+  }
+  .search-box:focus-within {
+    border-color: var(--brand);
+  }
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 14px 0;
+    font-size: 1.05rem;
+    color: var(--ink);
+    font-family: inherit;
+  }
+  .suggests {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 18px;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+  }
+  .suggests button {
+    padding: 5px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.15s;
+  }
+  .suggests button:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  .status {
+    color: var(--ink-faint);
+    padding-block: 32px 8px;
+    text-align: center;
+  }
+  .result-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: transform 0.16s, box-shadow 0.16s, border-color 0.16s;
+  }
+  .result-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--brand) 40%, var(--border));
+    text-decoration: none;
+  }
+  .result-cat {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  .result-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .result-card p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  mark {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+</style>
+
+<script>
+  interface Post {
+    slug: string;
+    title: string;
+    description: string;
+    categoryName: string;
+    categoryIcon: string;
+    tags: string[];
+  }
+
+  const input = document.getElementById('q') as HTMLInputElement;
+  const results = document.getElementById('results')!;
+  const status = document.getElementById('status')!;
+  let posts: Post[] = [];
+
+  // Bỏ dấu tiếng Việt để tìm kiếm linh hoạt
+  const normalize = (s: string) =>
+    s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, 'd');
+
+  const escapeHtml = (s: string) =>
+    s.replace(/[&<>"]/g, (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] || c
+    );
+
+  function highlight(text: string, q: string): string {
+    const safe = escapeHtml(text);
+    if (!q) return safe;
+    const nText = normalize(safe);
+    const nQ = normalize(q);
+    const idx = nText.indexOf(nQ);
+    if (idx === -1) return safe;
+    return (
+      safe.slice(0, idx) +
+      '<mark>' +
+      safe.slice(idx, idx + q.length) +
+      '</mark>' +
+      safe.slice(idx + q.length)
+    );
+  }
+
+  function render(q: string) {
+    const nQ = normalize(q.trim());
+    if (!nQ) {
+      results.innerHTML = '';
+      status.textContent = `Có ${posts.length} bài viết. Gõ từ khóa để bắt đầu tìm.`;
+      return;
+    }
+    const matches = posts.filter((p) => {
+      const haystack = normalize(
+        [p.title, p.description, p.categoryName, p.tags.join(' ')].join(' ')
+      );
+      return haystack.includes(nQ);
+    });
+
+    status.textContent = matches.length
+      ? `Tìm thấy ${matches.length} kết quả cho "${q.trim()}"`
+      : `Không tìm thấy kết quả nào cho "${q.trim()}". Thử từ khóa khác nhé.`;
+
+    results.innerHTML = matches
+      .map(
+        (p) => `
+      <a class="result-card" href="/blog/${p.slug}">
+        <span class="result-cat">${p.categoryIcon} ${escapeHtml(p.categoryName)}</span>
+        <h3>${highlight(p.title, q.trim())}</h3>
+        <p>${highlight(p.description, q.trim())}</p>
+      </a>`
+      )
+      .join('');
+  }
+
+  async function init() {
+    status.textContent = 'Đang tải dữ liệu...';
+    try {
+      const res = await fetch('/search.json');
+      posts = await res.json();
+    } catch {
+      status.textContent = 'Không tải được dữ liệu. Vui lòng thử lại.';
+      return;
+    }
+    // Ưu tiên từ khóa trên URL: /tim-kiem?q=...
+    const urlQ = new URLSearchParams(location.search).get('q') || '';
+    if (urlQ) input.value = urlQ;
+    render(input.value);
+  }
+
+  input.addEventListener('input', () => render(input.value));
+
+  document.querySelectorAll<HTMLButtonElement>('.suggests button').forEach((b) => {
+    b.addEventListener('click', () => {
+      input.value = b.dataset.term || '';
+      input.focus();
+      render(input.value);
+    });
+  });
+
+  init();
+</script>

@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categories } from '../../data/categories';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const countByCat = (slug: string) =>
+  posts.filter((p) => p.data.category === slug).length;
+---
+
+<BaseLayout
+  title="Chủ đề"
+  description="Khám phá các chủ đề Marketing: SEO, Content, Quảng cáo, Social Media, Email và Thương hiệu."
+>
+  <section class="page-head">
+    <div class="container">
+      <span class="badge">🗂 Danh mục</span>
+      <h1>Chủ đề Marketing</h1>
+      <p>Chọn một lĩnh vực để đi sâu vào các bài viết liên quan.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding-block:48px 64px">
+    <div class="cat-grid">
+      {categories.map((c) => (
+        <a href={`/chu-de/${c.slug}`} class="cat-card" style={`--c:${c.color}`}>
+          <span class="cat-icon">{c.icon}</span>
+          <div class="cat-body">
+            <h2>{c.name}</h2>
+            <p>{c.description}</p>
+            <span class="count">{countByCat(c.slug)} bài viết →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: 56px 32px;
+    text-align: center;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .page-head h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 16px 0 8px;
+  }
+  .page-head p {
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .cat-card {
+    display: flex;
+    gap: 18px;
+    padding: 26px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
+  }
+  .cat-card:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: color-mix(in srgb, var(--c) 45%, var(--border));
+  }
+  .cat-icon {
+    flex-shrink: 0;
+    font-size: 1.8rem;
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+  }
+  .cat-body h2 {
+    margin: 0 0 6px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .cat-body p {
+    margin: 0 0 10px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .count {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--c);
+  }
+  @media (max-width: 640px) {
+    .cat-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

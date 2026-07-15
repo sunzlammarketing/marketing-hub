@@ -1,0 +1,116 @@
+---
+import { categories } from '../data/categories';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="logo">
+        <span class="logo-mark">M</span>
+        <span>Marketing<b>Hub</b></span>
+      </a>
+      <p>
+        Nơi chia sẻ kiến thức Marketing thực chiến — từ SEO, Content đến
+        Quảng cáo và Thương hiệu, dành cho người Việt.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Chủ đề</h4>
+      {categories.slice(0, 5).map((c) => (
+        <a href={`/chu-de/${c.slug}`}>{c.name}</a>
+      ))}
+    </div>
+
+    <div class="footer-col">
+      <h4>Khám phá</h4>
+      <a href="/blog">Tất cả bài viết</a>
+      <a href="/chu-de">Danh mục chủ đề</a>
+      <a href="/tim-kiem">Tìm kiếm</a>
+      <a href="/gioi-thieu">Giới thiệu</a>
+      <a href="/lien-he">Liên hệ</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {year} Marketing Hub. Nội dung mang tính tham khảo & học tập.</span>
+    <span>Xây dựng bằng Astro 🚀</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+    margin-top: 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    padding-block: 56px 32px;
+  }
+  .footer-brand p {
+    color: var(--ink-soft);
+    margin: 16px 0 0;
+    max-width: 340px;
+    font-size: 0.95rem;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .logo:hover {
+    text-decoration: none;
+  }
+  .logo-mark {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #fff;
+    font-weight: 900;
+  }
+  .logo b {
+    color: var(--brand);
+  }
+  .footer-col h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin: 0 0 14px;
+  }
+  .footer-col a {
+    display: block;
+    color: var(--ink-soft);
+    padding: 5px 0;
+    font-size: 0.95rem;
+  }
+  .footer-col a:hover {
+    color: var(--brand);
+    text-decoration: none;
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-block: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--ink-faint);
+    font-size: 0.88rem;
+  }
+  @media (max-width: 720px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

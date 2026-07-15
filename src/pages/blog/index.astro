@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { categories } from '../../data/categories';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Tất cả bài viết"
+  description="Toàn bộ bài viết chia sẻ kiến thức Marketing: SEO, Content, Ads, Social Media, Email và Thương hiệu."
+>
+  <section class="page-head">
+    <div class="container">
+      <span class="badge">📚 Thư viện bài viết</span>
+      <h1>Tất cả bài viết</h1>
+      <p>Tổng hợp {posts.length} bài viết về marketing. Lọc theo chủ đề bên dưới.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding-bottom:64px">
+    <div class="filters" role="tablist" aria-label="Lọc theo chủ đề">
+      <button class="filter active" data-filter="all">Tất cả</button>
+      {categories.map((c) => (
+        <button class="filter" data-filter={c.slug}>{c.icon} {c.name}</button>
+      ))}
+    </div>
+
+    <div class="grid grid-3" id="post-grid">
+      {posts.map((p) => (
+        <div class="post-item" data-category={p.data.category}>
+          <PostCard
+            slug={p.slug}
+            title={p.data.title}
+            description={p.data.description}
+            pubDate={p.data.pubDate}
+            category={p.data.category}
+            readingTime={p.data.readingTime}
+          />
+        </div>
+      ))}
+    </div>
+    <p id="empty" class="empty" hidden>Chưa có bài viết nào trong chủ đề này.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: 56px 32px;
+    text-align: center;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .page-head h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 16px 0 8px;
+  }
+  .page-head p {
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-block: 32px;
+  }
+  .filter {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+  .filter:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  .filter.active {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+  .empty {
+    text-align: center;
+    color: var(--ink-faint);
+    padding: 40px;
+  }
+</style>
+
+<script>
+  const filters = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const items = document.querySelectorAll<HTMLElement>('.post-item');
+  const empty = document.getElementById('empty');
+
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filters.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      let shown = 0;
+      items.forEach((item) => {
+        const match = f === 'all' || item.dataset.category === f;
+        item.style.display = match ? '' : 'none';
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown !== 0;
+    });
+  });
+</script>
