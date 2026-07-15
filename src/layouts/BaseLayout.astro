@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ui } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -34,6 +35,19 @@ const fullTitle = title === 'Sunz Làm Marketing'
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <!-- Chống nháy: đặt theme & ngôn ngữ trước khi trang vẽ -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'dark' || t === 'light')
+            document.documentElement.setAttribute('data-theme', t);
+          var l = localStorage.getItem('lang');
+          if (l === 'en' || l === 'vi')
+            document.documentElement.setAttribute('lang', l);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <Header />
@@ -41,5 +55,115 @@ const fullTitle = title === 'Sunz Làm Marketing'
       <slot />
     </main>
     <Footer />
+
+    <!-- Từ điển song ngữ dùng cho runtime -->
+    <script is:inline set:html={`window.__I18N__ = ${JSON.stringify(ui)};`} />
+
+    <!-- Bộ máy i18n + chuyển đổi theme -->
+    <script>
+      const dict = (window as any).__I18N__ || {};
+
+      function currentLang(): 'vi' | 'en' {
+        return document.documentElement.getAttribute('lang') === 'en'
+          ? 'en'
+          : 'vi';
+      }
+
+      function applyLang(lang: 'vi' | 'en') {
+        const table = dict[lang] || {};
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const k = el.getAttribute('data-i18n')!;
+          if (table[k] != null) el.textContent = table[k];
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+          const k = el.getAttribute('data-i18n-html')!;
+          if (table[k] != null) el.innerHTML = table[k];
+        });
+        document.querySelectorAll('[data-i18n-ph]').forEach((el) => {
+          const k = el.getAttribute('data-i18n-ph')!;
+          if (table[k] != null) el.setAttribute('placeholder', table[k]);
+        });
+        document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+          const k = el.getAttribute('data-i18n-aria')!;
+          if (table[k] != null) el.setAttribute('aria-label', table[k]);
+        });
+        // Nội dung động (chủ đề...): dùng cặp data-i18n-vi / data-i18n-en
+        document.querySelectorAll('[data-i18n-en]').forEach((el) => {
+          const v =
+            lang === 'en'
+              ? el.getAttribute('data-i18n-en')
+              : el.getAttribute('data-i18n-vi');
+          if (v != null) el.textContent = v;
+        });
+        document.documentElement.setAttribute('lang', lang);
+        const code = document.querySelector('[data-lang-code]');
+        if (code) code.textContent = lang.toUpperCase();
+        const flag = document.querySelector('[data-lang-flag]');
+        if (flag) flag.textContent = lang === 'en' ? '🇬🇧' : '🇻🇳';
+        document
+          .querySelectorAll('[data-set-lang]')
+          .forEach((el) =>
+            el.classList.toggle(
+              'active',
+              el.getAttribute('data-set-lang') === lang
+            )
+          );
+      }
+
+      function setLang(lang: 'vi' | 'en') {
+        try {
+          localStorage.setItem('lang', lang);
+        } catch (e) {}
+        applyLang(lang);
+      }
+
+      function effectiveTheme(): 'dark' | 'light' {
+        const t = document.documentElement.getAttribute('data-theme');
+        if (t === 'dark' || t === 'light') return t;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      }
+
+      function updateThemeIcon(mode: 'dark' | 'light') {
+        const sun = document.querySelector('[data-icon-sun]');
+        const moon = document.querySelector('[data-icon-moon]');
+        if (sun) (sun as HTMLElement).hidden = mode !== 'light';
+        if (moon) (moon as HTMLElement).hidden = mode !== 'dark';
+      }
+
+      function setTheme(mode: 'dark' | 'light') {
+        document.documentElement.setAttribute('data-theme', mode);
+        try {
+          localStorage.setItem('theme', mode);
+        } catch (e) {}
+        updateThemeIcon(mode);
+      }
+
+      // Nút chuyển sáng/tối
+      const themeBtn = document.querySelector('[data-theme-toggle]');
+      themeBtn?.addEventListener('click', () => {
+        setTheme(effectiveTheme() === 'dark' ? 'light' : 'dark');
+      });
+
+      // Dropdown ngôn ngữ
+      const langBtn = document.querySelector('[data-lang-btn]');
+      const langMenu = document.querySelector('[data-lang-menu]');
+      langBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langMenu?.classList.toggle('open');
+      });
+      document.addEventListener('click', () => langMenu?.classList.remove('open'));
+      document.querySelectorAll('[data-set-lang]').forEach((el) => {
+        el.addEventListener('click', () => {
+          setLang(el.getAttribute('data-set-lang') as 'vi' | 'en');
+          langMenu?.classList.remove('open');
+        });
+      });
+
+      // Khởi tạo
+      applyLang(currentLang());
+      updateThemeIcon(effectiveTheme());
+    </script>
   </body>
 </html>

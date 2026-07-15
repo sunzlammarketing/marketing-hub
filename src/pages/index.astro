@@ -15,24 +15,24 @@ const recent = posts.slice(1, 7);
   <!-- Hero -->
   <section class="hero">
     <div class="container hero-inner">
-      <span class="badge">📚 Kiến thức Marketing thực chiến</span>
-      <h1>
+      <span class="badge" data-i18n="home.badge">📚 Kiến thức Marketing thực chiến</span>
+      <h1 data-i18n-html="home.hero.title">
         Hiểu Marketing <span class="grad">đúng</span>,<br />
         làm Marketing <span class="grad">hiệu quả</span>.
       </h1>
-      <p class="hero-sub">
+      <p class="hero-sub" data-i18n="home.hero.sub">
         Kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng xuyên suốt hành
         trình Marketing từ nghiên cứu thị trường, xây dựng chiến lược đến triển
         khai, đo lường và tối ưu hiệu quả.
       </p>
       <div class="hero-actions">
-        <a href="/blog" class="btn btn-primary">Bắt đầu đọc →</a>
-        <a href="/chu-de" class="btn btn-ghost">Khám phá chủ đề</a>
+        <a href="/blog" class="btn btn-primary" data-i18n="home.hero.cta1">Bắt đầu đọc →</a>
+        <a href="/chu-de" class="btn btn-ghost" data-i18n="home.hero.cta2">Khám phá chủ đề</a>
       </div>
       <div class="hero-stats">
-        <div><b>{posts.length}+</b><span>Bài viết</span></div>
-        <div><b>{categories.length}</b><span>Chủ đề</span></div>
-        <div><b>100%</b><span>Miễn phí</span></div>
+        <div><b>{posts.length}+</b><span data-i18n="home.stat.posts">Bài viết</span></div>
+        <div><b>{categories.length}</b><span data-i18n="home.stat.topics">Chủ đề</span></div>
+        <div><b>100%</b><span data-i18n="home.stat.free">Miễn phí</span></div>
       </div>
     </div>
   </section>
@@ -40,16 +40,16 @@ const recent = posts.slice(1, 7);
   <!-- Categories -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title">Khám phá theo chủ đề</h2>
-      <p class="section-sub">
+      <h2 class="section-title" data-i18n="home.cat.title">Khám phá theo chủ đề</h2>
+      <p class="section-sub" data-i18n="home.cat.sub">
         Chọn lĩnh vực bạn quan tâm và đào sâu vào những bài viết chất lượng.
       </p>
       <div class="cat-grid">
         {categories.map((c) => (
           <a href={`/chu-de/${c.slug}`} class="cat-card" style={`--c:${c.color}`}>
             <span class="cat-icon">{c.icon}</span>
-            <span class="cat-name">{c.name}</span>
-            <span class="cat-desc">{c.description}</span>
+            <span class="cat-name" data-i18n-vi={c.name} data-i18n-en={c.nameEn}>{c.name}</span>
+            <span class="cat-desc" data-i18n-vi={c.description} data-i18n-en={c.descriptionEn}>{c.description}</span>
           </a>
         ))}
       </div>
@@ -60,8 +60,8 @@ const recent = posts.slice(1, 7);
   {featured && (
     <section class="section featured-section">
       <div class="container">
-        <h2 class="section-title">Bài viết nổi bật</h2>
-        <p class="section-sub">Bài viết mới nhất, đáng đọc nhất tuần này.</p>
+        <h2 class="section-title" data-i18n="home.featured.title">Bài viết nổi bật</h2>
+        <p class="section-sub" data-i18n="home.featured.sub">Bài viết mới nhất, đáng đọc nhất tuần này.</p>
         <div class="featured-wrap">
           <PostCard
             slug={featured.slug}
@@ -82,12 +82,12 @@ const recent = posts.slice(1, 7);
     <div class="container">
       <div class="row-head">
         <div>
-          <h2 class="section-title">Bài viết mới nhất</h2>
-          <p class="section-sub" style="margin-bottom:0">
+          <h2 class="section-title" data-i18n="home.recent.title">Bài viết mới nhất</h2>
+          <p class="section-sub" style="margin-bottom:0" data-i18n="home.recent.sub">
             Cập nhật kiến thức marketing đều đặn mỗi tuần.
           </p>
         </div>
-        <a href="/blog" class="btn btn-ghost">Xem tất cả →</a>
+        <a href="/blog" class="btn btn-ghost" data-i18n="home.viewall">Xem tất cả →</a>
       </div>
       <div class="grid grid-3" style="margin-top:32px">
         {recent.map((p) => (
@@ -108,12 +108,12 @@ const recent = posts.slice(1, 7);
   <section class="section">
     <div class="container">
       <div class="cta-box">
-        <h2>Đừng bỏ lỡ kiến thức mới</h2>
-        <p>
+        <h2 data-i18n="home.cta.title">Đừng bỏ lỡ kiến thức mới</h2>
+        <p data-i18n="home.cta.text">
           Ghé thăm thường xuyên hoặc kết nối với chúng tôi để cập nhật những
           bài viết marketing mới nhất.
         </p>
-        <a href="/lien-he" class="btn btn-primary">Kết nối ngay →</a>
+        <a href="/lien-he" class="btn btn-primary" data-i18n="home.cta.btn">Kết nối ngay →</a>
       </div>
     </div>
   </section>

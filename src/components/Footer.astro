@@ -10,31 +10,31 @@ const year = new Date().getFullYear();
         <span class="logo-mark">S</span>
         <span>Sunz Làm <b>Marketing</b></span>
       </a>
-      <p>
+      <p data-i18n="footer.tagline">
         Nơi chia sẻ kiến thức Marketing thực chiến — từ SEO, Content đến
         Quảng cáo và Thương hiệu, dành cho người Việt.
       </p>
     </div>
 
     <div class="footer-col">
-      <h4>Chủ đề</h4>
+      <h4 data-i18n="footer.col.topics">Chủ đề</h4>
       {categories.slice(0, 5).map((c) => (
-        <a href={`/chu-de/${c.slug}`}>{c.name}</a>
+        <a href={`/chu-de/${c.slug}`} data-i18n-vi={c.name} data-i18n-en={c.nameEn}>{c.name}</a>
       ))}
     </div>
 
     <div class="footer-col">
-      <h4>Khám phá</h4>
-      <a href="/blog">Tất cả bài viết</a>
-      <a href="/chu-de">Danh mục chủ đề</a>
-      <a href="/tim-kiem">Tìm kiếm</a>
-      <a href="/gioi-thieu">Giới thiệu</a>
-      <a href="/lien-he">Liên hệ</a>
+      <h4 data-i18n="footer.col.explore">Khám phá</h4>
+      <a href="/blog" data-i18n="footer.allposts">Tất cả bài viết</a>
+      <a href="/chu-de" data-i18n="footer.categories">Danh mục chủ đề</a>
+      <a href="/tim-kiem" data-i18n="footer.search">Tìm kiếm</a>
+      <a href="/gioi-thieu" data-i18n="footer.about">Giới thiệu</a>
+      <a href="/lien-he" data-i18n="footer.contact">Liên hệ</a>
     </div>
   </div>
   <div class="container footer-bottom">
-    <span>© {year} Sunz Làm Marketing. Nội dung mang tính tham khảo & học tập.</span>
-    <span>Xây dựng bằng Astro 🚀</span>
+    <span>© {year} Sunz Làm Marketing. <span data-i18n="footer.copyright">Nội dung mang tính tham khảo & học tập.</span></span>
+    <span data-i18n="footer.built">Xây dựng bằng Astro 🚀</span>
   </div>
 </footer>
 

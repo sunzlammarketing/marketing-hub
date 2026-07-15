@@ -15,9 +15,9 @@ const channels = [
   <section class="contact">
     <div class="container contact-grid">
       <div class="contact-left">
-        <span class="badge">📬 Liên hệ</span>
-        <h1>Kết nối với chúng tôi</h1>
-        <p>
+        <span class="badge" data-i18n="contact.badge">📬 Liên hệ</span>
+        <h1 data-i18n="contact.title">Kết nối với chúng tôi</h1>
+        <p data-i18n="contact.lead">
           Bạn có câu hỏi, góp ý, hoặc muốn hợp tác? Hãy gửi tin nhắn cho chúng
           tôi — chúng tôi luôn sẵn lòng lắng nghe và phản hồi sớm nhất có thể.
         </p>
@@ -38,22 +38,22 @@ const channels = [
       <div class="contact-right">
         <form id="contact-form" novalidate>
           <div class="field">
-            <label for="name">Họ và tên</label>
-            <input type="text" id="name" name="name" placeholder="Nguyễn Văn A" required />
+            <label for="name" data-i18n="contact.form.name">Họ và tên</label>
+            <input type="text" id="name" name="name" placeholder="Nguyễn Văn A" data-i18n-ph="contact.form.name.ph" required />
           </div>
           <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="ban@email.com" required />
+            <label for="email" data-i18n="contact.form.email">Email</label>
+            <input type="email" id="email" name="email" placeholder="ban@email.com" data-i18n-ph="contact.form.email.ph" required />
           </div>
           <div class="field">
-            <label for="subject">Chủ đề</label>
-            <input type="text" id="subject" name="subject" placeholder="Tôi muốn hỏi về..." />
+            <label for="subject" data-i18n="contact.form.subject">Chủ đề</label>
+            <input type="text" id="subject" name="subject" placeholder="Tôi muốn hỏi về..." data-i18n-ph="contact.form.subject.ph" />
           </div>
           <div class="field">
-            <label for="message">Nội dung</label>
-            <textarea id="message" name="message" rows="5" placeholder="Nhập nội dung tin nhắn của bạn..." required></textarea>
+            <label for="message" data-i18n="contact.form.message">Nội dung</label>
+            <textarea id="message" name="message" rows="5" placeholder="Nhập nội dung tin nhắn của bạn..." data-i18n-ph="contact.form.message.ph" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" data-i18n="contact.form.submit">
             Gửi tin nhắn →
           </button>
           <p id="form-note" class="form-note" role="status"></p>
@@ -181,6 +181,13 @@ const channels = [
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const note = document.getElementById('form-note')!;
 
+  // Lấy chuỗi theo ngôn ngữ đang chọn
+  const t = (key: string) => {
+    const dict = (window as any).__I18N__ || {};
+    const lang = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
+    return (dict[lang] && dict[lang][key]) || (dict.vi && dict.vi[key]) || '';
+  };
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const data = new FormData(form);
@@ -190,18 +197,18 @@ const channels = [
 
     if (!name || !email || !message) {
       note.className = 'form-note err';
-      note.textContent = 'Vui lòng điền đầy đủ họ tên, email và nội dung.';
+      note.textContent = t('contact.err.required');
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       note.className = 'form-note err';
-      note.textContent = 'Email không hợp lệ. Vui lòng kiểm tra lại.';
+      note.textContent = t('contact.err.email');
       return;
     }
 
     // Demo: chưa kết nối backend. Thay bằng API/dịch vụ form thật khi triển khai.
     note.className = 'form-note ok';
-    note.textContent = `Cảm ơn ${name}! Tin nhắn của bạn đã được ghi nhận (demo).`;
+    note.textContent = t('contact.ok');
     form.reset();
   });
 </script>

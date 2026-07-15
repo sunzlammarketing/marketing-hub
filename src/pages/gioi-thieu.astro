@@ -4,21 +4,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const values = [
   {
     icon: '🎯',
+    k: 'about.val1',
     title: 'Thực chiến, không lý thuyết suông',
     text: 'Mọi bài viết đều hướng tới việc áp dụng được ngay, kèm ví dụ và bước làm cụ thể.',
   },
   {
     icon: '🇻🇳',
+    k: 'about.val2',
     title: 'Dành cho người Việt',
     text: 'Nội dung viết bằng tiếng Việt, phù hợp với bối cảnh thị trường và nền tảng người Việt hay dùng.',
   },
   {
     icon: '🆓',
+    k: 'about.val3',
     title: 'Miễn phí & dễ tiếp cận',
     text: 'Kiến thức nên được chia sẻ. Toàn bộ nội dung trên Sunz Làm Marketing đều miễn phí.',
   },
   {
     icon: '📈',
+    k: 'about.val4',
     title: 'Cập nhật liên tục',
     text: 'Marketing thay đổi từng ngày. Chúng tôi cập nhật kiến thức mới để bạn không tụt lại.',
   },
@@ -31,9 +35,9 @@ const values = [
 >
   <section class="intro">
     <div class="container">
-      <span class="badge">👋 Về chúng tôi</span>
-      <h1>Chúng tôi tin marketing tốt <span class="grad">nên dễ học</span></h1>
-      <p class="lead">
+      <span class="badge" data-i18n="about.badge">👋 Về chúng tôi</span>
+      <h1 data-i18n-html="about.title">Chúng tôi tin marketing tốt <span class="grad">nên dễ học</span></h1>
+      <p class="lead" data-i18n="about.lead">
         Sunz Làm Marketing ra đời với một mục tiêu đơn giản: biến những kiến thức
         marketing tưởng chừng phức tạp thành thứ ai cũng có thể hiểu và áp dụng —
         dù bạn là chủ shop online, freelancer hay người mới vào nghề.
@@ -46,8 +50,8 @@ const values = [
       {values.map((v) => (
         <div class="value-card">
           <span class="v-icon">{v.icon}</span>
-          <h3>{v.title}</h3>
-          <p>{v.text}</p>
+          <h3 data-i18n={`${v.k}.title`}>{v.title}</h3>
+          <p data-i18n={`${v.k}.text`}>{v.text}</p>
         </div>
       ))}
     </div>
@@ -55,25 +59,25 @@ const values = [
 
   <section class="story-section">
     <div class="container story">
-      <h2>Câu chuyện của chúng tôi</h2>
-      <p>
+      <h2 data-i18n="about.story.title">Câu chuyện của chúng tôi</h2>
+      <p data-i18n="about.story.p1">
         Có quá nhiều kiến thức marketing ngoài kia, nhưng phần lớn hoặc quá hàn
         lâm, hoặc chỉ là những "mẹo" rời rạc thiếu nền tảng. Người mới bắt đầu
         thường bối rối không biết học từ đâu.
       </p>
-      <p>
+      <p data-i18n="about.story.p2">
         Chúng tôi tạo ra Sunz Làm Marketing để lấp khoảng trống đó — một nơi trình bày
         kiến thức có hệ thống, đi từ căn bản đến nâng cao, luôn kèm ví dụ thực tế
         và có thể áp dụng ngay. Không hứa hẹn "làm giàu sau một đêm", chỉ có
         những kiến thức nền tảng vững chắc giúp bạn đi đường dài.
       </p>
-      <blockquote>
+      <blockquote data-i18n="about.story.quote">
         "Marketing không phải là nghệ thuật bán thứ bạn làm ra, mà là nghệ thuật
         tạo ra thứ khách hàng thật sự cần."
       </blockquote>
       <div class="story-cta">
-        <a href="/blog" class="btn btn-primary">Khám phá bài viết →</a>
-        <a href="/lien-he" class="btn btn-ghost">Liên hệ với chúng tôi</a>
+        <a href="/blog" class="btn btn-primary" data-i18n="about.story.cta1">Khám phá bài viết →</a>
+        <a href="/lien-he" class="btn btn-ghost" data-i18n="about.story.cta2">Liên hệ với chúng tôi</a>
       </div>
     </div>
   </section>
