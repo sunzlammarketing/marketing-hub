@@ -125,19 +125,13 @@ const fullTitle = title === 'Sunz Làm Marketing'
           : 'light';
       }
 
-      function updateThemeIcon(mode: 'dark' | 'light') {
-        const sun = document.querySelector('[data-icon-sun]');
-        const moon = document.querySelector('[data-icon-moon]');
-        if (sun) (sun as HTMLElement).hidden = mode !== 'light';
-        if (moon) (moon as HTMLElement).hidden = mode !== 'dark';
-      }
-
+      // Icon nút theme do CSS quyết định theo [data-theme] trên <html>,
+      // nên chỉ cần đặt thuộc tính là đủ.
       function setTheme(mode: 'dark' | 'light') {
         document.documentElement.setAttribute('data-theme', mode);
         try {
           localStorage.setItem('theme', mode);
         } catch (e) {}
-        updateThemeIcon(mode);
       }
 
       // Nút chuyển sáng/tối
@@ -163,7 +157,6 @@ const fullTitle = title === 'Sunz Làm Marketing'
 
       // Khởi tạo
       applyLang(currentLang());
-      updateThemeIcon(effectiveTheme());
     </script>
   </body>
 </html>
