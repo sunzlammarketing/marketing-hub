@@ -1,8 +1,11 @@
 :root {
-  --bg: #ffffff;
-  --bg-soft: #f6f7f9;
+  --bg: #f2f7ff;
+  --bg-soft: #e7f0fd;
   --bg-card: #ffffff;
-  --border: #e6e8eb;
+  --border: #dbe6f5;
+  /* Nền gradient xanh dương nhạt → trắng + hoa văn chấm mờ */
+  --page-bg: linear-gradient(160deg, #dcebff 0%, #eaf3ff 42%, #f6faff 100%);
+  --dot: rgba(37, 99, 235, 0.06);
   --ink: #16181d;
   --ink-soft: #4a4f57;
   --ink-faint: #8a9099;
@@ -23,6 +26,8 @@
     --bg-soft: #14171d;
     --bg-card: #171a21;
     --border: #262b34;
+    --page-bg: #0d0f14;
+    --dot: transparent;
     --ink: #eef0f3;
     --ink-soft: #b6bcc6;
     --ink-faint: #7c828d;
@@ -47,12 +52,24 @@ html {
 
 body {
   margin: 0;
+  min-height: 100vh;
   font-family: var(--font);
-  background: var(--bg);
+  background: var(--page-bg) fixed;
   color: var(--ink);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Lớp hoa văn chấm mờ phủ toàn trang, nằm sau nội dung */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 a {
