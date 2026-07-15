@@ -50,7 +50,7 @@ export const ui = {
 
     // Footer
     'footer.tagline':
-      'Nơi chia sẻ kiến thức Marketing thực chiến — từ SEO, Content đến Quảng cáo và Thương hiệu, dành cho người Việt.',
+      'Nơi chia sẻ kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng ngay.',
     'footer.col.topics': 'Chủ đề',
     'footer.col.explore': 'Khám phá',
     'footer.allposts': 'Tất cả bài viết',
@@ -165,7 +165,7 @@ export const ui = {
 
     // Footer
     'footer.tagline':
-      'A place to share practical marketing knowledge — from SEO and Content to Ads and Branding, made for Vietnamese learners.',
+      'A place to share marketing knowledge that is clear, practical and ready to apply.',
     'footer.col.topics': 'Topics',
     'footer.col.explore': 'Explore',
     'footer.allposts': 'All articles',
