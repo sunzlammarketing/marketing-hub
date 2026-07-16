@@ -57,8 +57,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'digital',
-    name: 'Digital',
-    nameEn: 'Digital',
+    name: 'Digital Marketing',
+    nameEn: 'Digital Marketing',
     description: 'Quảng cáo, email và các kênh digital trả phí.',
     descriptionEn: 'Ads, email and paid digital channels.',
     icon: '📣',
@@ -66,8 +66,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'growth',
-    name: 'Growth',
-    nameEn: 'Growth',
+    name: 'Growth Marketing',
+    nameEn: 'Growth Marketing',
     description: 'Tăng trưởng, phễu và tối ưu chuyển đổi.',
     descriptionEn: 'Growth, funnels and conversion optimization.',
     icon: '📈',
