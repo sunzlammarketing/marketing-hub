@@ -2,9 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const products = [
-  { k: 'products.p1', icon: '🎓', color: '#4f46e5' },
-  { k: 'products.p2', icon: '🧭', color: '#0891b2' },
-  { k: 'products.p3', icon: '⭐', color: '#ca8a04' },
+  { k: 'products.p1', icon: '🧭', color: '#4f46e5' },
+  { k: 'products.p2', icon: '✍️', color: '#7c3aed' },
+  { k: 'products.p3', icon: '🔍', color: '#2563eb' },
+  { k: 'products.p4', icon: '📣', color: '#dc2626' },
+  { k: 'products.p5', icon: '⭐', color: '#ca8a04' },
+  { k: 'products.p6', icon: '🎓', color: '#16a34a' },
 ];
 ---
 
@@ -27,8 +30,7 @@ const products = [
       {products.map((p) => (
         <article class="prod-card" style={`--c:${p.color}`}>
           <span class="prod-icon">{p.icon}</span>
-          <span class="prod-tag" data-i18n="products.badge2">Nội dung mẫu</span>
-          <h3 data-i18n={`${p.k}.name`}>Sản phẩm</h3>
+          <h3 data-i18n={`${p.k}.name`}>Dịch vụ</h3>
           <p data-i18n={`${p.k}.desc`}>Mô tả sản phẩm.</p>
           <div class="prod-foot">
             <span class="prod-price" data-i18n={`${p.k}.price`}>Đang cập nhật</span>

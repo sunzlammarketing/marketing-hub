@@ -89,45 +89,61 @@ export const ui = {
     'about.story.cta1': 'Khám phá bài viết →',
     'about.story.cta2': 'Liên hệ với chúng tôi',
 
-    // Trang Sản phẩm
-    'products.badge': '🎓 Sản phẩm & Dịch vụ',
-    'products.title': 'Sản phẩm & Dịch vụ',
+    // Trang Dịch vụ
+    'products.badge': '🎓 Dịch vụ Marketing',
+    'products.title': 'Dịch vụ Marketing',
     'products.lead':
-      'Các sản phẩm và dịch vụ giúp bạn học và ứng dụng Marketing hiệu quả hơn. (Đây là nội dung mẫu — hãy thay bằng sản phẩm thật của bạn.)',
-    'products.p1.name': 'Khóa học Marketing nền tảng',
+      'Đồng hành cùng bạn từ chiến lược đến triển khai — chọn dịch vụ phù hợp với mục tiêu và giai đoạn của doanh nghiệp.',
+    'products.p1.name': 'Tư vấn chiến lược Marketing',
     'products.p1.desc':
-      'Lộ trình bài bản từ tư duy đến thực thi, phù hợp cho người mới bắt đầu.',
-    'products.p1.price': 'Đang cập nhật',
-    'products.p2.name': 'Dịch vụ tư vấn chiến lược',
+      'Phân tích thị trường, định vị và xây dựng lộ trình Marketing tổng thể bám sát mục tiêu kinh doanh.',
+    'products.p1.price': 'Liên hệ báo giá',
+    'products.p2.name': 'Content & Social Media',
     'products.p2.desc':
-      'Đồng hành cùng doanh nghiệp xây dựng chiến lược Marketing phù hợp mục tiêu.',
-    'products.p2.price': 'Liên hệ báo giá',
-    'products.p3.name': 'Gói xây dựng thương hiệu',
+      'Lên kế hoạch nội dung, sản xuất bài đăng và phát triển kênh mạng xã hội đều đặn, đúng tông thương hiệu.',
+    'products.p2.price': 'Theo gói tháng',
+    'products.p3.name': 'SEO & Tối ưu Website',
     'products.p3.desc':
-      'Định vị, bộ nhận diện và hệ thống nội dung nhất quán cho thương hiệu của bạn.',
+      'Nghiên cứu từ khóa, tối ưu on-page và kỹ thuật để cải thiện thứ hạng, kéo traffic tự nhiên bền vững.',
     'products.p3.price': 'Liên hệ báo giá',
+    'products.p4.name': 'Quảng cáo Digital (Ads)',
+    'products.p4.desc':
+      'Thiết lập và tối ưu Facebook Ads, Google Ads nhằm giảm chi phí mỗi chuyển đổi và tăng doanh thu.',
+    'products.p4.price': 'Theo ngân sách',
+    'products.p5.name': 'Xây dựng thương hiệu',
+    'products.p5.desc':
+      'Định vị, bộ nhận diện và hệ thống thông điệp nhất quán giúp thương hiệu ghi dấu trong tâm trí khách hàng.',
+    'products.p5.price': 'Theo dự án',
+    'products.p6.name': 'Đào tạo & Coaching Marketing',
+    'products.p6.desc':
+      'Kèm 1-1 hoặc đào tạo đội nhóm về tư duy và kỹ năng Marketing thực chiến, áp dụng được ngay.',
+    'products.p6.price': 'Theo buổi / khóa',
     'products.cta': 'Liên hệ tư vấn',
-    'products.badge2': 'Nội dung mẫu',
 
     // Trang Tài liệu miễn phí
     'resources.badge': '📂 Tài liệu miễn phí',
     'resources.title': 'Tài liệu Marketing miễn phí',
     'resources.lead':
-      'Tổng hợp ebook, checklist và template giúp bạn học và làm Marketing hiệu quả hơn. (Đây là nội dung mẫu — hãy thay bằng tài liệu thật của bạn.)',
+      'Tổng hợp ebook, checklist và template thực chiến — tải về và áp dụng ngay vào công việc của bạn.',
     'resources.d1.name': 'Ebook: Nhập môn Marketing cho người mới',
-    'resources.d1.desc': 'Tổng quan các khái niệm và tư duy Marketing nền tảng, dễ hiểu cho người bắt đầu.',
+    'resources.d1.desc': 'Tổng quan các khái niệm và tư duy Marketing nền tảng, trình bày dễ hiểu cho người mới bắt đầu.',
     'resources.d1.type': 'PDF · 24 trang',
     'resources.d2.name': 'Checklist: 30 điểm tối ưu SEO on-page',
-    'resources.d2.desc': 'Danh sách kiểm tra giúp bạn tối ưu từng bài viết chuẩn SEO trước khi đăng.',
+    'resources.d2.desc': 'Danh sách kiểm tra giúp bạn tối ưu từng bài viết chuẩn SEO trước khi xuất bản.',
     'resources.d2.type': 'PDF · 2 trang',
     'resources.d3.name': 'Template: Kế hoạch content 30 ngày',
-    'resources.d3.desc': 'Mẫu lịch nội dung điền sẵn cấu trúc, chỉ việc thay chủ đề của bạn.',
+    'resources.d3.desc': 'Mẫu lịch nội dung dựng sẵn cấu trúc, chỉ việc điền chủ đề và triển khai.',
     'resources.d3.type': 'Google Sheet',
     'resources.d4.name': 'Ebook: Cẩm nang chạy Facebook Ads',
-    'resources.d4.desc': 'Hướng dẫn từ tạo chiến dịch đến tối ưu chi phí, kèm ví dụ thực tế.',
+    'resources.d4.desc': 'Hướng dẫn từ tạo chiến dịch đến tối ưu chi phí, kèm ví dụ thực tế dễ áp dụng.',
     'resources.d4.type': 'PDF · 32 trang',
+    'resources.d5.name': 'Template: Phễu Marketing AARRR',
+    'resources.d5.desc': 'Khung phễu giúp bạn vẽ và đo lường hành trình khách hàng qua 5 giai đoạn.',
+    'resources.d5.type': 'Google Sheet',
+    'resources.d6.name': 'Swipe file: 50 mẫu caption bán hàng',
+    'resources.d6.desc': 'Bộ 50 mẫu caption theo nhiều công thức copywriting để bạn tham khảo và biến tấu.',
+    'resources.d6.type': 'PDF',
     'resources.download': 'Tải xuống',
-    'resources.badge2': 'Mẫu',
 
     // Trang Liên hệ
     'contact.badge': '📬 Liên hệ',
@@ -242,31 +258,42 @@ export const ui = {
     'about.story.cta1': 'Explore articles →',
     'about.story.cta2': 'Get in touch',
 
-    // Products page
-    'products.badge': '🎓 Products & Services',
-    'products.title': 'Products & Services',
+    // Services page
+    'products.badge': '🎓 Marketing Services',
+    'products.title': 'Marketing Services',
     'products.lead':
-      'Products and services to help you learn and apply marketing more effectively. (This is sample content — replace it with your real offerings.)',
-    'products.p1.name': 'Marketing Foundations Course',
+      'We support you from strategy to execution — pick the service that fits your goals and stage of growth.',
+    'products.p1.name': 'Marketing Strategy Consulting',
     'products.p1.desc':
-      'A structured path from mindset to execution, perfect for beginners.',
-    'products.p1.price': 'Coming soon',
-    'products.p2.name': 'Strategy Consulting',
+      'Market analysis, positioning and a full marketing roadmap aligned with your business goals.',
+    'products.p1.price': 'Contact for quote',
+    'products.p2.name': 'Content & Social Media',
     'products.p2.desc':
-      'We partner with businesses to build a marketing strategy that fits their goals.',
-    'products.p2.price': 'Contact for quote',
-    'products.p3.name': 'Branding Package',
+      'Content planning, post production and steady social channel growth, on-brand and consistent.',
+    'products.p2.price': 'Monthly plan',
+    'products.p3.name': 'SEO & Website Optimization',
     'products.p3.desc':
-      'Positioning, visual identity and a consistent content system for your brand.',
+      'Keyword research, on-page and technical optimization to improve rankings and drive organic traffic.',
     'products.p3.price': 'Contact for quote',
+    'products.p4.name': 'Digital Advertising (Ads)',
+    'products.p4.desc':
+      'Set up and optimize Facebook and Google Ads to lower cost per conversion and grow revenue.',
+    'products.p4.price': 'Based on budget',
+    'products.p5.name': 'Branding',
+    'products.p5.desc':
+      'Positioning, visual identity and a consistent message system that makes your brand memorable.',
+    'products.p5.price': 'Per project',
+    'products.p6.name': 'Training & Coaching',
+    'products.p6.desc':
+      '1-on-1 coaching or team training on practical marketing mindset and skills you can apply right away.',
+    'products.p6.price': 'Per session / course',
     'products.cta': 'Contact us',
-    'products.badge2': 'Sample content',
 
     // Free Resources page
     'resources.badge': '📂 Free Resources',
     'resources.title': 'Free Marketing Resources',
     'resources.lead':
-      'A collection of ebooks, checklists and templates to help you learn and do marketing more effectively. (This is sample content — replace it with your real resources.)',
+      'A collection of practical ebooks, checklists and templates — download and apply them to your work right away.',
     'resources.d1.name': 'Ebook: Marketing Basics for Beginners',
     'resources.d1.desc': 'An overview of core marketing concepts and mindset, easy to grasp for beginners.',
     'resources.d1.type': 'PDF · 24 pages',
@@ -279,8 +306,13 @@ export const ui = {
     'resources.d4.name': 'Ebook: Facebook Ads Handbook',
     'resources.d4.desc': 'From setting up campaigns to optimizing cost, with real examples.',
     'resources.d4.type': 'PDF · 32 pages',
+    'resources.d5.name': 'Template: AARRR Marketing Funnel',
+    'resources.d5.desc': 'A funnel framework to map and measure the customer journey across 5 stages.',
+    'resources.d5.type': 'Google Sheet',
+    'resources.d6.name': 'Swipe file: 50 Sales Caption Examples',
+    'resources.d6.desc': '50 caption examples across multiple copywriting formulas to reference and adapt.',
+    'resources.d6.type': 'PDF',
     'resources.download': 'Download',
-    'resources.badge2': 'Sample',
 
     // Contact page
     'contact.badge': '📬 Contact',
