@@ -17,7 +17,8 @@ export const ui = {
     'nav.home': 'Trang chủ',
     'nav.about': 'Giới thiệu',
     'nav.blog': 'Bài viết',
-    'nav.products': 'Sản phẩm',
+    'nav.products': 'Dịch vụ',
+    'nav.resources': 'Tài liệu miễn phí',
     'nav.contact': 'Liên hệ',
     'nav.search': 'Tìm kiếm',
     'ui.theme': 'Đổi giao diện sáng/tối',
@@ -108,6 +109,26 @@ export const ui = {
     'products.cta': 'Liên hệ tư vấn',
     'products.badge2': 'Nội dung mẫu',
 
+    // Trang Tài liệu miễn phí
+    'resources.badge': '📂 Tài liệu miễn phí',
+    'resources.title': 'Tài liệu Marketing miễn phí',
+    'resources.lead':
+      'Tổng hợp ebook, checklist và template giúp bạn học và làm Marketing hiệu quả hơn. (Đây là nội dung mẫu — hãy thay bằng tài liệu thật của bạn.)',
+    'resources.d1.name': 'Ebook: Nhập môn Marketing cho người mới',
+    'resources.d1.desc': 'Tổng quan các khái niệm và tư duy Marketing nền tảng, dễ hiểu cho người bắt đầu.',
+    'resources.d1.type': 'PDF · 24 trang',
+    'resources.d2.name': 'Checklist: 30 điểm tối ưu SEO on-page',
+    'resources.d2.desc': 'Danh sách kiểm tra giúp bạn tối ưu từng bài viết chuẩn SEO trước khi đăng.',
+    'resources.d2.type': 'PDF · 2 trang',
+    'resources.d3.name': 'Template: Kế hoạch content 30 ngày',
+    'resources.d3.desc': 'Mẫu lịch nội dung điền sẵn cấu trúc, chỉ việc thay chủ đề của bạn.',
+    'resources.d3.type': 'Google Sheet',
+    'resources.d4.name': 'Ebook: Cẩm nang chạy Facebook Ads',
+    'resources.d4.desc': 'Hướng dẫn từ tạo chiến dịch đến tối ưu chi phí, kèm ví dụ thực tế.',
+    'resources.d4.type': 'PDF · 32 trang',
+    'resources.download': 'Tải xuống',
+    'resources.badge2': 'Mẫu',
+
     // Trang Liên hệ
     'contact.badge': '📬 Liên hệ',
     'contact.title': 'Kết nối với chúng tôi',
@@ -125,6 +146,20 @@ export const ui = {
     'contact.err.required': 'Vui lòng điền đầy đủ họ tên, email và nội dung.',
     'contact.err.email': 'Email không hợp lệ. Vui lòng kiểm tra lại.',
     'contact.ok': 'Cảm ơn bạn! Tin nhắn của bạn đã được ghi nhận (demo).',
+
+    // Chatbot
+    'chat.title': 'Trợ lý Marketing',
+    'chat.subtitle': 'Thường trả lời ngay lập tức',
+    'chat.greeting':
+      'Xin chào 👋 Mình là trợ lý của Sunz Làm Marketing. Chọn nhanh một câu hỏi bên dưới, hoặc nhập câu hỏi của bạn nhé!',
+    'chat.placeholder': 'Nhập câu hỏi của bạn...',
+    'chat.open': 'Mở trợ lý tư vấn',
+    'chat.close': 'Đóng',
+    'chat.send': 'Gửi',
+    'chat.q.topics': 'Website có những chủ đề gì?',
+    'chat.q.services': 'Dịch vụ gồm những gì?',
+    'chat.q.resources': 'Tài liệu miễn phí ở đâu?',
+    'chat.q.contact': 'Làm sao để liên hệ?',
   },
 
   en: {
@@ -132,7 +167,8 @@ export const ui = {
     'nav.home': 'Home',
     'nav.about': 'About',
     'nav.blog': 'Articles',
-    'nav.products': 'Products',
+    'nav.products': 'Services',
+    'nav.resources': 'Free Resources',
     'nav.contact': 'Contact',
     'nav.search': 'Search',
     'ui.theme': 'Toggle light/dark theme',
@@ -223,6 +259,26 @@ export const ui = {
     'products.cta': 'Contact us',
     'products.badge2': 'Sample content',
 
+    // Free Resources page
+    'resources.badge': '📂 Free Resources',
+    'resources.title': 'Free Marketing Resources',
+    'resources.lead':
+      'A collection of ebooks, checklists and templates to help you learn and do marketing more effectively. (This is sample content — replace it with your real resources.)',
+    'resources.d1.name': 'Ebook: Marketing Basics for Beginners',
+    'resources.d1.desc': 'An overview of core marketing concepts and mindset, easy to grasp for beginners.',
+    'resources.d1.type': 'PDF · 24 pages',
+    'resources.d2.name': 'Checklist: 30 On-page SEO Optimizations',
+    'resources.d2.desc': 'A checklist to optimize every article for SEO before you publish.',
+    'resources.d2.type': 'PDF · 2 pages',
+    'resources.d3.name': 'Template: 30-Day Content Plan',
+    'resources.d3.desc': 'A content calendar template with the structure ready — just add your topics.',
+    'resources.d3.type': 'Google Sheet',
+    'resources.d4.name': 'Ebook: Facebook Ads Handbook',
+    'resources.d4.desc': 'From setting up campaigns to optimizing cost, with real examples.',
+    'resources.d4.type': 'PDF · 32 pages',
+    'resources.download': 'Download',
+    'resources.badge2': 'Sample',
+
     // Contact page
     'contact.badge': '📬 Contact',
     'contact.title': 'Get in touch with us',
@@ -240,5 +296,19 @@ export const ui = {
     'contact.err.required': 'Please fill in your name, email and message.',
     'contact.err.email': 'Invalid email. Please check again.',
     'contact.ok': 'Thank you! Your message has been received (demo).',
+
+    // Chatbot
+    'chat.title': 'Marketing Assistant',
+    'chat.subtitle': 'Usually replies instantly',
+    'chat.greeting':
+      "Hi 👋 I'm the Sunz Làm Marketing assistant. Pick a quick question below, or type your own!",
+    'chat.placeholder': 'Type your question...',
+    'chat.open': 'Open the assistant',
+    'chat.close': 'Close',
+    'chat.send': 'Send',
+    'chat.q.topics': 'What topics does the site cover?',
+    'chat.q.services': 'What services do you offer?',
+    'chat.q.resources': 'Where are the free resources?',
+    'chat.q.contact': 'How do I get in touch?',
   },
 } as const;

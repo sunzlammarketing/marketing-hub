@@ -1,10 +1,11 @@
 ---
-// Thứ tự: Trang chủ · Giới thiệu · Bài viết · Sản phẩm · Liên hệ
+// Thứ tự: Trang chủ · Giới thiệu · Bài viết · Dịch vụ · Tài liệu miễn phí · Liên hệ
 const nav = [
   { href: '/', label: 'Trang chủ', key: 'nav.home' },
   { href: '/gioi-thieu', label: 'Giới thiệu', key: 'nav.about' },
   { href: '/blog', label: 'Bài viết', key: 'nav.blog' },
-  { href: '/san-pham', label: 'Sản phẩm', key: 'nav.products' },
+  { href: '/san-pham', label: 'Dịch vụ', key: 'nav.products' },
+  { href: '/tai-lieu-mien-phi', label: 'Tài liệu miễn phí', key: 'nav.resources' },
   { href: '/lien-he', label: 'Liên hệ', key: 'nav.contact' },
 ];
 const path = Astro.url.pathname;
@@ -305,7 +306,7 @@ const isActive = (href: string) =>
     border-bottom: none;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1040px) {
     .nav {
       display: none;
     }

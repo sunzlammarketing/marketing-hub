@@ -1,0 +1,431 @@
+---
+// Chatbot FAQ (mien phi). San sang nang cap len AI that:
+// xem ham getBotReply() trong phan script, thay FAQ bang goi /api/chat.
+---
+
+<!-- Nút mở chat -->
+<button class="chat-fab" data-chat-open aria-label="Mở trợ lý tư vấn" data-i18n-aria="chat.open">
+  <svg class="ic-chat" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+  </svg>
+  <svg class="ic-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+</button>
+
+<!-- Khung chat -->
+<div class="chat-panel" data-chat-panel role="dialog" aria-label="Trợ lý tư vấn">
+  <div class="chat-header">
+    <div class="chat-avatar">S</div>
+    <div class="chat-head-text">
+      <b data-i18n="chat.title">Trợ lý Marketing</b>
+      <span data-i18n="chat.subtitle">Thường trả lời ngay lập tức</span>
+    </div>
+    <button class="chat-x" data-chat-close aria-label="Đóng" data-i18n-aria="chat.close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="chat-body" data-chat-body></div>
+
+  <div class="chat-chips" data-chat-chips>
+    <button class="chip" data-intent="topics" data-i18n="chat.q.topics">Website có những chủ đề gì?</button>
+    <button class="chip" data-intent="services" data-i18n="chat.q.services">Dịch vụ gồm những gì?</button>
+    <button class="chip" data-intent="resources" data-i18n="chat.q.resources">Tài liệu miễn phí ở đâu?</button>
+    <button class="chip" data-intent="contact" data-i18n="chat.q.contact">Làm sao để liên hệ?</button>
+  </div>
+
+  <form class="chat-input" data-chat-form>
+    <input type="text" data-chat-text placeholder="Nhập câu hỏi của bạn..." data-i18n-ph="chat.placeholder" autocomplete="off" />
+    <button type="submit" aria-label="Gửi" data-i18n-aria="chat.send">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </form>
+</div>
+
+<style>
+  .chat-fab {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 90;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--brand) 45%, transparent);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .chat-fab:hover {
+    transform: translateY(-2px) scale(1.04);
+  }
+  .chat-fab .ic-close {
+    display: none;
+  }
+  .chat-fab.open .ic-chat {
+    display: none;
+  }
+  .chat-fab.open .ic-close {
+    display: block;
+  }
+
+  .chat-panel {
+    position: fixed;
+    right: 22px;
+    bottom: 92px;
+    z-index: 90;
+    width: min(376px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 130px));
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .chat-panel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #fff;
+  }
+  .chat-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 900;
+  }
+  .chat-head-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    flex: 1;
+  }
+  .chat-head-text b {
+    font-size: 0.98rem;
+  }
+  .chat-head-text span {
+    font-size: 0.78rem;
+    opacity: 0.9;
+  }
+  .chat-x {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+  }
+  .chat-x:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--bg-soft);
+  }
+  .msg {
+    max-width: 82%;
+    padding: 10px 13px;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+  .msg a {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-bottom-left-radius: 4px;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--brand);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.user a {
+    color: #fff;
+  }
+  .typing {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .typing i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    animation: blink 1.2s infinite both;
+  }
+  .typing i:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .typing i:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.3; }
+    40% { opacity: 1; }
+  }
+
+  .chat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .chip {
+    font-size: 0.8rem;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: 0.15s;
+  }
+  .chip:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .chat-input {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .chat-input input {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 10px 15px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .chat-input input:focus {
+    border-color: var(--brand);
+  }
+  .chat-input button {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: none;
+    background: var(--brand);
+    color: #fff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .chat-input button:hover {
+    background: var(--brand-dark);
+  }
+
+  @media (max-width: 480px) {
+    .chat-panel {
+      right: 12px;
+      left: 12px;
+      width: auto;
+      bottom: 86px;
+    }
+    .chat-fab {
+      right: 16px;
+      bottom: 16px;
+    }
+  }
+</style>
+
+<script>
+  type Lang = 'vi' | 'en';
+  interface Intent { id: string; keys: string[]; a: string; }
+
+  // ===== Dữ liệu FAQ (song ngữ). Sửa/thêm câu trả lời tại đây. =====
+  const FAQ: Record<Lang, Intent[]> = {
+    vi: [
+      { id: 'greeting', keys: ['xin chao', 'hello', 'hi', 'chao ban', 'alo'],
+        a: 'Chào bạn 👋 Mình có thể giúp gì cho bạn hôm nay?' },
+      { id: 'topics', keys: ['chu de', 'linh vuc', 'seo', 'content', 'quang cao', 'ads', 'email', 'thuong hieu', 'social'],
+        a: 'Website chia sẻ 6 chủ đề: SEO, Content Marketing, Quảng cáo, Social Media, Email Marketing và Thương hiệu. Xem tất cả tại <a href="/chu-de">trang Chủ đề</a>.' },
+      { id: 'read', keys: ['doc bai', 'bai viet', 'blog', 'hoc', 'kien thuc', 'tim bai'],
+        a: 'Bạn vào mục <a href="/blog">Bài viết</a> để đọc tất cả bài, lọc theo chủ đề, hoặc dùng <a href="/tim-kiem">Tìm kiếm</a> để tìm nhanh theo từ khóa.' },
+      { id: 'services', keys: ['dich vu', 'san pham', 'tu van', 'khoa hoc', 'gia', 'bao gia', 'hop tac'],
+        a: 'Mình có các dịch vụ như khóa học nền tảng, tư vấn chiến lược và xây dựng thương hiệu. Xem chi tiết tại <a href="/san-pham">trang Dịch vụ</a> hoặc <a href="/lien-he">liên hệ để được tư vấn</a>.' },
+      { id: 'resources', keys: ['tai lieu', 'ebook', 'template', 'checklist', 'tai xuong', 'tai ve', 'mien phi'],
+        a: 'Bạn có thể tải ebook, checklist và template tại <a href="/tai-lieu-mien-phi">trang Tài liệu miễn phí</a>. Hoàn toàn miễn phí!' },
+      { id: 'contact', keys: ['lien he', 'email', 'facebook', 'gap', 'so dien thoai', 'ket noi'],
+        a: 'Bạn có thể liên hệ qua email <b>sunzlammarketing@gmail.com</b> hoặc điền form tại <a href="/lien-he">trang Liên hệ</a>.' },
+      { id: 'free', keys: ['co mat phi', 'ton tien', 'phi', 'free khong', 'co phi'],
+        a: 'Toàn bộ kiến thức và tài liệu trên website đều <b>miễn phí</b>. Các dịch vụ tư vấn chuyên sâu thì bạn liên hệ để được báo giá nhé.' },
+    ],
+    en: [
+      { id: 'greeting', keys: ['hello', 'hi', 'hey', 'good morning'],
+        a: 'Hi there 👋 How can I help you today?' },
+      { id: 'topics', keys: ['topic', 'seo', 'content', 'ads', 'advertising', 'email', 'brand', 'social'],
+        a: 'We cover 6 topics: SEO, Content Marketing, Advertising, Social Media, Email Marketing and Branding. See them all on the <a href="/chu-de">Topics page</a>.' },
+      { id: 'read', keys: ['read', 'article', 'blog', 'learn', 'find article'],
+        a: 'Head to <a href="/blog">Articles</a> to read everything, filter by topic, or use <a href="/tim-kiem">Search</a> to find posts by keyword.' },
+      { id: 'services', keys: ['service', 'product', 'consult', 'course', 'price', 'quote'],
+        a: 'We offer a foundations course, strategy consulting and branding packages. See the <a href="/san-pham">Services page</a> or <a href="/lien-he">contact us</a>.' },
+      { id: 'resources', keys: ['resource', 'ebook', 'template', 'checklist', 'download', 'free doc'],
+        a: 'You can grab ebooks, checklists and templates on the <a href="/tai-lieu-mien-phi">Free Resources page</a>. All free!' },
+      { id: 'contact', keys: ['contact', 'email', 'facebook', 'reach', 'get in touch'],
+        a: 'Reach us at <b>sunzlammarketing@gmail.com</b> or use the form on the <a href="/lien-he">Contact page</a>.' },
+      { id: 'free', keys: ['cost', 'paid', 'price', 'is it free', 'free'],
+        a: 'All knowledge and resources on the site are <b>free</b>. For in-depth consulting, contact us for a quote.' },
+    ],
+  };
+  const FALLBACK: Record<Lang, string> = {
+    vi: 'Mình chưa chắc câu trả lời cho câu hỏi này 🤔 Bạn thử chọn một trong các câu gợi ý, hoặc <a href="/lien-he">liên hệ trực tiếp</a> để được hỗ trợ nhé.',
+    en: "I'm not sure about that one 🤔 Try one of the suggested questions, or <a href=\"/lien-he\">contact us</a> directly.",
+  };
+
+  const norm = (s: string) =>
+    s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/đ/g, 'd');
+
+  const curLang = (): Lang =>
+    document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
+
+  const t = (key: string): string => {
+    const dict = (window as any).__I18N__ || {};
+    const l = curLang();
+    return (dict[l] && dict[l][key]) || (dict.vi && dict.vi[key]) || '';
+  };
+
+  // ===== NÂNG CẤP AI: thay toàn bộ thân hàm này bằng gọi API thật, ví dụ:
+  //   const r = await fetch('/api/chat', { method:'POST',
+  //     headers:{'Content-Type':'application/json'},
+  //     body: JSON.stringify({ message: text, lang }) });
+  //   return (await r.json()).reply;
+  // (Cần thêm serverless function /api/chat gọi Claude API + đặt API key ở Vercel.)
+  function getBotReply(text: string, lang: Lang): string {
+    const n = norm(text);
+    let best: Intent | null = null;
+    let bestScore = 0;
+    for (const intent of FAQ[lang]) {
+      let score = 0;
+      for (const k of intent.keys) if (n.includes(norm(k))) score++;
+      if (score > bestScore) { bestScore = score; best = intent; }
+    }
+    return best ? best.a : FALLBACK[lang];
+  }
+
+  // ===== Giao diện =====
+  const fab = document.querySelector('[data-chat-open]');
+  const panel = document.querySelector('[data-chat-panel]');
+  const body = document.querySelector('[data-chat-body]');
+  const form = document.querySelector('[data-chat-form]') as HTMLFormElement | null;
+  const input = document.querySelector('[data-chat-text]') as HTMLInputElement | null;
+  let greeted = false;
+
+  function scrollDown() { if (body) body.scrollTop = body.scrollHeight; }
+
+  function addMsg(html: string, who: 'bot' | 'user') {
+    if (!body) return;
+    const el = document.createElement('div');
+    el.className = 'msg ' + who;
+    if (who === 'user') el.textContent = html;
+    else el.innerHTML = html;
+    body.appendChild(el);
+    scrollDown();
+  }
+
+  function botTyping() {
+    if (!body) return null;
+    const el = document.createElement('div');
+    el.className = 'msg bot';
+    el.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+    body.appendChild(el);
+    scrollDown();
+    return el;
+  }
+
+  function respondTo(text: string) {
+    addMsg(text, 'user');
+    const typing = botTyping();
+    const reply = getBotReply(text, curLang());
+    setTimeout(() => {
+      if (typing) typing.remove();
+      addMsg(reply, 'bot');
+    }, 500);
+  }
+
+  function openChat() {
+    panel?.classList.add('open');
+    fab?.classList.add('open');
+    if (!greeted && body) {
+      addMsg(t('chat.greeting'), 'bot');
+      greeted = true;
+    }
+    setTimeout(() => input?.focus(), 200);
+  }
+  function closeChat() {
+    panel?.classList.remove('open');
+    fab?.classList.remove('open');
+  }
+
+  fab?.addEventListener('click', () => {
+    if (panel?.classList.contains('open')) closeChat();
+    else openChat();
+  });
+  document.querySelector('[data-chat-close]')?.addEventListener('click', closeChat);
+
+  document.querySelectorAll('[data-intent]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      openChat();
+      respondTo((chip as HTMLElement).textContent!.trim());
+    });
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = input?.value.trim();
+    if (!text) return;
+    input!.value = '';
+    respondTo(text);
+  });
+</script>

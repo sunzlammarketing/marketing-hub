@@ -28,11 +28,6 @@ const recent = posts.slice(1, 7);
         <a href="/blog" class="btn btn-primary" data-i18n="home.hero.cta1">Bắt đầu đọc →</a>
         <a href="/chu-de" class="btn btn-ghost" data-i18n="home.hero.cta2">Khám phá chủ đề</a>
       </div>
-      <div class="hero-stats">
-        <div><b>{posts.length}+</b><span data-i18n="home.stat.posts">Bài viết</span></div>
-        <div><b>{categories.length}</b><span data-i18n="home.stat.topics">Chủ đề</span></div>
-        <div><b>100%</b><span data-i18n="home.stat.free">Miễn phí</span></div>
-      </div>
     </div>
   </section>
 
@@ -166,27 +161,6 @@ const recent = posts.slice(1, 7);
     justify-content: center;
     margin-top: 8px;
   }
-  .hero-stats {
-    display: flex;
-    gap: 40px;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-  }
-  .hero-stats div {
-    display: flex;
-    flex-direction: column;
-  }
-  .hero-stats b {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--ink);
-  }
-  .hero-stats span {
-    font-size: 0.85rem;
-    color: var(--ink-faint);
-  }
-
   .cat-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -276,9 +250,6 @@ const recent = posts.slice(1, 7);
   @media (max-width: 560px) {
     .cat-grid {
       grid-template-columns: 1fr;
-    }
-    .hero-stats {
-      gap: 28px;
     }
   }
 </style>
