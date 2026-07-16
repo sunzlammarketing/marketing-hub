@@ -177,8 +177,16 @@ const channels = [
 </style>
 
 <script>
+  // ==========================================================================
+  // 👉 DÁN ENDPOINT FORMSPREE CỦA BẠN VÀO ĐÂY (thay YOUR_FORM_ID)
+  //    Lấy tại: formspree.io -> tạo form -> copy phần cuối URL (vd: mldyabcz)
+  //    Ví dụ hoàn chỉnh: 'https://formspree.io/f/mldyabcz'
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+  // ==========================================================================
+
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const note = document.getElementById('form-note')!;
+  const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
 
   // Lấy chuỗi theo ngôn ngữ đang chọn
   const t = (key: string) => {
@@ -187,7 +195,7 @@ const channels = [
     return (dict[lang] && dict[lang][key]) || (dict.vi && dict.vi[key]) || '';
   };
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const name = (data.get('name') as string)?.trim();
@@ -205,9 +213,37 @@ const channels = [
       return;
     }
 
-    // Demo: chưa kết nối backend. Thay bằng API/dịch vụ form thật khi triển khai.
-    note.className = 'form-note ok';
-    note.textContent = t('contact.ok');
-    form.reset();
+    // Chưa cấu hình endpoint -> nhắc nhẹ, không gửi
+    if (FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')) {
+      note.className = 'form-note err';
+      note.textContent = t('contact.notready');
+      return;
+    }
+
+    // Gửi qua Formspree
+    const label = submitBtn.textContent;
+    submitBtn.disabled = true;
+    note.className = 'form-note';
+    note.textContent = t('contact.sending');
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+      if (res.ok) {
+        note.className = 'form-note ok';
+        note.textContent = t('contact.ok');
+        form.reset();
+      } else {
+        throw new Error('bad response');
+      }
+    } catch {
+      note.className = 'form-note err';
+      note.textContent = t('contact.err.send');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = label;
+    }
   });
 </script>

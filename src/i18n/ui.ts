@@ -145,7 +145,10 @@ export const ui = {
     'contact.form.submit': 'Gửi tin nhắn →',
     'contact.err.required': 'Vui lòng điền đầy đủ họ tên, email và nội dung.',
     'contact.err.email': 'Email không hợp lệ. Vui lòng kiểm tra lại.',
-    'contact.ok': 'Cảm ơn bạn! Tin nhắn của bạn đã được ghi nhận (demo).',
+    'contact.sending': 'Đang gửi...',
+    'contact.ok': 'Cảm ơn bạn! Tin nhắn đã được gửi, chúng tôi sẽ phản hồi sớm.',
+    'contact.err.send': 'Gửi thất bại. Vui lòng thử lại hoặc email trực tiếp cho chúng tôi.',
+    'contact.notready': 'Form chưa được cấu hình. Vui lòng liên hệ qua email bên trái.',
 
     // Chatbot
     'chat.title': 'Trợ lý Marketing',
@@ -295,7 +298,10 @@ export const ui = {
     'contact.form.submit': 'Send message →',
     'contact.err.required': 'Please fill in your name, email and message.',
     'contact.err.email': 'Invalid email. Please check again.',
-    'contact.ok': 'Thank you! Your message has been received (demo).',
+    'contact.sending': 'Sending...',
+    'contact.ok': 'Thank you! Your message has been sent, we will get back to you soon.',
+    'contact.err.send': 'Failed to send. Please try again or email us directly.',
+    'contact.notready': 'The form is not configured yet. Please reach us via the email on the left.',
 
     // Chatbot
     'chat.title': 'Marketing Assistant',
