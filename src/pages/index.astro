@@ -32,15 +32,56 @@ const recent = posts.slice(1, 7);
       </div>
 
       <div class="hero-media">
-        <span class="hero-media-note">
-          🖼️ Thêm ảnh banner vào <b>public/hero-banner.png</b> để hiển thị ở đây
-        </span>
-        <img
-          src="/hero-banner.png"
-          alt="Sunz Làm Marketing"
-          loading="eager"
-          onerror="this.style.display='none'; this.parentElement.classList.add('no-img')"
-        />
+        <svg class="hero-illus" viewBox="0 0 500 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minh họa Sunz Làm Marketing">
+          <defs>
+            <linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4f46e5" />
+              <stop offset="0.55" stop-color="#6d5df0" />
+              <stop offset="1" stop-color="#06b6d4" />
+            </linearGradient>
+          </defs>
+
+          <!-- Nền thẻ + hoa văn -->
+          <rect x="0" y="0" width="500" height="430" rx="26" fill="url(#hbg)" />
+          <circle cx="446" cy="58" r="92" fill="#ffffff" opacity="0.10" />
+          <circle cx="52" cy="392" r="74" fill="#ffffff" opacity="0.08" />
+
+          <!-- Pill chủ đề -->
+          <g font-family="Inter, sans-serif" font-weight="700" font-size="15">
+            <rect x="40" y="42" width="86" height="34" rx="17" fill="#ffffff" />
+            <text x="83" y="64" text-anchor="middle" fill="#2563eb">SEO</text>
+            <rect x="140" y="66" width="126" height="34" rx="17" fill="#ffffff" opacity="0.94" />
+            <text x="203" y="88" text-anchor="middle" fill="#7c3aed">Content</text>
+            <rect x="336" y="40" width="120" height="34" rx="17" fill="#ffffff" opacity="0.94" />
+            <text x="396" y="62" text-anchor="middle" fill="#16a34a">Growth</text>
+          </g>
+
+          <!-- Thẻ biểu đồ -->
+          <rect x="70" y="126" width="360" height="196" rx="20" fill="#ffffff" />
+          <rect x="110" y="248" width="42" height="50" rx="9" fill="#c7d2fe" />
+          <rect x="172" y="222" width="42" height="76" rx="9" fill="#a5b4fc" />
+          <rect x="234" y="196" width="42" height="102" rx="9" fill="#818cf8" />
+          <rect x="296" y="162" width="42" height="136" rx="9" fill="#4f46e5" />
+          <!-- Đường xu hướng đi lên -->
+          <polyline points="131,238 193,212 255,186 317,152" fill="none" stroke="#06b6d4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="131" cy="238" r="5" fill="#06b6d4" />
+          <circle cx="193" cy="212" r="5" fill="#06b6d4" />
+          <circle cx="255" cy="186" r="5" fill="#06b6d4" />
+          <circle cx="317" cy="152" r="5.5" fill="#06b6d4" />
+          <path d="M317 152 l16 -3 -6 15 z" fill="#06b6d4" />
+
+          <!-- Huy hiệu tim (like) -->
+          <circle cx="96" cy="140" r="24" fill="#ec4899" />
+          <path d="M96 150 c-8 -6 -13 -11 -13 -17 a5.5 5.5 0 0 1 10 -3 a5.5 5.5 0 0 1 10 3 c0 6 -5 11 -13 17 z" fill="#ffffff" />
+          <!-- Huy hiệu loa (megaphone) -->
+          <circle cx="410" cy="300" r="27" fill="#f59e0b" />
+          <path d="M398 300 l7 0 0 -8 14 -6 0 30 -14 -6 -7 0 z" fill="#ffffff" />
+          <rect x="399" y="303" width="6" height="12" rx="2" fill="#ffffff" />
+
+          <!-- Tên thương hiệu -->
+          <text x="250" y="372" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="27" fill="#ffffff">Sunz Làm Marketing</text>
+          <text x="250" y="399" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="15" fill="#ffffff" opacity="0.9">@sunzlammarketing</text>
+        </svg>
       </div>
     </div>
   </section>
@@ -143,9 +184,9 @@ const recent = posts.slice(1, 7);
   }
   .hero-grid {
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-columns: 1.15fr 0.85fr;
     align-items: center;
-    gap: 48px;
+    gap: 44px;
   }
   .hero-text {
     display: flex;
@@ -154,10 +195,10 @@ const recent = posts.slice(1, 7);
     gap: 22px;
   }
   .hero h1 {
-    font-size: clamp(2rem, 4.4vw, 3.35rem);
+    font-size: clamp(1.85rem, 3.6vw, 2.85rem);
     font-weight: 900;
     letter-spacing: -0.03em;
-    line-height: 1.1;
+    line-height: 1.12;
     margin: 0;
     text-align: left;
   }
@@ -179,35 +220,14 @@ const recent = posts.slice(1, 7);
     flex-wrap: wrap;
   }
   .hero-media {
-    position: relative;
-    display: grid;
-    place-items: center;
-    border-radius: 22px;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--brand-soft), var(--bg-soft));
-    box-shadow: var(--shadow);
+    display: block;
   }
-  /* Khi chưa có ảnh: hiện khung gợi ý có viền đứt */
-  .hero-media.no-img {
-    min-height: 300px;
-    border: 2px dashed color-mix(in srgb, var(--brand) 35%, var(--border));
-    box-shadow: none;
-  }
-  .hero-media img {
-    position: relative;
-    z-index: 1;
+  .hero-illus {
     width: 100%;
     height: auto;
     display: block;
-  }
-  .hero-media-note {
-    position: absolute;
-    z-index: 0;
-    padding: 70px 24px;
-    text-align: center;
-    color: var(--ink-faint);
-    font-size: 0.9rem;
-    line-height: 1.5;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
   }
   @media (max-width: 900px) {
     .hero-grid {
