@@ -2,7 +2,7 @@
 title: "Email Marketing: Xây phễu tự động biến người lạ thành khách hàng"
 description: "Email vẫn là kênh có ROI cao nhất trong marketing. Học cách xây một phễu email tự động (automation) nuôi dưỡng khách từ đăng ký đến mua hàng."
 pubDate: 2026-06-28
-category: "email"
+category: "growth"
 tags: ["email-marketing", "automation", "pheu", "roi"]
 author: "Thu Hà"
 readingTime: 7

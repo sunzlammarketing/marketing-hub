@@ -2,7 +2,7 @@
 title: "5 cách tối ưu Facebook Ads giúp giảm chi phí mỗi chuyển đổi"
 description: "Chi phí quảng cáo Facebook ngày càng đắt. Đây là 5 đòn bẩy thực chiến giúp bạn giảm CPA mà không phải tăng ngân sách."
 pubDate: 2026-07-05
-category: "ads"
+category: "digital"
 tags: ["facebook-ads", "quang-cao", "cpa", "toi-uu"]
 author: "Đức Long"
 readingTime: 7

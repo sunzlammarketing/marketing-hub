@@ -2,7 +2,7 @@
 title: "Xây kênh TikTok từ con số 0: Chiến lược nội dung cho 90 ngày đầu"
 description: "Không cần chạy quảng cáo, bạn vẫn có thể xây kênh TikTok nghìn follow nếu hiểu cách thuật toán phân phối và có chiến lược nội dung rõ ràng."
 pubDate: 2026-07-02
-category: "social-media"
+category: "content-social"
 tags: ["tiktok", "social-media", "video-ngan", "thuat-toan"]
 author: "Ngọc Bích"
 readingTime: 6

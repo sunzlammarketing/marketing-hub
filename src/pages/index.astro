@@ -14,19 +14,33 @@ const recent = posts.slice(1, 7);
 <BaseLayout title="Sunz Làm Marketing">
   <!-- Hero -->
   <section class="hero">
-    <div class="container hero-inner">
-      <h1 data-i18n-html="home.hero.title">
-        Hiểu Marketing <span class="grad">đúng</span>,<br />
-        làm Marketing <span class="grad">hiệu quả</span>.
-      </h1>
-      <p class="hero-sub" data-i18n="home.hero.sub">
-        Kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng xuyên suốt hành
-        trình Marketing từ nghiên cứu thị trường, xây dựng chiến lược đến triển
-        khai, đo lường và tối ưu hiệu quả.
-      </p>
-      <div class="hero-actions">
-        <a href="/blog" class="btn btn-primary" data-i18n="home.hero.cta1">Bắt đầu đọc →</a>
-        <a href="/chu-de" class="btn btn-ghost" data-i18n="home.hero.cta2">Khám phá chủ đề</a>
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <h1 data-i18n-html="home.hero.title">
+          Hiểu Marketing <span class="grad">đúng</span>,<br />
+          làm Marketing <span class="grad">hiệu quả</span>.
+        </h1>
+        <p class="hero-sub" data-i18n="home.hero.sub">
+          Kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng xuyên suốt hành
+          trình Marketing từ nghiên cứu thị trường, xây dựng chiến lược đến triển
+          khai, đo lường và tối ưu hiệu quả.
+        </p>
+        <div class="hero-actions">
+          <a href="/blog" class="btn btn-primary" data-i18n="home.hero.cta1">Bắt đầu đọc →</a>
+          <a href="/chu-de" class="btn btn-ghost" data-i18n="home.hero.cta2">Khám phá chủ đề</a>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <span class="hero-media-note">
+          🖼️ Thêm ảnh banner vào <b>public/hero-banner.png</b> để hiển thị ở đây
+        </span>
+        <img
+          src="/hero-banner.png"
+          alt="Sunz Làm Marketing"
+          loading="eager"
+          onerror="this.style.display='none'; this.parentElement.classList.add('no-img')"
+        />
       </div>
     </div>
   </section>
@@ -116,8 +130,7 @@ const recent = posts.slice(1, 7);
 <style>
   .hero {
     position: relative;
-    padding-block: 72px 40px;
-    text-align: center;
+    padding-block: 60px 56px;
     overflow: hidden;
   }
   .hero::before {
@@ -125,21 +138,28 @@ const recent = posts.slice(1, 7);
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(60% 50% at 50% 0%, var(--brand-soft), transparent 70%);
+      radial-gradient(50% 60% at 70% 10%, var(--brand-soft), transparent 70%);
     z-index: -1;
   }
-  .hero-inner {
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 48px;
+  }
+  .hero-text {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 22px;
   }
   .hero h1 {
-    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    font-size: clamp(2rem, 4.4vw, 3.35rem);
     font-weight: 900;
     letter-spacing: -0.03em;
-    line-height: 1.08;
-    margin: 6px 0 0;
+    line-height: 1.1;
+    margin: 0;
+    text-align: left;
   }
   .grad {
     background: linear-gradient(120deg, var(--brand), var(--accent));
@@ -148,18 +168,62 @@ const recent = posts.slice(1, 7);
     -webkit-text-fill-color: transparent;
   }
   .hero-sub {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
     color: var(--ink-soft);
-    max-width: 840px;
+    max-width: 540px;
     margin: 0;
-    text-wrap: balance;
   }
   .hero-actions {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 8px;
+  }
+  .hero-media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--brand-soft), var(--bg-soft));
+    box-shadow: var(--shadow);
+  }
+  /* Khi chưa có ảnh: hiện khung gợi ý có viền đứt */
+  .hero-media.no-img {
+    min-height: 300px;
+    border: 2px dashed color-mix(in srgb, var(--brand) 35%, var(--border));
+    box-shadow: none;
+  }
+  .hero-media img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .hero-media-note {
+    position: absolute;
+    z-index: 0;
+    padding: 70px 24px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .hero-text {
+      align-items: center;
+      text-align: center;
+    }
+    .hero h1 {
+      text-align: center;
+    }
+    .hero-actions {
+      justify-content: center;
+    }
   }
   .cat-grid {
     display: grid;

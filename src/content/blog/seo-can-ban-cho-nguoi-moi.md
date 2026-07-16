@@ -2,7 +2,7 @@
 title: "SEO căn bản cho người mới: Lộ trình 30 ngày lên top Google"
 description: "Hiểu đúng bản chất SEO và lộ trình thực hành 30 ngày đầu tiên — từ nghiên cứu từ khóa, tối ưu on-page đến xây dựng liên kết một cách bền vững."
 pubDate: 2026-07-10
-category: "seo"
+category: "seo-website"
 tags: ["seo", "google", "tu-khoa", "on-page"]
 author: "Minh Anh"
 readingTime: 8

@@ -2,7 +2,7 @@
 title: "Định vị thương hiệu cho doanh nghiệp nhỏ: Làm sao để khách nhớ đến bạn?"
 description: "Bạn không cần ngân sách lớn để xây thương hiệu. Điều bạn cần là một định vị rõ ràng khiến khách hàng nhớ và chọn bạn thay vì đối thủ."
 pubDate: 2026-06-24
-category: "branding"
+category: "thuong-hieu"
 tags: ["thuong-hieu", "branding", "dinh-vi", "usp"]
 author: "Minh Anh"
 readingTime: 6

@@ -2,7 +2,7 @@
 title: "Hiểu về phễu Marketing: Từ người lạ đến khách hàng trung thành"
 description: "Phễu marketing giúp bạn nhìn toàn cảnh hành trình khách hàng và biết nên đầu tư vào đâu. Cùng đi qua mô hình AARRR dễ áp dụng cho mọi doanh nghiệp."
 pubDate: 2026-06-20
-category: "content"
+category: "nen-tang-chien-luoc"
 tags: ["pheu-marketing", "funnel", "aarrr", "chien-luoc"]
 author: "Đức Long"
 readingTime: 5

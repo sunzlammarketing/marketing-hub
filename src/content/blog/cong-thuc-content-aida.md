@@ -2,7 +2,7 @@
 title: "Công thức AIDA: Viết content bán hàng khiến khách không thể lướt qua"
 description: "Giải mã công thức copywriting kinh điển AIDA — Attention, Interest, Desire, Action — kèm ví dụ thực tế để bạn áp dụng ngay cho bài đăng bán hàng."
 pubDate: 2026-07-08
-category: "content"
+category: "content-social"
 tags: ["copywriting", "aida", "content", "ban-hang"]
 author: "Thu Hà"
 readingTime: 6
