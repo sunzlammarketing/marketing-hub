@@ -74,6 +74,15 @@ export const categories: Category[] = [
     color: '#16a34a',
   },
   {
+    slug: 'ecommerce-marketing',
+    name: 'Ecommerce Marketing',
+    nameEn: 'Ecommerce Marketing',
+    description: 'Bán hàng và tối ưu chuyển đổi trên sàn & website thương mại điện tử.',
+    descriptionEn: 'Selling and optimizing conversions on e-commerce platforms and sites.',
+    icon: '🛒',
+    color: '#0d9488',
+  },
+  {
     slug: 'du-lieu-do-luong',
     name: 'Dữ liệu & Đo lường',
     nameEn: 'Data & Analytics',
