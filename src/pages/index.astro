@@ -35,7 +35,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
           <a href="/tai-lieu-mien-phi" class="btn btn-primary cta-main" data-i18n="home.hero.cta1">
             Kho tài liệu Marketing miễn phí
           </a>
-          <a href="/gioi-thieu" class="btn btn-ghost cta-sub" data-i18n="home.hero.cta2">
+          <a href="#sunz-la-ai" class="btn btn-ghost cta-sub" data-i18n="home.hero.cta2">
             Sunz Làm Marketing là ai?
           </a>
         </div>
@@ -92,6 +92,51 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
           <text x="250" y="372" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="27" fill="#ffffff">Sunz Làm Marketing</text>
           <text x="250" y="399" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="15" fill="#ffffff" opacity="0.9">@sunzlammarketing</text>
         </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sunz Làm Marketing là ai? -->
+  <section class="section me-section" id="sunz-la-ai">
+    <div class="container me-grid">
+      <div class="me-card">
+        <div class="me-avatar">S</div>
+        <b class="me-name">Sunz Làm Marketing</b>
+        <span class="me-handle">@sunzlammarketing</span>
+        <p class="me-bio" data-i18n="home.me.bio">
+          Chia sẻ kiến thức, tài liệu & công cụ Marketing miễn phí
+        </p>
+        <div class="me-links">
+          <a href="https://www.instagram.com/sunzlammarketing" target="_blank" rel="noopener">📸 Instagram</a>
+          <a href="mailto:sunzlammarketing@gmail.com">✉️ Email</a>
+        </div>
+      </div>
+
+      <div class="me-text">
+        <span class="me-label" data-i18n="home.me.label">Sunz Làm Marketing là ai?</span>
+        <h2 class="me-title" data-i18n-html="home.me.title">
+          Chào bạn, mình làm Marketing và thích <span class="grad">chia sẻ lại</span>
+          những gì đã học.
+        </h2>
+        <p data-i18n="home.me.p1">
+          Marketing có quá nhiều thứ để học. Nhưng phần lớn kiến thức ngoài kia
+          hoặc quá hàn lâm, hoặc chỉ là những "mẹo" rời rạc thiếu nền tảng —
+          khiến người mới không biết nên bắt đầu từ đâu.
+        </p>
+        <p data-i18n="home.me.p2">
+          Sunz Làm Marketing ra đời để lấp khoảng trống đó. Đây là nơi mình gom
+          lại kiến thức, tài liệu và công cụ đã dùng trong công việc, sắp xếp có
+          hệ thống từ căn bản đến nâng cao, rồi chia sẻ hoàn toàn miễn phí.
+        </p>
+        <p data-i18n="home.me.p3">
+          Mình không hứa hẹn "làm giàu sau một đêm". Chỉ có kiến thức nền tảng
+          vững chắc, ví dụ thực tế, và những thứ bạn áp dụng được ngay vào công
+          việc của mình.
+        </p>
+        <p class="me-closing" data-i18n="home.me.closing">
+          Cùng nhau chuẩn bị hành trang thật tốt trước khi bước ra thương trường nhé!
+        </p>
+        <a href="/gioi-thieu" class="btn btn-ghost me-cta" data-i18n="home.me.cta">Tìm hiểu thêm về Sunz →</a>
       </div>
     </div>
   </section>
@@ -276,6 +321,116 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
       align-items: center;
     }
   }
+  /* Mục "Sunz Làm Marketing là ai?" */
+  .me-section {
+    background: var(--bg-soft);
+    border-block: 1px solid var(--border);
+    scroll-margin-top: 80px;
+  }
+  .me-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .me-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    padding: 36px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+  }
+  .me-avatar {
+    display: grid;
+    place-items: center;
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #fff;
+    font-weight: 900;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+  .me-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .me-handle {
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+  }
+  .me-bio {
+    margin: 10px 0 4px;
+    font-size: 0.93rem;
+    color: var(--ink-soft);
+  }
+  .me-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .me-links a {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 7px 14px;
+    border-radius: 999px;
+  }
+  .me-links a:hover {
+    color: var(--brand);
+    border-color: var(--brand);
+    text-decoration: none;
+  }
+  .me-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand);
+    margin-bottom: 14px;
+  }
+  .me-title {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    margin: 0 0 18px;
+  }
+  .me-text p {
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    margin: 0 0 14px;
+  }
+  .me-closing {
+    font-weight: 700;
+    color: var(--ink) !important;
+  }
+  .me-cta {
+    margin-top: 8px;
+  }
+  @media (max-width: 860px) {
+    .me-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .me-card {
+      max-width: 420px;
+      margin-inline: auto;
+    }
+  }
+
   .cat-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

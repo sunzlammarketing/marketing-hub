@@ -37,6 +37,21 @@ export const ui = {
     'home.stat.topics': 'Chủ đề',
     'home.stat.free': 'Miễn phí',
 
+    // Trang chủ - Mục "Sunz Làm Marketing là ai?"
+    'home.me.label': 'Sunz Làm Marketing là ai?',
+    'home.me.title':
+      'Chào bạn, mình làm Marketing và thích <span class="grad">chia sẻ lại</span> những gì đã học.',
+    'home.me.p1':
+      'Marketing có quá nhiều thứ để học. Nhưng phần lớn kiến thức ngoài kia hoặc quá hàn lâm, hoặc chỉ là những "mẹo" rời rạc thiếu nền tảng — khiến người mới không biết nên bắt đầu từ đâu.',
+    'home.me.p2':
+      'Sunz Làm Marketing ra đời để lấp khoảng trống đó. Đây là nơi mình gom lại kiến thức, tài liệu và công cụ đã dùng trong công việc, sắp xếp có hệ thống từ căn bản đến nâng cao, rồi chia sẻ hoàn toàn miễn phí.',
+    'home.me.p3':
+      'Mình không hứa hẹn "làm giàu sau một đêm". Chỉ có kiến thức nền tảng vững chắc, ví dụ thực tế, và những thứ bạn áp dụng được ngay vào công việc của mình.',
+    'home.me.closing':
+      'Cùng nhau chuẩn bị hành trang thật tốt trước khi bước ra thương trường nhé!',
+    'home.me.cta': 'Tìm hiểu thêm về Sunz →',
+    'home.me.bio': 'Chia sẻ kiến thức, tài liệu & công cụ Marketing miễn phí',
+
     // Trang chủ - các mục
     'home.cat.title': 'Khám phá theo chủ đề',
     'home.cat.sub': 'Chọn lĩnh vực bạn quan tâm và đào sâu vào những bài viết chất lượng.',
@@ -228,6 +243,21 @@ export const ui = {
     'home.stat.posts': 'Articles',
     'home.stat.topics': 'Topics',
     'home.stat.free': 'Free',
+
+    // Home - "Who is Sunz Làm Marketing?" section
+    'home.me.label': 'Who is Sunz Làm Marketing?',
+    'home.me.title':
+      'Hi, I work in Marketing and love <span class="grad">sharing back</span> what I have learned.',
+    'home.me.p1':
+      'There is so much to learn in marketing. But most knowledge out there is either too academic or just scattered "tips" with no foundation — leaving beginners unsure where to start.',
+    'home.me.p2':
+      'Sunz Làm Marketing was born to fill that gap. This is where I gather the knowledge, resources and tools I actually use at work, organize them from basics to advanced, and share them completely free.',
+    'home.me.p3':
+      'No "get rich overnight" promises here. Just solid fundamentals, real examples, and things you can apply to your work right away.',
+    'home.me.closing':
+      "Let's pack the right gear together before stepping into the market!",
+    'home.me.cta': 'More about Sunz →',
+    'home.me.bio': 'Sharing free marketing knowledge, resources & tools',
 
     // Home - sections
     'home.cat.title': 'Explore by topic',
