@@ -4,7 +4,6 @@ description: "Like và lượt xem không trả lương cho ai. Hướng dẫn c
 pubDate: 2026-07-18
 category: "du-lieu-do-luong"
 tags: ["do-luong", "analytics", "kpi", "du-lieu"]
-author: "Sunz Làm Marketing"
 readingTime: 7
 ---
 

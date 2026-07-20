@@ -8,9 +8,8 @@ interface Props {
   pubDate: Date;
   category: string;
   readingTime?: number;
-  featured?: boolean;
 }
-const { slug, title, description, pubDate, category, readingTime, featured } =
+const { slug, title, description, pubDate, category, readingTime } =
   Astro.props;
 const cat = getCategory(category);
 const dateStr = pubDate.toLocaleDateString('vi-VN', {
@@ -20,7 +19,7 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
 });
 ---
 
-<article class:list={['card', { featured }]}>
+<article class="card">
   <a href={`/blog/${slug}`} class="card-cover" aria-hidden="true" tabindex="-1">
     <span class="cover-emoji" style={`--c:${cat?.color ?? 'var(--brand)'}`}>
       {cat?.icon ?? '📄'}
@@ -72,9 +71,6 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
     font-size: 3rem;
     filter: drop-shadow(0 4px 12px color-mix(in srgb, var(--c) 40%, transparent));
   }
-  .featured .card-cover {
-    height: 220px;
-  }
   .card-body {
     display: flex;
     flex-direction: column;
@@ -106,9 +102,6 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
     font-weight: 700;
     line-height: 1.35;
     letter-spacing: -0.01em;
-  }
-  .featured .card-title {
-    font-size: 1.4rem;
   }
   .card-title a {
     color: var(--ink);

@@ -4,7 +4,6 @@ description: "Phễu marketing giúp bạn nhìn toàn cảnh hành trình khác
 pubDate: 2026-06-20
 category: "nen-tang-chien-luoc"
 tags: ["pheu-marketing", "funnel", "aarrr", "chien-luoc"]
-author: "Đức Long"
 readingTime: 5
 ---
 

@@ -4,7 +4,6 @@ description: "Giải mã công thức copywriting kinh điển AIDA — Attentio
 pubDate: 2026-07-08
 category: "content-social"
 tags: ["copywriting", "aida", "content", "ban-hang"]
-author: "Thu Hà"
 readingTime: 6
 ---
 

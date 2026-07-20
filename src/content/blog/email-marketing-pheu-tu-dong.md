@@ -4,7 +4,6 @@ description: "Email vẫn là kênh có ROI cao nhất trong marketing. Học c�
 pubDate: 2026-06-28
 category: "growth"
 tags: ["email-marketing", "automation", "pheu", "roi"]
-author: "Thu Hà"
 readingTime: 7
 ---
 

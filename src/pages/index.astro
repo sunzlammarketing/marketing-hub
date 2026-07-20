@@ -7,8 +7,8 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-const featured = posts[0];
-const recent = posts.slice(1, 7);
+const featured = posts.slice(0, 3);
+const recent = posts.slice(3, 9);
 ---
 
 <BaseLayout title="Sunz Làm Marketing">
@@ -106,21 +106,22 @@ const recent = posts.slice(1, 7);
   </section>
 
   <!-- Featured -->
-  {featured && (
+  {featured.length > 0 && (
     <section class="section featured-section">
       <div class="container">
         <h2 class="section-title" data-i18n="home.featured.title">Bài viết nổi bật</h2>
-        <p class="section-sub" data-i18n="home.featured.sub">Bài viết mới nhất, đáng đọc nhất tuần này.</p>
-        <div class="featured-wrap">
-          <PostCard
-            slug={featured.slug}
-            title={featured.data.title}
-            description={featured.data.description}
-            pubDate={featured.data.pubDate}
-            category={featured.data.category}
-            readingTime={featured.data.readingTime}
-            featured={true}
-          />
+        <p class="section-sub" data-i18n="home.featured.sub">Những bài viết mới nhất, đáng đọc nhất tuần này.</p>
+        <div class="grid grid-3">
+          {featured.map((p) => (
+            <PostCard
+              slug={p.slug}
+              title={p.data.title}
+              description={p.data.description}
+              pubDate={p.data.pubDate}
+              category={p.data.category}
+              readingTime={p.data.readingTime}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -288,9 +289,6 @@ const recent = posts.slice(1, 7);
   .featured-section {
     background: var(--bg-soft);
     border-block: 1px solid var(--border);
-  }
-  .featured-wrap {
-    max-width: 720px;
   }
 
   .row-head {

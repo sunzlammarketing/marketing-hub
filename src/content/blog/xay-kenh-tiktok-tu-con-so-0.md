@@ -4,7 +4,6 @@ description: "Không cần chạy quảng cáo, bạn vẫn có thể xây kênh
 pubDate: 2026-07-02
 category: "content-social"
 tags: ["tiktok", "social-media", "video-ngan", "thuat-toan"]
-author: "Ngọc Bích"
 readingTime: 6
 ---
 

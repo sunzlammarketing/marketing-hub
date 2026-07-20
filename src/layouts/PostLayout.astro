@@ -7,7 +7,7 @@ interface Props {
   post: CollectionEntry<'blog'>;
 }
 const { post } = Astro.props;
-const { title, description, pubDate, category, tags, author, readingTime } =
+const { title, description, pubDate, category, tags, readingTime } =
   post.data;
 const cat = getCategory(category);
 const dateStr = pubDate.toLocaleDateString('vi-VN', {
@@ -33,14 +33,10 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
       <h1>{title}</h1>
       <p class="lead">{description}</p>
       <div class="byline">
-        <span class="avatar">{author.charAt(0)}</span>
-        <div>
-          <strong>{author}</strong>
-          <span class="byline-meta">
-            <time datetime={pubDate.toISOString()}>{dateStr}</time>
-            {readingTime && <> · ⏱ {readingTime} phút đọc</>}
-          </span>
-        </div>
+        <span class="byline-meta">
+          <time datetime={pubDate.toISOString()}>{dateStr}</time>
+          {readingTime && <> · ⏱ {readingTime} phút đọc</>}
+        </span>
       </div>
     </div>
 
@@ -109,30 +105,12 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
     max-width: 620px;
   }
   .byline {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 12px;
-    text-align: left;
-    padding: 12px 0 32px;
+    justify-content: center;
+    padding: 4px 0 28px;
     border-bottom: 1px solid var(--border);
     width: 100%;
-    justify-content: center;
-  }
-  .avatar {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand), var(--accent));
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.1rem;
-  }
-  .byline strong {
-    display: block;
-    color: var(--ink);
-    font-size: 0.98rem;
   }
   .byline-meta {
     font-size: 0.85rem;

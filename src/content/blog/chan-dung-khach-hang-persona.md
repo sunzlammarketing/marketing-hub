@@ -4,7 +4,6 @@ description: "Không hiểu khách hàng thì mọi chiến dịch đều là ph
 pubDate: 2026-07-14
 category: "khach-hang"
 tags: ["khach-hang", "persona", "insight", "nghien-cuu"]
-author: "Sunz Làm Marketing"
 readingTime: 8
 ---
 
