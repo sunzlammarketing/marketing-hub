@@ -31,8 +31,8 @@ export const ui = {
       'Hiểu Marketing <span class="grad">đúng</span>,<br /> làm Marketing <span class="grad">hiệu quả</span>.',
     'home.hero.sub':
       'Kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng xuyên suốt hành trình Marketing từ nghiên cứu thị trường, xây dựng chiến lược đến triển khai, đo lường và tối ưu hiệu quả.',
-    'home.hero.cta1': 'Bắt đầu đọc →',
-    'home.hero.cta2': 'Khám phá chủ đề',
+    'home.hero.cta1': 'Kho tài liệu Marketing miễn phí',
+    'home.hero.cta2': 'Sunz Làm Marketing là ai?',
     'home.stat.posts': 'Bài viết',
     'home.stat.topics': 'Chủ đề',
     'home.stat.free': 'Miễn phí',
@@ -223,8 +223,8 @@ export const ui = {
       'Understand marketing <span class="grad">right</span>,<br /> do marketing <span class="grad">effectively</span>.',
     'home.hero.sub':
       'Marketing knowledge that is clear, practical and applicable across the entire journey — from market research and strategy to execution, measurement and optimization.',
-    'home.hero.cta1': 'Start reading →',
-    'home.hero.cta2': 'Explore topics',
+    'home.hero.cta1': 'Free marketing resource hub',
+    'home.hero.cta2': 'Who is Sunz Làm Marketing?',
     'home.stat.posts': 'Articles',
     'home.stat.topics': 'Topics',
     'home.stat.free': 'Free',

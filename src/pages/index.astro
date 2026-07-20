@@ -32,8 +32,12 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
           khai, đo lường và tối ưu hiệu quả.
         </p>
         <div class="hero-actions">
-          <a href="/blog" class="btn btn-primary" data-i18n="home.hero.cta1">Bắt đầu đọc →</a>
-          <a href="/chu-de" class="btn btn-ghost" data-i18n="home.hero.cta2">Khám phá chủ đề</a>
+          <a href="/tai-lieu-mien-phi" class="btn btn-primary cta-main" data-i18n="home.hero.cta1">
+            Kho tài liệu Marketing miễn phí
+          </a>
+          <a href="/gioi-thieu" class="btn btn-ghost cta-sub" data-i18n="home.hero.cta2">
+            Sunz Làm Marketing là ai?
+          </a>
         </div>
       </div>
 
@@ -223,10 +227,28 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     max-width: 540px;
     margin: 0;
   }
+  /* Hai nút xếp dọc: nút chính nổi bật, nút phụ nhẹ hơn */
   .hero-actions {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .cta-main {
+    padding: 17px 34px;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .cta-sub {
+    padding: 13px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .cta-sub:hover {
+    color: var(--ink);
   }
   .hero-media {
     display: block;
@@ -251,7 +273,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
       text-align: center;
     }
     .hero-actions {
-      justify-content: center;
+      align-items: center;
     }
   }
   .cat-grid {
