@@ -12,8 +12,9 @@ const byLang = (l: 'vi' | 'en') =>
 const viPosts = byLang('vi');
 const enPosts = byLang('en');
 // Render cả hai ngôn ngữ; runtime i18n sẽ ẩn nhóm không khớp ngôn ngữ đang chọn.
+// Mỗi mục chỉ hiển thị 3 bài (đúng 1 hàng ngang)
 const featured = [...viPosts.slice(0, 3), ...enPosts.slice(0, 3)];
-const recent = [...viPosts.slice(3, 9), ...enPosts.slice(3, 9)];
+const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
 ---
 
 <BaseLayout title="Sunz Làm Marketing">
