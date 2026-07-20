@@ -6,6 +6,7 @@ const nav = [
   { href: '/blog', label: 'Bài viết', key: 'nav.blog' },
   { href: '/san-pham', label: 'Dịch vụ', key: 'nav.products' },
   { href: '/tai-lieu-mien-phi', label: 'Tài liệu miễn phí', key: 'nav.resources' },
+  { href: '/cong-cu', label: 'Công cụ', key: 'nav.tools' },
   { href: '/lien-he', label: 'Liên hệ', key: 'nav.contact' },
 ];
 const path = Astro.url.pathname;
@@ -306,7 +307,7 @@ const isActive = (href: string) =>
     border-bottom: none;
   }
 
-  @media (max-width: 1040px) {
+  @media (max-width: 1160px) {
     .nav {
       display: none;
     }

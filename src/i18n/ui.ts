@@ -19,6 +19,7 @@ export const ui = {
     'nav.blog': 'Bài viết',
     'nav.products': 'Dịch vụ',
     'nav.resources': 'Tài liệu miễn phí',
+    'nav.tools': 'Công cụ',
     'nav.contact': 'Liên hệ',
     'nav.search': 'Tìm kiếm',
     'ui.theme': 'Đổi giao diện sáng/tối',
@@ -145,6 +146,35 @@ export const ui = {
     'resources.d6.type': 'PDF',
     'resources.download': 'Tải xuống',
 
+    // Trang Công cụ - Kiểm tra content quảng cáo
+    'tools.title': 'Kiểm tra content quảng cáo',
+    'tools.lead':
+      'Dán nội dung quảng cáo của bạn để rà soát nhanh những từ ngữ dễ vi phạm chính sách Facebook và Luật Quảng cáo Việt Nam, kèm gợi ý sửa.',
+    'tools.input.label': 'Nội dung quảng cáo',
+    'tools.input.ph':
+      'Dán toàn bộ nội dung bài quảng cáo vào đây, gồm cả câu kêu gọi hành động (Mua ngay, Inbox tư vấn...)',
+    'tools.opt.vn': 'Kiểm tra thêm theo Luật Quảng cáo Việt Nam',
+    'tools.btn': 'Kiểm tra ngay',
+    'tools.empty': 'Bạn hãy dán nội dung quảng cáo vào ô bên trên trước nhé.',
+    'tools.result.title': 'Kết quả rà soát',
+    'tools.riskLabel': 'Mức rủi ro',
+    'tools.risk.high': 'Cao',
+    'tools.risk.medium': 'Trung bình',
+    'tools.risk.low': 'Thấp',
+    'tools.risk.none': 'Không phát hiện',
+    'tools.sev.high': 'Nghiêm trọng',
+    'tools.sev.medium': 'Cần lưu ý',
+    'tools.sev.low': 'Nên cân nhắc',
+    'tools.foundOne': 'điểm cần xem lại',
+    'tools.pass':
+      '✅ Không phát hiện từ ngữ rủi ro phổ biến nào. Lưu ý đây chỉ là rà soát sơ bộ — hãy đọc lại tổng thể trước khi chạy quảng cáo.',
+    'tools.fixLabel': 'Gợi ý sửa',
+    'tools.matched': 'Phát hiện',
+    'tools.disclaimer':
+      'Công cụ rà soát sơ bộ theo danh sách từ ngữ rủi ro thường gặp. Kết quả mang tính tham khảo, không thay thế tư vấn pháp lý hay quyết định duyệt của Facebook.',
+    'tools.aiNote':
+      'Sắp có: lớp phân tích bằng AI để hiểu ngữ cảnh cả bài, không chỉ dò từ khóa.',
+
     // Trang Liên hệ
     'contact.badge': '📬 Liên hệ',
     'contact.title': 'Kết nối với chúng tôi',
@@ -188,6 +218,7 @@ export const ui = {
     'nav.blog': 'Articles',
     'nav.products': 'Services',
     'nav.resources': 'Free Resources',
+    'nav.tools': 'Tools',
     'nav.contact': 'Contact',
     'nav.search': 'Search',
     'ui.theme': 'Toggle light/dark theme',
@@ -313,6 +344,35 @@ export const ui = {
     'resources.d6.desc': '50 caption examples across multiple copywriting formulas to reference and adapt.',
     'resources.d6.type': 'PDF',
     'resources.download': 'Download',
+
+    // Tools page - Ad content checker
+    'tools.title': 'Ad Content Checker',
+    'tools.lead':
+      'Paste your ad copy to quickly scan for wording that commonly breaches Facebook ad policies and Vietnamese advertising law, with suggested fixes.',
+    'tools.input.label': 'Ad content',
+    'tools.input.ph':
+      'Paste your full ad copy here, including the call to action (Buy now, Message us...)',
+    'tools.opt.vn': 'Also check against Vietnamese advertising law',
+    'tools.btn': 'Check now',
+    'tools.empty': 'Please paste your ad content into the box above first.',
+    'tools.result.title': 'Scan results',
+    'tools.riskLabel': 'Risk level',
+    'tools.risk.high': 'High',
+    'tools.risk.medium': 'Medium',
+    'tools.risk.low': 'Low',
+    'tools.risk.none': 'None found',
+    'tools.sev.high': 'Serious',
+    'tools.sev.medium': 'Needs attention',
+    'tools.sev.low': 'Worth reviewing',
+    'tools.foundOne': 'point(s) to review',
+    'tools.pass':
+      '✅ No common risky wording detected. Note this is only a preliminary scan — read the whole piece again before running the ad.',
+    'tools.fixLabel': 'Suggested fix',
+    'tools.matched': 'Found',
+    'tools.disclaimer':
+      'A preliminary scan based on commonly flagged wording. Results are for reference only and do not replace legal advice or Facebook’s review decision.',
+    'tools.aiNote':
+      'Coming soon: an AI layer that understands the context of the whole piece, not just keywords.',
 
     // Contact page
     'contact.badge': '📬 Contact',
