@@ -66,6 +66,12 @@
   box-sizing: border-box;
 }
 
+/* Thuộc tính hidden phải luôn ẩn được, kể cả khi phần tử có display riêng
+   (vd .card dùng display:flex sẽ đè lên quy tắc mặc định của trình duyệt) */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
