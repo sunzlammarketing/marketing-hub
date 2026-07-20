@@ -4,11 +4,16 @@ import PostCard from '../components/PostCard.astro';
 import { categories } from '../data/categories';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-const featured = posts.slice(0, 3);
-const recent = posts.slice(3, 9);
+const all = await getCollection('blog');
+const byLang = (l: 'vi' | 'en') =>
+  all
+    .filter((p) => p.data.lang === l)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const viPosts = byLang('vi');
+const enPosts = byLang('en');
+// Render cả hai ngôn ngữ; runtime i18n sẽ ẩn nhóm không khớp ngôn ngữ đang chọn.
+const featured = [...viPosts.slice(0, 3), ...enPosts.slice(0, 3)];
+const recent = [...viPosts.slice(3, 9), ...enPosts.slice(3, 9)];
 ---
 
 <BaseLayout title="Sunz Làm Marketing">
@@ -120,6 +125,7 @@ const recent = posts.slice(3, 9);
               pubDate={p.data.pubDate}
               category={p.data.category}
               readingTime={p.data.readingTime}
+              lang={p.data.lang}
             />
           ))}
         </div>
@@ -148,6 +154,7 @@ const recent = posts.slice(3, 9);
             pubDate={p.data.pubDate}
             category={p.data.category}
             readingTime={p.data.readingTime}
+            lang={p.data.lang}
           />
         ))}
       </div>

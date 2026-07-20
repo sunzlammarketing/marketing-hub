@@ -10,10 +10,12 @@ export const GET: APIRoute = async () => {
       const cat = getCategory(p.data.category);
       return {
         slug: p.slug,
+        lang: p.data.lang,
         title: p.data.title,
         description: p.data.description,
         category: p.data.category,
-        categoryName: cat?.name ?? p.data.category,
+        categoryName:
+          (p.data.lang === 'en' ? cat?.nameEn : cat?.name) ?? p.data.category,
         categoryIcon: cat?.icon ?? '📄',
         tags: p.data.tags,
         pubDate: p.data.pubDate.toISOString(),

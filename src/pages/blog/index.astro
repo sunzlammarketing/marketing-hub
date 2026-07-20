@@ -15,21 +15,26 @@ const posts = (await getCollection('blog')).sort(
 >
   <section class="page-head">
     <div class="container">
-      <h1>Tất cả bài viết</h1>
+      <h1 data-i18n-vi="Tất cả bài viết" data-i18n-en="All articles">Tất cả bài viết</h1>
     </div>
   </section>
 
   <section class="container" style="padding-bottom:64px">
     <div class="filters" role="tablist" aria-label="Lọc theo chủ đề">
-      <button class="filter active" data-filter="all">Tất cả</button>
+      <button class="filter active" data-filter="all" data-i18n-vi="Tất cả" data-i18n-en="All">Tất cả</button>
       {categories.map((c) => (
-        <button class="filter" data-filter={c.slug}>{c.icon} {c.name}</button>
+        <button
+          class="filter"
+          data-filter={c.slug}
+          data-i18n-vi={`${c.icon} ${c.name}`}
+          data-i18n-en={`${c.icon} ${c.nameEn}`}
+        >{c.icon} {c.name}</button>
       ))}
     </div>
 
     <div class="grid grid-3" id="post-grid">
       {posts.map((p) => (
-        <div class="post-item" data-category={p.data.category}>
+        <div class="post-item" data-category={p.data.category} data-post-lang={p.data.lang}>
           <PostCard
             slug={p.slug}
             title={p.data.title}
@@ -37,11 +42,18 @@ const posts = (await getCollection('blog')).sort(
             pubDate={p.data.pubDate}
             category={p.data.category}
             readingTime={p.data.readingTime}
+            lang={p.data.lang}
           />
         </div>
       ))}
     </div>
-    <p id="empty" class="empty" hidden>Chưa có bài viết nào trong chủ đề này.</p>
+    <p
+      id="empty"
+      class="empty"
+      hidden
+      data-i18n-vi="Chưa có bài viết nào trong chủ đề này."
+      data-i18n-en="No articles in this topic yet."
+    >Chưa có bài viết nào trong chủ đề này.</p>
   </section>
 </BaseLayout>
 
@@ -93,25 +105,42 @@ const posts = (await getCollection('blog')).sort(
     color: var(--ink-faint);
     padding: 40px;
   }
+  /* Ẩn theo bộ lọc chủ đề (độc lập với ẩn theo ngôn ngữ) */
+  .post-item.cat-hidden {
+    display: none;
+  }
 </style>
 
 <script>
   const filters = document.querySelectorAll<HTMLButtonElement>('.filter');
   const items = document.querySelectorAll<HTMLElement>('.post-item');
   const empty = document.getElementById('empty');
+  let activeFilter = 'all';
+
+  const curLang = () =>
+    document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
+
+  // Lọc theo chủ đề (class) — việc ẩn theo ngôn ngữ do runtime i18n lo (thuộc tính hidden)
+  function applyFilter() {
+    let shown = 0;
+    items.forEach((item) => {
+      const okCat = activeFilter === 'all' || item.dataset.category === activeFilter;
+      item.classList.toggle('cat-hidden', !okCat);
+      if (okCat && item.dataset.postLang === curLang()) shown++;
+    });
+    if (empty) empty.hidden = shown !== 0;
+  }
 
   filters.forEach((btn) => {
     btn.addEventListener('click', () => {
       filters.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
-      const f = btn.dataset.filter;
-      let shown = 0;
-      items.forEach((item) => {
-        const match = f === 'all' || item.dataset.category === f;
-        item.style.display = match ? '' : 'none';
-        if (match) shown++;
-      });
-      if (empty) empty.hidden = shown !== 0;
+      activeFilter = btn.dataset.filter || 'all';
+      applyFilter();
     });
   });
+
+  // Khi đổi ngôn ngữ, tính lại số bài hiển thị
+  document.addEventListener('langchange', applyFilter);
+  applyFilter();
 </script>

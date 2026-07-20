@@ -19,9 +19,9 @@ const posts = (await getCollection('blog'))
   <section class="page-head" style={`--c:${cat.color}`}>
     <div class="container">
       <span class="cat-icon">{cat.icon}</span>
-      <h1>{cat.name}</h1>
-      <p>{cat.description}</p>
-      <span class="count">{posts.length} bài viết</span>
+      <h1 data-i18n-vi={cat.name} data-i18n-en={cat.nameEn}>{cat.name}</h1>
+      <p data-i18n-vi={cat.description} data-i18n-en={cat.descriptionEn}>{cat.description}</p>
+      <span class="count" data-post-count>{posts.filter((p) => p.data.lang === 'vi').length} bài viết</span>
     </div>
   </section>
 
@@ -36,15 +36,25 @@ const posts = (await getCollection('blog'))
             pubDate={p.data.pubDate}
             category={p.data.category}
             readingTime={p.data.readingTime}
+            lang={p.data.lang}
           />
         ))}
       </div>
     ) : (
-      <p class="empty">Chưa có bài viết nào trong chủ đề này. Hãy quay lại sau nhé!</p>
+      <p
+        class="empty"
+        data-i18n-vi="Chưa có bài viết nào trong chủ đề này. Hãy quay lại sau nhé!"
+        data-i18n-en="No articles in this topic yet. Please check back soon!"
+      >Chưa có bài viết nào trong chủ đề này. Hãy quay lại sau nhé!</p>
     )}
 
     <div style="text-align:center;margin-top:48px">
-      <a href="/chu-de" class="btn btn-ghost">← Xem tất cả chủ đề</a>
+      <a
+        href="/chu-de"
+        class="btn btn-ghost"
+        data-i18n-vi="← Xem tất cả chủ đề"
+        data-i18n-en="← View all topics"
+      >← Xem tất cả chủ đề</a>
     </div>
   </section>
 </BaseLayout>

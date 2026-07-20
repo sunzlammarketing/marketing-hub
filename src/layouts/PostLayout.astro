@@ -7,27 +7,36 @@ interface Props {
   post: CollectionEntry<'blog'>;
 }
 const { post } = Astro.props;
-const { title, description, pubDate, category, tags, readingTime } =
+const { title, description, pubDate, category, tags, readingTime, lang } =
   post.data;
+const en = lang === 'en';
 const cat = getCategory(category);
-const dateStr = pubDate.toLocaleDateString('vi-VN', {
+const catName = cat ? (en ? cat.nameEn : cat.name) : '';
+const dateStr = pubDate.toLocaleDateString(en ? 'en-US' : 'vi-VN', {
   day: '2-digit',
   month: 'long',
   year: 'numeric',
 });
+const t = {
+  home: en ? 'Home' : 'Trang chủ',
+  blog: en ? 'Articles' : 'Bài viết',
+  read: en ? 'min read' : 'phút đọc',
+  back: en ? '← View all articles' : '← Xem tất cả bài viết',
+  contact: en ? 'Contact us' : 'Liên hệ với chúng tôi',
+};
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="post">
     <div class="container post-head">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Trang chủ</a> <span>/</span>
-        <a href="/blog">Bài viết</a> <span>/</span>
-        {cat && <a href={`/chu-de/${cat.slug}`}>{cat.name}</a>}
+        <a href="/">{t.home}</a> <span>/</span>
+        <a href="/blog">{t.blog}</a> <span>/</span>
+        {cat && <a href={`/chu-de/${cat.slug}`}>{catName}</a>}
       </nav>
       {cat && (
         <a href={`/chu-de/${cat.slug}`} class="cat-chip" style={`--c:${cat.color}`}>
-          {cat.icon} {cat.name}
+          {cat.icon} {catName}
         </a>
       )}
       <h1>{title}</h1>
@@ -35,7 +44,7 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
       <div class="byline">
         <span class="byline-meta">
           <time datetime={pubDate.toISOString()}>{dateStr}</time>
-          {readingTime && <> · ⏱ {readingTime} phút đọc</>}
+          {readingTime && <>{` · ⏱ ${readingTime} ${t.read}`}</>}
         </span>
       </div>
     </div>
@@ -52,8 +61,8 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
       )}
 
       <div class="post-cta">
-        <a href="/blog" class="btn btn-ghost">← Xem tất cả bài viết</a>
-        <a href="/lien-he" class="btn btn-primary">Liên hệ với chúng tôi</a>
+        <a href="/blog" class="btn btn-ghost">{t.back}</a>
+        <a href="/lien-he" class="btn btn-primary">{t.contact}</a>
       </div>
     </div>
   </article>

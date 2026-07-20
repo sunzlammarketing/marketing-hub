@@ -160,6 +160,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <script>
   interface Post {
     slug: string;
+    lang: 'vi' | 'en';
     title: string;
     description: string;
     categoryName: string;
@@ -201,14 +202,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     );
   }
 
+  const curLang = () =>
+    document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
+
   function render(q: string) {
+    const lang = curLang();
+    const pool = posts.filter((p) => p.lang === lang);
     const nQ = normalize(q.trim());
     if (!nQ) {
       results.innerHTML = '';
-      status.textContent = `Có ${posts.length} bài viết. Gõ từ khóa để bắt đầu tìm.`;
+      status.textContent =
+        lang === 'en'
+          ? `${pool.length} articles available. Type a keyword to search.`
+          : `Có ${pool.length} bài viết. Gõ từ khóa để bắt đầu tìm.`;
       return;
     }
-    const matches = posts.filter((p) => {
+    const matches = pool.filter((p) => {
       const haystack = normalize(
         [p.title, p.description, p.categoryName, p.tags.join(' ')].join(' ')
       );
@@ -216,8 +225,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
 
     status.textContent = matches.length
-      ? `Tìm thấy ${matches.length} kết quả cho "${q.trim()}"`
-      : `Không tìm thấy kết quả nào cho "${q.trim()}". Thử từ khóa khác nhé.`;
+      ? lang === 'en'
+        ? `Found ${matches.length} result(s) for "${q.trim()}"`
+        : `Tìm thấy ${matches.length} kết quả cho "${q.trim()}"`
+      : lang === 'en'
+        ? `No results for "${q.trim()}". Try another keyword.`
+        : `Không tìm thấy kết quả nào cho "${q.trim()}". Thử từ khóa khác nhé.`;
 
     results.innerHTML = matches
       .map(
@@ -247,6 +260,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   input.addEventListener('input', () => render(input.value));
+  document.addEventListener('langchange', () => render(input.value));
 
   document.querySelectorAll<HTMLButtonElement>('.suggests button').forEach((b) => {
     b.addEventListener('click', () => {

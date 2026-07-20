@@ -8,9 +8,10 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     category: z.string(),
     tags: z.array(z.string()).default([]),
-    author: z.string().default('Sunz Làm Marketing'),
     readingTime: z.number().optional(),
     cover: z.string().optional(),
+    // Ngôn ngữ bài viết. Bản tiếng Anh đặt trong thư mục src/content/blog/en/
+    lang: z.enum(['vi', 'en']).default('vi'),
   }),
 });
 

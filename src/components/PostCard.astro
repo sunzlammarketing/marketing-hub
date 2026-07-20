@@ -8,8 +8,9 @@ interface Props {
   pubDate: Date;
   category: string;
   readingTime?: number;
+  lang?: 'vi' | 'en';
 }
-const { slug, title, description, pubDate, category, readingTime } =
+const { slug, title, description, pubDate, category, readingTime, lang = 'vi' } =
   Astro.props;
 const cat = getCategory(category);
 const dateStr = pubDate.toLocaleDateString('vi-VN', {
@@ -19,7 +20,7 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
 });
 ---
 
-<article class="card">
+<article class="card" data-post-lang={lang}>
   <a href={`/blog/${slug}`} class="card-cover" aria-hidden="true" tabindex="-1">
     <span class="cover-emoji" style={`--c:${cat?.color ?? 'var(--brand)'}`}>
       {cat?.icon ?? '📄'}
@@ -28,8 +29,14 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
   <div class="card-body">
     <div class="card-meta">
       {cat && (
-        <a href={`/chu-de/${cat.slug}`} class="cat-chip" style={`--c:${cat.color}`}>
-          {cat.name}
+        <a
+          href={`/chu-de/${cat.slug}`}
+          class="cat-chip"
+          style={`--c:${cat.color}`}
+          data-i18n-vi={cat.name}
+          data-i18n-en={cat.nameEn}
+        >
+          {lang === 'en' ? cat.nameEn : cat.name}
         </a>
       )}
       <span class="dot">·</span>
@@ -40,8 +47,17 @@ const dateStr = pubDate.toLocaleDateString('vi-VN', {
     </h3>
     <p class="card-desc">{description}</p>
     <div class="card-foot">
-      {readingTime && <span>⏱ {readingTime} phút đọc</span>}
-      <a href={`/blog/${slug}`} class="read-more">Đọc tiếp →</a>
+      {readingTime && (
+        <span
+          data-i18n-vi={`⏱ ${readingTime} phút đọc`}
+          data-i18n-en={`⏱ ${readingTime} min read`}
+        >
+          ⏱ {readingTime} {lang === 'en' ? 'min read' : 'phút đọc'}
+        </span>
+      )}
+      <a href={`/blog/${slug}`} class="read-more" data-i18n-vi="Đọc tiếp →" data-i18n-en="Read more →">
+        {lang === 'en' ? 'Read more →' : 'Đọc tiếp →'}
+      </a>
     </div>
   </div>
 </article>
