@@ -163,16 +163,16 @@ img {
 
 /* Khoảng cách chuẩn giữa các phần — sửa 1 chỗ, mọi trang theo */
 :root {
-  --space-head-top: 56px;   /* header → tiêu đề trang */
-  --space-head-bottom: 40px; /* đáy dải tiêu đề */
-  --space-content-top: 48px; /* dải tiêu đề → nội dung */
+  --space-head-top: 32px;   /* header → tiêu đề trang */
+  --space-head-bottom: 28px; /* đáy dải tiêu đề */
+  --space-content-top: 40px; /* dải tiêu đề → nội dung */
   --space-section: 64px;     /* khoảng đệm mỗi section / cuối trang */
 }
 @media (max-width: 640px) {
   :root {
-    --space-head-top: 40px;
-    --space-head-bottom: 32px;
-    --space-content-top: 32px;
+    --space-head-top: 24px;
+    --space-head-bottom: 20px;
+    --space-content-top: 28px;
     --space-section: 48px;
   }
 }
