@@ -12,6 +12,7 @@ export interface Product {
   name: { vi: string; en: string };
   desc: { vi: string; en: string };
   price: number | null;
+  originalPrice?: number; // giá gốc (gạch ngang) — chỉ hiện khi lớn hơn price
   image?: string;
   buyUrl?: string;
   code?: string; // mã ngắn trong nội dung chuyển khoản (không dấu). Bỏ trống → tự tạo từ slug
@@ -39,6 +40,7 @@ export const PRODUCTS: Product[] = [
       en: 'A content calendar template with the structure ready — just add your topics.',
     },
     price: 49000,
+    originalPrice: 99000,
   },
   {
     slug: 'pheu-marketing-aarrr',
@@ -52,6 +54,7 @@ export const PRODUCTS: Product[] = [
       en: 'A funnel framework to map and measure the customer journey across 5 stages.',
     },
     price: 49000,
+    originalPrice: 99000,
   },
   {
     slug: 'checklist-seo-on-page',
@@ -65,6 +68,7 @@ export const PRODUCTS: Product[] = [
       en: 'A checklist to optimize every article for SEO before you publish.',
     },
     price: 49000,
+    originalPrice: 99000,
   },
   {
     slug: 'nhap-mon-marketing',
@@ -78,6 +82,7 @@ export const PRODUCTS: Product[] = [
       en: 'An overview of core marketing concepts and mindset, easy to grasp for beginners.',
     },
     price: 49000,
+    originalPrice: 99000,
   },
   {
     slug: 'cam-nang-facebook-ads',
@@ -91,6 +96,7 @@ export const PRODUCTS: Product[] = [
       en: 'From creating campaigns to cutting costs, with practical examples.',
     },
     price: 49000,
+    originalPrice: 99000,
   },
   {
     slug: '50-mau-caption-ban-hang',
@@ -104,6 +110,7 @@ export const PRODUCTS: Product[] = [
       en: '50 captions across copywriting formulas to reference and adapt.',
     },
     price: 49000,
+    originalPrice: 99000,
   },
 ];
 
@@ -114,4 +121,9 @@ export const productCode = (p: Product) =>
 export const productUrl = (p: Product) => `/tai-lieu/${p.slug}`;
 export const buyHref = (p: Product) =>
   p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn mua sản phẩm: ${p.name.vi}`)}`;
+// % giảm so với giá gốc (null nếu không có giảm giá)
+export const discountPct = (p: Product) =>
+  p.price != null && p.originalPrice && p.originalPrice > p.price
+    ? Math.round((1 - p.price / p.originalPrice) * 100)
+    : null;
 export const formatVnd = (n: number) => n.toLocaleString('vi-VN') + ' ₫';

@@ -2,12 +2,13 @@
 // Thẻ sản phẩm: bấm ảnh/tên → trang chi tiết; nút Mua ngay → mua thẳng.
 import ProductCover from './ProductCover.astro';
 import BuyButton from './BuyButton.astro';
-import { productUrl, formatVnd, type Product } from '../data/products';
+import { productUrl, formatVnd, discountPct, type Product } from '../data/products';
 interface Props {
   product: Product;
 }
 const { product: p } = Astro.props;
 const url = productUrl(p);
+const off = discountPct(p);
 ---
 
 <article class="pd-card">
@@ -25,7 +26,14 @@ const url = productUrl(p);
     </a>
     <div class="pd-foot">
       {p.price != null ? (
-        <span class="pd-price">{formatVnd(p.price)}</span>
+        <div class="pd-prices">
+          {off && (
+            <span class="pd-old">
+              <s>{formatVnd(p.originalPrice!)}</s> <b class="pd-off">-{off}%</b>
+            </span>
+          )}
+          <span class="pd-price">{formatVnd(p.price)}</span>
+        </div>
       ) : (
         <span class="pd-price pd-price-ask" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
       )}
@@ -126,6 +134,28 @@ const url = productUrl(p);
     font-weight: 900;
     color: var(--brand);
     letter-spacing: -0.01em;
+  }
+  .pd-prices {
+    display: grid;
+    line-height: 1.15;
+  }
+  .pd-old {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+  }
+  .pd-old s {
+    text-decoration-thickness: 1.5px;
+  }
+  .pd-off {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #fff;
+    background: #ef4444;
+    padding: 2px 6px;
+    border-radius: 6px;
   }
   .pd-price-ask {
     font-size: 1.1rem;
