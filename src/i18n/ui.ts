@@ -73,6 +73,20 @@ export const ui = {
     'footer.built': 'Xây dựng bằng Astro 🚀',
 
     // Trang Giới thiệu
+    'about.hero.badge': 'Giới thiệu',
+    'about.stat': 'bài viết miễn phí',
+    'about.short.label': 'Giới thiệu ngắn gọn',
+    'about.short.copy': 'Copy giới thiệu',
+    'about.short.text':
+      'Sunz Làm Marketing là nơi chia sẻ kiến thức, tài liệu và công cụ Marketing thực chiến cho người Việt — sắp xếp có hệ thống từ căn bản đến nâng cao, kèm ví dụ thực tế và hoàn toàn miễn phí.',
+    'about.principle.label': 'Nguyên tắc',
+    'about.res.title': 'Tài nguyên thương hiệu, bấm để copy link',
+    'about.res.logo': 'Logo Sunz',
+    'about.res.web': 'Website',
+    'about.res.email': 'Email hợp tác',
+    'about.res.copy': 'Copy link',
+    'about.posts.title': 'Bài viết mới nhất',
+    'about.copied': 'Đã copy',
     'about.badge': '👋 Về chúng tôi',
     'about.title': 'Chúng tôi tin marketing tốt <span class="grad">nên dễ học</span>',
     'about.lead':
@@ -284,6 +298,20 @@ export const ui = {
     'footer.built': 'Built with Astro 🚀',
 
     // About page
+    'about.hero.badge': 'About',
+    'about.stat': 'free articles',
+    'about.short.label': 'Short bio',
+    'about.short.copy': 'Copy bio',
+    'about.short.text':
+      'Sunz Làm Marketing shares practical marketing knowledge, resources and tools for Vietnamese marketers — organized from basics to advanced, with real examples, and completely free.',
+    'about.principle.label': 'Principle',
+    'about.res.title': 'Brand resources, click to copy link',
+    'about.res.logo': 'Sunz logo',
+    'about.res.web': 'Website',
+    'about.res.email': 'Partnership email',
+    'about.res.copy': 'Copy link',
+    'about.posts.title': 'Latest articles',
+    'about.copied': 'Copied',
     'about.badge': '👋 About us',
     'about.title': 'We believe good marketing <span class="grad">should be easy to learn</span>',
     'about.lead':
