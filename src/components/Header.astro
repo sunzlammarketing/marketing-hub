@@ -322,6 +322,35 @@ const isActive = (href: string) =>
     .lang-code-hide {
       display: none;
     }
+    /* Điện thoại: thu gọn header để không tràn ngang (Tìm kiếm đã có trong menu) */
+    .header-inner {
+      gap: 8px;
+    }
+    .header-actions {
+      gap: 6px;
+    }
+    .header-actions > a.icon-btn[href='/tim-kiem'] {
+      display: none;
+    }
+    .icon-btn,
+    .menu-toggle {
+      width: 36px;
+      height: 36px;
+    }
+    .logo {
+      font-size: 1rem;
+      gap: 8px;
+    }
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+    }
+    .lang-btn {
+      padding-inline: 8px;
+    }
+    .lang-btn [data-lang-code] {
+      display: none;
+    }
   }
 </style>
 
