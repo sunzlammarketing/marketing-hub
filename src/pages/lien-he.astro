@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SOCIALS } from '../data/social';
 
 const channels = [
   { icon: '✉️', label: 'Email', value: 'sunzlammarketing@gmail.com', href: 'mailto:sunzlammarketing@gmail.com' },
-  { icon: '📘', label: 'Facebook', value: 'facebook.com/sunzlammarketing', href: '#' },
-  { icon: '📸', label: 'Instagram', value: 'instagram.com/sunzlammarketing', href: 'https://www.instagram.com/sunzlammarketing' },
+  ...SOCIALS.map((s) => ({ svg: s.icon, color: s.color, label: s.name, value: s.handle, href: s.url })),
 ];
 ---
 
@@ -23,8 +23,18 @@ const channels = [
 
         <div class="channels">
           {channels.map((c) => (
-            <a href={c.href} class="channel">
-              <span class="ch-icon">{c.icon}</span>
+            <a
+              href={c.href}
+              class="channel"
+              {...(c.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}
+            >
+              {'svg' in c ? (
+                <span class="ch-icon ch-svg" style={`--c:${c.color}`}>
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={c.svg} fill="currentColor" /></svg>
+                </span>
+              ) : (
+                <span class="ch-icon">{c.icon}</span>
+              )}
               <div>
                 <b>{c.label}</b>
                 <span>{c.value}</span>
@@ -112,6 +122,10 @@ const channels = [
     place-items: center;
     border-radius: 10px;
     background: var(--brand-soft);
+  }
+  .ch-svg {
+    color: #fff;
+    background: var(--c);
   }
   .channel b {
     display: block;

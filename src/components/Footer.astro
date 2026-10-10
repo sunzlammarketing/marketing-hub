@@ -1,4 +1,5 @@
 ---
+import { SOCIALS } from '../data/social';
 const year = new Date().getFullYear();
 ---
 
@@ -12,6 +13,24 @@ const year = new Date().getFullYear();
       <p data-i18n="footer.tagline">
         Nơi chia sẻ kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng ngay.
       </p>
+    </div>
+    <div class="footer-social">
+      <span class="fs-title" data-i18n="footer.follow">Theo dõi Sunz</span>
+      <div class="fs-icons">
+        {SOCIALS.map((s) => (
+          <a
+            href={s.url}
+            target="_blank"
+            rel="noopener"
+            class="fs-link"
+            style={`--c:${s.color}`}
+            aria-label={`${s.name} ${s.handle}`}
+            title={`${s.name} · ${s.handle}`}
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d={s.icon} fill="currentColor" /></svg>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
   <div class="container footer-bottom">
@@ -28,6 +47,39 @@ const year = new Date().getFullYear();
   }
   .footer-grid {
     padding-block: 36px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .fs-title {
+    display: block;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .fs-icons {
+    display: flex;
+    gap: 10px;
+  }
+  .fs-link {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink-soft);
+    transition: 0.15s;
+  }
+  .fs-link:hover {
+    color: #fff;
+    background: var(--c);
+    border-color: var(--c);
+    transform: translateY(-2px);
   }
   .footer-brand p {
     color: var(--ink-soft);

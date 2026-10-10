@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ChatWidget from '../components/ChatWidget.astro';
 import { ui } from '../i18n/ui';
+import { SOCIALS } from '../data/social';
 
 interface Props {
   title: string;
@@ -30,6 +31,16 @@ const fullTitle = title === 'Sunz Làm Marketing'
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta name="generator" content={Astro.generator} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Sunz Làm Marketing',
+        email: 'sunzlammarketing@gmail.com',
+        sameAs: SOCIALS.map((s) => s.url),
+      })}
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
