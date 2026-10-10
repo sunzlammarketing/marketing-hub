@@ -38,7 +38,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Mẫu lịch nội dung dựng sẵn cấu trúc, chỉ việc điền chủ đề và triển khai.',
       en: 'A content calendar template with the structure ready — just add your topics.',
     },
-    price: null,
+    price: 49000,
   },
   {
     slug: 'pheu-marketing-aarrr',
@@ -51,7 +51,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Khung phễu giúp bạn vẽ và đo lường hành trình khách hàng qua 5 giai đoạn.',
       en: 'A funnel framework to map and measure the customer journey across 5 stages.',
     },
-    price: null,
+    price: 49000,
   },
   {
     slug: 'checklist-seo-on-page',
@@ -64,7 +64,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Danh sách kiểm tra giúp bạn tối ưu từng bài viết chuẩn SEO trước khi xuất bản.',
       en: 'A checklist to optimize every article for SEO before you publish.',
     },
-    price: null,
+    price: 49000,
   },
   {
     slug: 'nhap-mon-marketing',
@@ -77,7 +77,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Tổng quan các khái niệm và tư duy Marketing nền tảng, trình bày dễ hiểu cho người mới bắt đầu.',
       en: 'An overview of core marketing concepts and mindset, easy to grasp for beginners.',
     },
-    price: null,
+    price: 49000,
   },
   {
     slug: 'cam-nang-facebook-ads',
@@ -90,7 +90,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Hướng dẫn từ tạo chiến dịch đến tối ưu chi phí, kèm ví dụ thực tế dễ áp dụng.',
       en: 'From creating campaigns to cutting costs, with practical examples.',
     },
-    price: null,
+    price: 49000,
   },
   {
     slug: '50-mau-caption-ban-hang',
@@ -103,7 +103,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Bộ 50 mẫu caption theo nhiều công thức copywriting để bạn tham khảo và biến tấu.',
       en: '50 captions across copywriting formulas to reference and adapt.',
     },
-    price: null,
+    price: 49000,
   },
 ];
 
