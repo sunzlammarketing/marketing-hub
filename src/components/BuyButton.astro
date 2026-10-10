@@ -1,0 +1,67 @@
+---
+// Nút "Mua ngay": mở Messenger fanpage kèm tin nhắn soạn sẵn tên sản phẩm (theo ngôn ngữ đang chọn),
+// hoặc mở buyUrl riêng nếu sản phẩm có khai báo.
+import { buyHref, type Product } from '../data/products';
+interface Props {
+  product: Product;
+  size?: 'md' | 'lg';
+}
+const { product: p, size = 'md' } = Astro.props;
+---
+
+<a
+  class={`buy-btn buy-${size}`}
+  href={buyHref(p)}
+  target="_blank"
+  rel="noopener"
+  data-name-vi={p.name.vi}
+  data-name-en={p.name.en}
+  data-custom={p.buyUrl ? '1' : undefined}
+>
+  <span aria-hidden="true">🛒</span>
+  <span data-i18n-vi="Mua ngay" data-i18n-en="Buy now">Mua ngay</span>
+</a>
+
+<style>
+  .buy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    box-shadow: 0 10px 22px -10px rgba(55, 48, 163, 0.75);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+  }
+  .buy-lg {
+    padding: 16px 32px;
+    font-size: 1.08rem;
+    border-radius: 16px;
+  }
+  .buy-btn:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px -10px rgba(55, 48, 163, 0.9);
+  }
+</style>
+
+<script>
+  const MSG = {
+    vi: (n: string) => `Xin chào Sunz, mình muốn mua sản phẩm: ${n}`,
+    en: (n: string) => `Hi Sunz, I'd like to buy: ${n}`,
+  };
+  document.querySelectorAll<HTMLAnchorElement>('.buy-btn:not([data-custom])').forEach((a) => {
+    a.addEventListener('click', () => {
+      const lang = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
+      const name = (lang === 'en' ? a.dataset.nameEn : a.dataset.nameVi) || '';
+      const url = new URL(a.href);
+      url.searchParams.set('text', MSG[lang](name));
+      a.href = url.toString();
+    });
+  });
+</script>

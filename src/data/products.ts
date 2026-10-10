@@ -14,6 +14,11 @@ export interface Product {
   price: number | null;
   image?: string;
   buyUrl?: string;
+  // Trang chi tiết (/tai-lieu/<slug>) — tuỳ chọn, có thì hiện:
+  intro?: { vi: string; en: string };       // đoạn giới thiệu dài
+  includes?: { vi: string[]; en: string[] }; // "Bạn nhận được gì"
+  forWho?: { vi: string[]; en: string[] };   // "Phù hợp với ai"
+  gallery?: string[];                        // ảnh chụp thêm (public/products/...)
 }
 
 const TEMPLATE = { vi: 'Template - Tài liệu Marketing', en: 'Template - Marketing Resource' };
@@ -102,4 +107,7 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const MESSENGER = 'https://m.me/sunzlammarketing';
+export const productUrl = (p: Product) => `/tai-lieu/${p.slug}`;
+export const buyHref = (p: Product) =>
+  p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn mua sản phẩm: ${p.name.vi}`)}`;
 export const formatVnd = (n: number) => n.toLocaleString('vi-VN') + ' ₫';

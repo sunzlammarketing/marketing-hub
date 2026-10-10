@@ -1,0 +1,377 @@
+---
+// Trang chi tiết từng tài liệu: /tai-lieu/<slug>. Dữ liệu ở src/data/products.ts
+// Các mục Giới thiệu / Bạn nhận được gì / Phù hợp với ai / ảnh chụp thêm chỉ hiện khi có dữ liệu.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCover from '../../components/ProductCover.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import { PRODUCTS, formatVnd, type Product } from '../../data/products';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product: p } = Astro.props as { product: Product };
+const related = PRODUCTS.filter((x) => x.slug !== p.slug).slice(0, 3);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.name.vi,
+  description: p.desc.vi,
+  brand: { '@type': 'Brand', name: 'Sunz Làm Marketing' },
+  ...(p.price != null && {
+    offers: { '@type': 'Offer', price: p.price, priceCurrency: 'VND', availability: 'https://schema.org/InStock' },
+  }),
+};
+---
+
+<BaseLayout title={p.name.vi} description={p.desc.vi}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="container pdx">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/" data-i18n="nav.home">Trang chủ</a> <span>/</span>
+      <a href="/tai-lieu" data-i18n="nav.resources">Tài liệu</a> <span>/</span>
+      <span data-i18n-vi={p.name.vi} data-i18n-en={p.name.en}>{p.name.vi}</span>
+    </nav>
+
+    <div class="pdx-grid">
+      <div class="pdx-media-col">
+        <div class="pdx-media">
+          <ProductCover product={p} size="large" />
+        </div>
+        {p.gallery && p.gallery.length > 0 && (
+          <div class="pdx-gallery">
+            {p.gallery.map((src) => (
+              <a href={src} target="_blank" rel="noopener">
+                <img src={src} alt="" loading="lazy" />
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div class="pdx-info">
+        <span class="pdx-tag" data-i18n-vi={p.tag.vi} data-i18n-en={p.tag.en}>{p.tag.vi}</span>
+        <h1 data-i18n-vi={p.name.vi} data-i18n-en={p.name.en}>{p.name.vi}</h1>
+        <p class="pdx-desc" data-i18n-vi={p.desc.vi} data-i18n-en={p.desc.en}>{p.desc.vi}</p>
+
+        <dl class="pdx-meta">
+          <div>
+            <dt data-i18n-vi="Định dạng" data-i18n-en="Format">Định dạng</dt>
+            <dd data-i18n-vi={p.type.vi} data-i18n-en={p.type.en}>{p.type.vi}</dd>
+          </div>
+          <div>
+            <dt data-i18n-vi="Tác giả" data-i18n-en="By">Tác giả</dt>
+            <dd>Sunz Làm Marketing</dd>
+          </div>
+        </dl>
+
+        <div class="pdx-buy">
+          <div>
+            <span class="pdx-price-label" data-i18n-vi="Giá" data-i18n-en="Price">Giá</span>
+            {p.price != null ? (
+              <span class="pdx-price">{formatVnd(p.price)}</span>
+            ) : (
+              <span class="pdx-price pdx-price-ask" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
+            )}
+          </div>
+          <BuyButton product={p} size="lg" />
+        </div>
+
+        <div class="pdx-how">
+          <b data-i18n-vi="Cách mua" data-i18n-en="How to buy">Cách mua</b>
+          <ol>
+            <li data-i18n-vi="Bấm “Mua ngay” — Messenger mở sẵn tin nhắn kèm tên tài liệu." data-i18n-en="Tap “Buy now” — Messenger opens with the product name pre-filled.">
+              Bấm “Mua ngay” — Messenger mở sẵn tin nhắn kèm tên tài liệu.
+            </li>
+            <li data-i18n-vi="Gửi tin nhắn, Sunz phản hồi và hướng dẫn thanh toán." data-i18n-en="Send it — Sunz replies with payment details.">
+              Gửi tin nhắn, Sunz phản hồi và hướng dẫn thanh toán.
+            </li>
+            <li data-i18n-vi="Nhận tài liệu sau khi thanh toán xong." data-i18n-en="Receive the file once payment is done.">
+              Nhận tài liệu sau khi thanh toán xong.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    {(p.intro || p.includes || p.forWho) && (
+      <div class="pdx-details">
+        {p.intro && (
+          <div class="pdx-block pdx-wide">
+            <h2 data-i18n-vi="Giới thiệu" data-i18n-en="Overview">Giới thiệu</h2>
+            <p data-i18n-vi={p.intro.vi} data-i18n-en={p.intro.en}>{p.intro.vi}</p>
+          </div>
+        )}
+        {p.includes && (
+          <div class="pdx-block">
+            <h2 data-i18n-vi="Bạn nhận được gì" data-i18n-en="What you get">Bạn nhận được gì</h2>
+            <ul class="pdx-list pdx-check">
+              {p.includes.vi.map((t, i) => (
+                <li data-i18n-vi={t} data-i18n-en={p.includes!.en[i] ?? t}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {p.forWho && (
+          <div class="pdx-block">
+            <h2 data-i18n-vi="Phù hợp với ai" data-i18n-en="Who it's for">Phù hợp với ai</h2>
+            <ul class="pdx-list pdx-dot">
+              {p.forWho.vi.map((t, i) => (
+                <li data-i18n-vi={t} data-i18n-en={p.forWho!.en[i] ?? t}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
+  </section>
+
+  {related.length > 0 && (
+    <section class="container pdx-related">
+      <div class="pdx-related-head">
+        <h2 data-i18n-vi="Tài liệu khác" data-i18n-en="More resources">Tài liệu khác</h2>
+        <a href="/tai-lieu" class="pdx-all" data-i18n-vi="Xem tất cả →" data-i18n-en="View all →">Xem tất cả →</a>
+      </div>
+      <div class="pdx-related-grid">
+        {related.map((r) => <ProductCard product={r} />)}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .pdx {
+    padding-top: var(--space-head-top);
+  }
+  .crumbs {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .crumbs a {
+    color: var(--ink-soft);
+  }
+  .crumbs span {
+    margin-inline: 4px;
+  }
+  .pdx-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .pdx-media {
+    aspect-ratio: 4 / 3;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    background: var(--bg-soft);
+  }
+  .pdx-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .pdx-gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .pdx-tag {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #e2553b;
+    background: color-mix(in srgb, #ff7759 14%, transparent);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  .pdx-info h1 {
+    margin: 14px 0 12px;
+    font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .pdx-desc {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1.04rem;
+    line-height: 1.7;
+  }
+  .pdx-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin: 20px 0;
+    padding: 14px 0;
+    border-block: 1px solid var(--border);
+  }
+  .pdx-meta dt {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pdx-meta dd {
+    margin: 2px 0 0;
+    font-weight: 700;
+  }
+  .pdx-buy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 18px 20px;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--brand) 8%, var(--bg-card));
+    border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--border));
+  }
+  .pdx-price-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+  .pdx-price {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--brand);
+    letter-spacing: -0.02em;
+  }
+  .pdx-price-ask {
+    font-size: 1.5rem;
+  }
+  .pdx-how {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .pdx-how b {
+    color: var(--ink);
+  }
+  .pdx-how ol {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 4px;
+  }
+
+  .pdx-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .pdx-block {
+    padding: 22px 24px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .pdx-wide {
+    grid-column: 1 / -1;
+  }
+  .pdx-block h2 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+  .pdx-block p {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+  .pdx-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+    color: var(--ink-soft);
+  }
+  .pdx-list li {
+    position: relative;
+    padding-left: 26px;
+  }
+  .pdx-check li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 900;
+  }
+  .pdx-dot li::before {
+    content: '•';
+    position: absolute;
+    left: 8px;
+    color: var(--brand);
+    font-weight: 900;
+  }
+
+  .pdx-related {
+    padding-block: var(--space-section);
+  }
+  .pdx-related-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .pdx-related-head h2 {
+    margin: 0;
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+    font-weight: 800;
+  }
+  .pdx-all {
+    font-weight: 700;
+  }
+  .pdx-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  :global([data-theme='dark']) .pdx-tag {
+    color: #ffa48f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .pdx-tag {
+      color: #ffa48f;
+    }
+  }
+  @media (max-width: 900px) {
+    .pdx-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .pdx-related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .pdx-details,
+    .pdx-related-grid {
+      grid-template-columns: 1fr;
+    }
+    .pdx-media {
+      border-radius: 22px;
+    }
+    .pdx-buy :global(.buy-btn) {
+      flex: 1;
+    }
+  }
+</style>
