@@ -1,0 +1,3 @@
+# Chuyển hướng cho Cloudflare Pages (Vercel dùng vercel.json)
+/tai-lieu-mien-phi   /tai-lieu   301
+/tai-lieu-mien-phi/  /tai-lieu   301
