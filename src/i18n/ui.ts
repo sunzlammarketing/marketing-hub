@@ -73,7 +73,6 @@ export const ui = {
     'footer.built': 'Xây dựng bằng Astro 🚀',
 
     // Trang Giới thiệu
-    'about.hero.badge': 'Giới thiệu',
     'about.stat': 'bài viết miễn phí',
     'about.short.label': 'Giới thiệu ngắn gọn',
     'about.short.copy': 'Copy giới thiệu',
@@ -298,7 +297,6 @@ export const ui = {
     'footer.built': 'Built with Astro 🚀',
 
     // About page
-    'about.hero.badge': 'About',
     'about.stat': 'free articles',
     'about.short.label': 'Short bio',
     'about.short.copy': 'Copy bio',
