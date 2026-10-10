@@ -227,7 +227,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
 <style>
   .hero {
     position: relative;
-    padding-block: var(--space-head-top) var(--space-section);
+    padding-block: var(--space-head-top) var(--space-home);
     overflow: hidden;
   }
   .hero::before {
@@ -273,20 +273,22 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   /* Hai nút xếp dọc: nút chính nổi bật, nút phụ nhẹ hơn */
   .hero-actions {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
   }
   .cta-main {
-    padding: 17px 34px;
-    font-size: 1rem;
+    padding: 15px 24px;
+    font-size: 0.9rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
   }
   .cta-sub {
-    padding: 13px 28px;
-    font-size: 0.95rem;
+    padding: 14px 20px;
+    font-size: 0.9rem;
+    white-space: nowrap;
     font-weight: 600;
     color: var(--ink-soft);
   }
@@ -316,7 +318,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
       text-align: center;
     }
     .hero-actions {
-      align-items: center;
+      justify-content: center;
     }
   }
   /* Mục "Sunz Làm Marketing là ai?" */

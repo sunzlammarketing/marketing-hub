@@ -167,6 +167,7 @@ img {
   --space-head-bottom: 28px; /* đáy dải tiêu đề */
   --space-content-top: 40px; /* dải tiêu đề → nội dung */
   --space-section: 64px;     /* khoảng đệm mỗi section / cuối trang */
+  --space-home: 44px;        /* đệm trên/dưới mỗi phần của trang chủ */
 }
 @media (max-width: 640px) {
   :root {
@@ -174,11 +175,12 @@ img {
     --space-head-bottom: 20px;
     --space-content-top: 28px;
     --space-section: 48px;
+    --space-home: 32px;
   }
 }
 
 .section {
-  padding-block: var(--space-section);
+  padding-block: var(--space-home);
 }
 .section-title {
   font-size: clamp(1.5rem, 3vw, 2rem);
@@ -188,7 +190,7 @@ img {
 }
 .section-sub {
   color: var(--ink-soft);
-  margin: 0 0 32px;
+  margin: 0 0 24px;
   max-width: 620px;
 }
 
