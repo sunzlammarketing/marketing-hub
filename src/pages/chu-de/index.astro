@@ -19,7 +19,7 @@ const countByCat = (slug: string) =>
     </div>
   </section>
 
-  <section class="container" style="padding-block:48px 64px">
+  <section class="container" style="padding-block:var(--space-content-top) var(--space-section)">
     <div class="cat-grid">
       {categories.map((c) => (
         <a href={`/chu-de/${c.slug}`} class="cat-card" style={`--c:${c.color}`}>
@@ -37,7 +37,7 @@ const countByCat = (slug: string) =>
 
 <style>
   .page-head {
-    padding-block: 56px 32px;
+    padding-block: var(--space-head-top) var(--space-head-bottom);
     text-align: center;
     background: var(--bg-soft);
     border-bottom: 1px solid var(--border);
@@ -46,7 +46,7 @@ const countByCat = (slug: string) =>
     font-size: clamp(1.8rem, 4vw, 2.6rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin: 16px 0 8px;
+    margin: 0 0 10px;
   }
   .page-head p {
     color: var(--ink-soft);

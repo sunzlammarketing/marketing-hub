@@ -19,7 +19,7 @@ const posts = (await getCollection('blog')).sort(
     </div>
   </section>
 
-  <section class="container" style="padding-bottom:64px">
+  <section class="container" style="padding-bottom:var(--space-section)">
     <div class="filters" role="tablist" aria-label="Lọc theo chủ đề">
       <button class="filter active" data-filter="all" data-i18n-vi="Tất cả" data-i18n-en="All">Tất cả</button>
       {categories.map((c) => (
@@ -59,7 +59,7 @@ const posts = (await getCollection('blog')).sort(
 
 <style>
   .page-head {
-    padding-block: 56px 32px;
+    padding-block: var(--space-head-top) var(--space-head-bottom);
     text-align: center;
     background: var(--bg-soft);
     border-bottom: 1px solid var(--border);
@@ -68,7 +68,7 @@ const posts = (await getCollection('blog')).sort(
     font-size: clamp(1.8rem, 4vw, 2.6rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin: 16px 0 8px;
+    margin: 0 0 10px;
   }
   .page-head p {
     color: var(--ink-soft);
@@ -78,7 +78,7 @@ const posts = (await getCollection('blog')).sort(
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    padding-block: 32px;
+    padding-block: var(--space-content-top) 32px;
   }
   .filter {
     padding: 8px 16px;

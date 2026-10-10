@@ -25,7 +25,7 @@ const posts = (await getCollection('blog'))
     </div>
   </section>
 
-  <section class="container" style="padding-block:48px 64px">
+  <section class="container" style="padding-block:var(--space-content-top) var(--space-section)">
     {posts.length > 0 ? (
       <div class="grid grid-3">
         {posts.map((p) => (
@@ -61,7 +61,7 @@ const posts = (await getCollection('blog'))
 
 <style>
   .page-head {
-    padding-block: 56px 36px;
+    padding-block: var(--space-head-top) var(--space-head-bottom);
     text-align: center;
     background: linear-gradient(
       180deg,
@@ -84,7 +84,7 @@ const posts = (await getCollection('blog'))
     font-size: clamp(1.8rem, 4vw, 2.6rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     color: var(--c);
   }
   .page-head p {

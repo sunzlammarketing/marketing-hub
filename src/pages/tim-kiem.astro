@@ -34,7 +34,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <section class="container" style="padding-bottom:64px">
+  <section class="container" style="padding-bottom:var(--space-section)">
     <p id="status" class="status"></p>
     <div class="grid grid-3" id="results"></div>
   </section>
@@ -42,7 +42,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <style>
   .search-head {
-    padding-block: 56px 40px;
+    padding-block: var(--space-head-top) var(--space-head-bottom);
     text-align: center;
     background: var(--bg-soft);
     border-bottom: 1px solid var(--border);
