@@ -1,0 +1,10 @@
+// Cấu hình Cloudflare Workers: phục vụ web tĩnh Astro đã build ở ./dist
+// Chuyển hướng đọc từ public/_redirects (được copy vào dist khi build)
+{
+  "name": "sunzlammarketing",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
