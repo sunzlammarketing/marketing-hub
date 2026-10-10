@@ -5,6 +5,8 @@
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
+    // Link trong web viết dạng /blog (không "/" cuối) → phục vụ thẳng, không chuyển hướng thêm
+    "html_handling": "drop-trailing-slash",
     "not_found_handling": "404-page"
   }
 }
