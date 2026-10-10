@@ -1,17 +1,49 @@
 ---
-// Cửa sổ thanh toán VietQR (Mức 1: khách chuyển khoản → bấm "Tôi đã chuyển khoản" → Messenger,
-// Sunz kiểm tra tài khoản rồi gửi file). Mở bởi nút [data-pay] trong BuyButton.
-// Đặt 1 lần trên mỗi trang có nút mua.
-import { BANK } from '../data/payment';
+// Cửa sổ thanh toán VietQR, 2 bước:
+//  1. Khách nhập SĐT/Zalo (bắt buộc), họ tên, email → đơn được lưu vào Google Sheet (nếu có ORDER_SHEET_URL).
+//  2. Hiện QR; nội dung CK = "SUNZ <mã SP> <SĐT>" → khách không nhắn thì xem sao kê vẫn có SĐT để liên hệ.
+// Mở bởi nút [data-pay] trong BuyButton. Đặt 1 lần trên mỗi trang có nút mua.
+import { BANK, ORDER_SHEET_URL } from '../data/payment';
 import { MESSENGER } from '../data/products';
 ---
 
-<dialog class="pay" id="pay-modal" data-bin={BANK.bin} data-account={BANK.account} data-holder={BANK.holder} data-messenger={MESSENGER} aria-labelledby="pay-title">
+<dialog class="pay" id="pay-modal" data-bin={BANK.bin} data-account={BANK.account} data-holder={BANK.holder} data-messenger={MESSENGER} data-sheet={ORDER_SHEET_URL} aria-labelledby="pay-title">
   <div class="pay-box">
     <button type="button" class="pay-x" data-pay-close aria-label="Đóng">✕</button>
     <h2 id="pay-title" data-i18n-vi="Thanh toán chuyển khoản" data-i18n-en="Bank transfer payment">Thanh toán chuyển khoản</h2>
     <p class="pay-product" data-pay-name></p>
 
+    <!-- Bước 1: thông tin liên hệ -->
+    <form class="pay-form" data-pay-step="info" novalidate>
+      <p class="pay-form-lead" data-i18n-vi="Để lại thông tin để Sunz gửi tài liệu cho bạn sau khi thanh toán." data-i18n-en="Leave your contact so Sunz can send the file after payment.">
+        Để lại thông tin để Sunz gửi tài liệu cho bạn sau khi thanh toán.
+      </p>
+      <label>
+        <span><span data-i18n-vi="Số điện thoại / Zalo" data-i18n-en="Phone / Zalo">Số điện thoại / Zalo</span> <b class="req">*</b></span>
+        <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxx" required />
+      </label>
+      <div class="pay-form-row">
+        <label>
+          <span data-i18n-vi="Họ tên" data-i18n-en="Name">Họ tên</span>
+          <input name="name" type="text" autocomplete="name" placeholder="Nguyễn Văn A" />
+        </label>
+        <label>
+          <span data-i18n-vi="Email (nhận file)" data-i18n-en="Email (to receive the file)">Email (nhận file)</span>
+          <input name="email" type="email" autocomplete="email" placeholder="ban@email.com" />
+        </label>
+      </div>
+      <input class="pay-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <p class="pay-err" data-pay-err hidden></p>
+      <button type="submit" class="pay-next">
+        <span data-i18n-vi="Tiếp tục — hiện mã QR thanh toán" data-i18n-en="Continue — show payment QR">Tiếp tục — hiện mã QR thanh toán</span> →
+      </button>
+      <p class="pay-privacy" data-i18n-vi="🔒 Thông tin chỉ dùng để gửi tài liệu và hỗ trợ đơn hàng." data-i18n-en="🔒 Your details are only used to deliver the file and support your order.">
+        🔒 Thông tin chỉ dùng để gửi tài liệu và hỗ trợ đơn hàng.
+      </p>
+    </form>
+
+    <!-- Bước 2: mã QR -->
+    <div data-pay-step="qr" hidden>
     <div class="pay-grid">
       <div class="pay-qr">
         <img data-pay-qr alt="Mã QR thanh toán" width="300" height="340" />
@@ -57,6 +89,10 @@ import { MESSENGER } from '../data/products';
     <a class="pay-done" data-pay-done target="_blank" rel="noopener">
       ✅ <span data-i18n-vi="Tôi đã chuyển khoản" data-i18n-en="I've paid">Tôi đã chuyển khoản</span>
     </a>
+    <button type="button" class="pay-back" data-pay-back>
+      ← <span data-i18n-vi="Sửa thông tin" data-i18n-en="Edit details">Sửa thông tin</span>
+    </button>
+    </div>
     <div class="pay-toast" role="status" aria-live="polite"></div>
   </div>
 </dialog>
@@ -103,6 +139,89 @@ import { MESSENGER } from '../data/products';
     margin: 4px 40px 18px 0;
     color: var(--ink-soft);
     font-weight: 600;
+  }
+  .pay-form {
+    display: grid;
+    gap: 14px;
+  }
+  .pay-form-lead {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+  }
+  .pay-form label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+  .pay-form .req {
+    color: #ef4444;
+  }
+  .pay-form input {
+    font: inherit;
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .pay-form input:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+  }
+  .pay-form input[aria-invalid='true'] {
+    border-color: #ef4444;
+  }
+  .pay-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .pay-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  .pay-err {
+    margin: 0;
+    color: #dc2626;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .pay-next {
+    font: inherit;
+    font-weight: 800;
+    font-size: 1rem;
+    border: 0;
+    cursor: pointer;
+    padding: 14px;
+    border-radius: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    box-shadow: 0 10px 22px -10px rgba(55, 48, 163, 0.75);
+  }
+  .pay-privacy {
+    margin: -4px 0 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+  .pay-back {
+    display: block;
+    margin: 12px auto 0;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: none;
+    border: 0;
+    cursor: pointer;
   }
   .pay-grid {
     display: grid;
@@ -233,7 +352,8 @@ import { MESSENGER } from '../data/products';
     .pay-box {
       padding: 22px 18px 20px;
     }
-    .pay-grid {
+    .pay-grid,
+    .pay-form-row {
       grid-template-columns: 1fr;
       gap: 12px;
     }
@@ -274,32 +394,110 @@ import { MESSENGER } from '../data/products';
       notify(lang() === 'en' ? '✓ Copied' : '✓ Đã copy');
     };
 
+    const form = $<HTMLFormElement>('form[data-pay-step="info"]');
+    const stepInfo = form;
+    const stepQr = $('[data-pay-step="qr"]');
+    const errBox = $('[data-pay-err]');
+    const sheet = dlg.dataset.sheet || '';
+    let product = { amount: 0, pcode: '', name: '' };
+
+    const showStep = (step: 'info' | 'qr') => {
+      stepInfo.hidden = step !== 'info';
+      stepQr.hidden = step !== 'qr';
+    };
+    // Gửi đơn lên Google Sheet (không chặn khách nếu lỗi)
+    const saveOrder = (data: Record<string, unknown>) => {
+      if (!sheet) return;
+      fetch(sheet, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }).catch(() => {});
+    };
+    // Nhớ thông tin khách cho lần mua sau (chỉ trên máy của khách)
+    const remember = (d?: Record<string, string>) => {
+      try {
+        if (d) localStorage.setItem('sunz-buyer', JSON.stringify(d));
+        else return JSON.parse(localStorage.getItem('sunz-buyer') || '{}');
+      } catch {
+        return {};
+      }
+    };
+
     document.querySelectorAll<HTMLElement>('[data-pay]').forEach((btn) =>
       btn.addEventListener('click', () => {
-        const amount = Number(btn.dataset.price);
-        const name = (lang() === 'en' ? btn.dataset.nameEn : btn.dataset.nameVi) || '';
-        // Mã đơn: SUNZ + mã sản phẩm + 4 số ngẫu nhiên → nhận ra ai mua gì khi xem sao kê
-        const code = `SUNZ ${btn.dataset.code} ${Math.floor(1000 + Math.random() * 9000)}`;
-        current = { amount, code };
-
-        const qr =
-          `https://img.vietqr.io/image/${dlg.dataset.bin}-${dlg.dataset.account}-compact.png` +
-          `?amount=${amount}&addInfo=${encodeURIComponent(code)}&accountName=${encodeURIComponent(dlg.dataset.holder || '')}`;
-        $<HTMLImageElement>('[data-pay-qr]').src = qr;
-        $<HTMLAnchorElement>('[data-pay-save]').href = qr;
-        $('[data-pay-name]').textContent = name;
-        $('[data-pay-amount]').textContent = vnd(amount);
-        $('[data-pay-code]').textContent = code;
-
-        const msg =
-          lang() === 'en'
-            ? `Hi Sunz, I've paid ${vnd(amount)} for "${name}". Transfer note: ${code}`
-            : `Xin chào Sunz, mình đã chuyển khoản ${vnd(amount)} mua "${name}". Nội dung CK: ${code}`;
-        $<HTMLAnchorElement>('[data-pay-done]').href = `${dlg.dataset.messenger}?text=${encodeURIComponent(msg)}`;
-
+        product = {
+          amount: Number(btn.dataset.price),
+          pcode: btn.dataset.code || '',
+          name: (lang() === 'en' ? btn.dataset.nameEn : btn.dataset.nameVi) || '',
+        };
+        $('[data-pay-name]').textContent = product.name;
+        const saved = remember() || {};
+        (['phone', 'name', 'email'] as const).forEach((k) => {
+          const el = form.elements.namedItem(k) as HTMLInputElement;
+          el.value = saved[k] || '';
+          el.removeAttribute('aria-invalid');
+        });
+        errBox.hidden = true;
+        showStep('info');
         dlg.showModal();
       })
     );
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = form.elements;
+      const phoneEl = f.namedItem('phone') as HTMLInputElement;
+      const emailEl = f.namedItem('email') as HTMLInputElement;
+      const name = (f.namedItem('name') as HTMLInputElement).value.trim();
+      const email = emailEl.value.trim();
+      // Chuẩn hoá SĐT VN: bỏ khoảng trắng/dấu, +84 → 0, phải đủ 10 số
+      const phone = phoneEl.value.replace(/[\s.\-()]/g, '').replace(/^\+?84/, '0');
+      const phoneOk = /^0\d{9}$/.test(phone);
+      const emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      phoneEl.setAttribute('aria-invalid', String(!phoneOk));
+      emailEl.setAttribute('aria-invalid', String(!emailOk));
+      if (!phoneOk || !emailOk) {
+        errBox.textContent = !phoneOk
+          ? lang() === 'en' ? 'Please enter a valid 10-digit phone number.' : 'Vui lòng nhập số điện thoại hợp lệ (10 số).'
+          : lang() === 'en' ? 'Email looks incorrect.' : 'Email chưa đúng định dạng.';
+        errBox.hidden = false;
+        (!phoneOk ? phoneEl : emailEl).focus();
+        return;
+      }
+      errBox.hidden = true;
+      remember({ phone, name, email });
+
+      // Nội dung CK: SUNZ + mã sản phẩm + SĐT khách → xem sao kê là biết ai mua gì
+      const code = `SUNZ ${product.pcode} ${phone}`;
+      const amount = product.amount;
+      current = { amount, code };
+
+      const qr =
+        `https://img.vietqr.io/image/${dlg.dataset.bin}-${dlg.dataset.account}-compact.png` +
+        `?amount=${amount}&addInfo=${encodeURIComponent(code)}&accountName=${encodeURIComponent(dlg.dataset.holder || '')}`;
+      $<HTMLImageElement>('[data-pay-qr]').src = qr;
+      $<HTMLAnchorElement>('[data-pay-save]').href = qr;
+      $('[data-pay-amount]').textContent = vnd(amount);
+      $('[data-pay-code]').textContent = code;
+
+      const msg =
+        lang() === 'en'
+          ? `Hi Sunz, I've paid ${vnd(amount)} for "${product.name}". Transfer note: ${code}`
+          : `Xin chào Sunz, mình đã chuyển khoản ${vnd(amount)} mua "${product.name}". Nội dung CK: ${code}`;
+      $<HTMLAnchorElement>('[data-pay-done]').href = `${dlg.dataset.messenger}?text=${encodeURIComponent(msg)}`;
+
+      saveOrder({
+        code,
+        product: product.name,
+        amount,
+        name,
+        phone,
+        email,
+        page: location.pathname,
+        website: (f.namedItem('website') as HTMLInputElement).value,
+      });
+      showStep('qr');
+    });
+
+    $('[data-pay-back]').addEventListener('click', () => showStep('info'));
+    $('[data-pay-done]').addEventListener('click', () => saveOrder({ action: 'claim', code: current.code }));
 
     dlg.querySelector('[data-pay-close]')?.addEventListener('click', () => dlg.close());
     // Bấm ra ngoài khung để đóng

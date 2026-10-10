@@ -8,3 +8,7 @@ export const BANK = {
   holder: 'LE VAN DUNG',
 };
 
+
+// Link Web App của Google Apps Script để lưu đơn hàng vào Google Sheet (xem tools/google-sheet-orders.gs).
+// Để trống → không lưu, thanh toán QR vẫn hoạt động bình thường.
+export const ORDER_SHEET_URL = '';
