@@ -178,6 +178,9 @@ export const ui = {
       '✅ Không phát hiện từ ngữ rủi ro phổ biến nào. Lưu ý đây chỉ là rà soát sơ bộ — hãy đọc lại tổng thể trước khi chạy quảng cáo.',
     'tools.fixLabel': 'Gợi ý sửa',
     'tools.matched': 'Phát hiện',
+    'tools.checkLabel': 'Kiểm tra',
+    'tools.issueLabel': 'Lỗi vi phạm',
+    'tools.urgent': 'Cần sửa trước khi chạy quảng cáo',
     'tools.disclaimer':
       'Công cụ rà soát sơ bộ theo danh sách từ ngữ rủi ro thường gặp. Kết quả mang tính tham khảo, không thay thế tư vấn pháp lý hay quyết định duyệt của Facebook.',
     'tools.aiNote':
@@ -385,6 +388,9 @@ export const ui = {
       '✅ No common risky wording detected. Note this is only a preliminary scan — read the whole piece again before running the ad.',
     'tools.fixLabel': 'Suggested fix',
     'tools.matched': 'Found',
+    'tools.checkLabel': 'Check',
+    'tools.issueLabel': 'Violation',
+    'tools.urgent': 'Fix before running your ads',
     'tools.disclaimer':
       'A preliminary scan based on commonly flagged wording. Results are for reference only and do not replace legal advice or Facebook’s review decision.',
     'tools.aiNote':

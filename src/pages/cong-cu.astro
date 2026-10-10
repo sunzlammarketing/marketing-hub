@@ -123,7 +123,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .result {
     margin-top: 28px;
   }
-  .summary {
+</style>
+
+<!-- Kết quả được dựng bằng innerHTML nên style phải là global (giới hạn trong #result) -->
+<style is:global>
+  #result .summary {
     display: flex;
     align-items: center;
     gap: 14px;
@@ -134,74 +138,227 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: var(--bg-card);
     margin-bottom: 18px;
   }
-  .risk-badge {
+  #result .summary-text {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  #result .risk-badge {
     font-weight: 800;
     font-size: 0.95rem;
     padding: 7px 16px;
     border-radius: 999px;
     color: #fff;
   }
-  .risk-high { background: #dc2626; }
-  .risk-medium { background: #ea580c; }
-  .risk-low { background: #ca8a04; }
-  .risk-none { background: #16a34a; }
-  .summary-text {
-    color: var(--ink-soft);
-    font-size: 0.95rem;
-  }
+  #result .risk-none { background: #16a34a; }
 
-  .finding {
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--sev);
-    border-radius: 12px;
-    background: var(--bg-card);
-    padding: 16px 18px;
-    margin-bottom: 12px;
+  /* ===== Banner mức rủi ro: gấp gáp, nổi bật ===== */
+  #result .summary.risk-high,
+  #result .summary.risk-medium,
+  #result .summary.risk-low {
+    --tone: #dc2626;
+    flex-wrap: nowrap;
+    color: #fff;
+    border: none;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, var(--tone), color-mix(in srgb, var(--tone) 75%, #000));
+    box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--tone) 70%, transparent);
   }
-  .f-top {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
+  #result .summary.risk-medium { --tone: #ea580c; }
+  #result .summary.risk-low { --tone: #ca8a04; }
+  #result .summary.risk-high { animation: risk-pulse 2s ease-in-out infinite; }
+  #result .sum-icon {
+    font-size: 1.9rem;
+    line-height: 1;
+    width: 54px;
+    height: 54px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.18);
   }
-  .sev-tag {
-    font-size: 0.72rem;
-    font-weight: 800;
+  #result .risk-high .sum-icon { animation: shake 2.4s ease-in-out infinite; }
+  #result .sum-body { flex: 1; min-width: 0; }
+  #result .sum-risk {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  #result .sum-risk strong {
+    font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--sev);
-    background: color-mix(in srgb, var(--sev) 12%, transparent);
-    padding: 3px 10px;
+  }
+  #result .sum-sub {
+    font-size: 0.88rem;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+  #result .sum-count {
+    flex: none;
+    text-align: center;
+    background: #fff;
+    color: var(--tone);
+    border-radius: 12px;
+    padding: 6px 14px;
+    line-height: 1.15;
+  }
+  #result .sum-count strong {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 900;
+  }
+  #result .sum-count span {
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  /* ===== Thẻ phát hiện: 3 khối Kiểm tra / Lỗi / Cách sửa ===== */
+  #result .finding {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+  }
+  #result .f-block {
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  #result .f-block p {
+    margin: 8px 0 0;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  #result .f-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
     border-radius: 999px;
   }
-  .f-match {
+  #result .f-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* 1. Kiểm tra: đỏ, khẩn cấp */
+  #result .f-check {
+    background: color-mix(in srgb, var(--sev) 10%, var(--bg-card));
+    border: 1.5px solid color-mix(in srgb, var(--sev) 45%, transparent);
+  }
+  #result .f-check .f-label {
+    background: color-mix(in srgb, var(--sev) 16%, transparent);
+    color: var(--sev);
+  }
+  #result .sev-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    background: var(--sev);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  #result .sev-tag .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  #result .sev-high .sev-tag .dot { animation: blink 1s steps(2, start) infinite; }
+  #result .f-match {
+    margin-top: 10px;
     font-weight: 700;
     color: var(--ink);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
   }
-  .f-match code {
-    background: color-mix(in srgb, var(--sev) 12%, transparent);
+  #result .hit {
+    font-weight: 800;
     color: var(--sev);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.92rem;
-  }
-  .f-reason {
-    color: var(--ink-soft);
-    font-size: 0.94rem;
-    margin: 0 0 8px;
-  }
-  .f-fix {
-    font-size: 0.94rem;
-    color: var(--ink);
-    background: var(--bg-soft);
+    background: var(--bg-card);
+    border: 1.5px dashed var(--sev);
+    padding: 3px 10px;
     border-radius: 8px;
-    padding: 10px 12px;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
   }
-  .f-fix b {
-    color: var(--brand);
+
+  /* 2. Lỗi vi phạm: trung tính, cảnh báo nhẹ */
+  #result .f-issue {
+    background: var(--bg-soft);
+    border-left: 4px solid var(--sev);
   }
-  .pass-msg {
+  #result .f-issue .f-label {
+    background: color-mix(in srgb, #f59e0b 18%, transparent);
+    color: #b45309;
+  }
+
+  /* 3. Cách sửa: xanh dịu mắt */
+  #result .f-fix {
+    background: color-mix(in srgb, #10b981 9%, var(--bg-card));
+    border: 1px solid color-mix(in srgb, #10b981 30%, transparent);
+  }
+  #result .f-fix .f-label {
+    background: color-mix(in srgb, #10b981 18%, transparent);
+    color: #047857;
+  }
+  #result .f-fix .lead {
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  /* Cụm trong ngoặc kép */
+  #result mark.q {
+    padding: 1px 7px;
+    border-radius: 6px;
+    font-weight: 700;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  #result mark.q-bad {
+    background: color-mix(in srgb, #dc2626 12%, transparent);
+    color: #b91c1c;
+  }
+  #result mark.q-good {
+    background: color-mix(in srgb, #10b981 20%, transparent);
+    color: #065f46;
+  }
+  #result mark.q-good::before { content: "“"; }
+  #result mark.q-good::after { content: "”"; }
+  #result mark.q-bad::before { content: "“"; }
+  #result mark.q-bad::after { content: "”"; }
+
+  /* Dark mode: chữ nhãn sáng hơn cho dễ đọc */
+  :root[data-theme='dark'] #result .f-issue .f-label { color: #fbbf24; }
+  :root[data-theme='dark'] #result .f-fix .f-label,
+  :root[data-theme='dark'] #result mark.q-good { color: #6ee7b7; }
+  :root[data-theme='dark'] #result mark.q-bad { color: #fca5a5; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) #result .f-issue .f-label { color: #fbbf24; }
+    :root:not([data-theme='light']) #result .f-fix .f-label,
+    :root:not([data-theme='light']) #result mark.q-good { color: #6ee7b7; }
+    :root:not([data-theme='light']) #result mark.q-bad { color: #fca5a5; }
+  }
+
+  #result .pass-msg {
     padding: 20px;
     border-radius: 14px;
     background: color-mix(in srgb, #16a34a 10%, transparent);
@@ -209,6 +366,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink);
     font-size: 0.98rem;
   }
+
+  @keyframes risk-pulse {
+    0%, 100% { box-shadow: 0 10px 28px -10px rgba(220, 38, 38, 0.7); }
+    50% { box-shadow: 0 10px 34px -6px rgba(220, 38, 38, 0.95), 0 0 0 4px rgba(220, 38, 38, 0.15); }
+  }
+  @keyframes shake {
+    0%, 86%, 100% { transform: rotate(0); }
+    88% { transform: rotate(-12deg); }
+    92% { transform: rotate(12deg); }
+    96% { transform: rotate(-8deg); }
+  }
+  @keyframes blink { to { visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) {
+    #result * { animation: none !important; }
+  }
+  @media (max-width: 560px) {
+    #result .summary.risk-high,
+    #result .summary.risk-medium,
+    #result .summary.risk-low { flex-wrap: wrap; }
+    #result .sum-icon { width: 44px; height: 44px; font-size: 1.5rem; }
+    #result .sum-body { flex: 1 1 calc(100% - 60px); }
+    #result .sum-count {
+      width: 100%;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+    }
+    #result .sum-count strong { display: inline; font-size: 1.3rem; }
+    #result .sum-count span { font-size: 0.85rem; }
+  }
+</style>
+
+<style>
   .disclaimer,
   .ai-note {
     margin-top: 22px;
@@ -410,6 +601,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] || c
     );
 
+  // Tô đậm: phần trước dấu ":" (hướng dẫn chính) và các cụm trong ngoặc kép (ví dụ / từ cấm)
+  function emphasize(s: string, tone: 'bad' | 'good') {
+    let h = escapeHtml(s);
+    if (tone === 'good') h = h.replace(/^([^:“&]{6,}?):/, '<strong class="lead">$1:</strong>');
+    return h
+      .replace(/“([^”]+)”/g, `<mark class="q q-${tone}">$1</mark>`)
+      .replace(/&quot;(.+?)&quot;/g, `<mark class="q q-${tone}">$1</mark>`);
+  }
+
   const SEV_COLOR: Record<Sev, string> = {
     high: '#dc2626',
     medium: '#ea580c',
@@ -465,27 +665,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       worst === 'high' ? 'high' : worst === 'medium' ? 'medium' : 'low';
 
     const cards = findings
-      .map(({ rule, hits }) => {
+      .map(({ rule, hits }, i) => {
         const color = SEV_COLOR[rule.sev];
         const chips = hits
-          .map((h) => `<code>${escapeHtml(h)}</code>`)
+          .map((h) => `<span class="hit">${escapeHtml(h)}</span>`)
           .join(' ');
         return `
-        <div class="finding" style="--sev:${color}">
-          <div class="f-top">
-            <span class="sev-tag">${escapeHtml(t('tools.sev.' + rule.sev))}</span>
-            <span class="f-match">${escapeHtml(t('tools.matched'))}: ${chips}</span>
+        <article class="finding sev-${rule.sev}" style="--sev:${color}">
+          <div class="f-block f-check">
+            <div class="f-head">
+              <span class="f-label">🔍 ${escapeHtml(t('tools.checkLabel'))} #${i + 1}</span>
+              <span class="sev-tag"><span class="dot"></span>${escapeHtml(t('tools.sev.' + rule.sev))}</span>
+            </div>
+            <div class="f-match">${escapeHtml(t('tools.matched'))}: ${chips}</div>
           </div>
-          <p class="f-reason">${escapeHtml(rule.reason[lang])}</p>
-          <div class="f-fix"><b>${escapeHtml(t('tools.fixLabel'))}:</b> ${escapeHtml(rule.fix[lang])}</div>
-        </div>`;
+          <div class="f-block f-issue">
+            <span class="f-label">⚠️ ${escapeHtml(t('tools.issueLabel'))}</span>
+            <p>${emphasize(rule.reason[lang], 'bad')}</p>
+          </div>
+          <div class="f-block f-fix">
+            <span class="f-label">✅ ${escapeHtml(t('tools.fixLabel'))}</span>
+            <p>${emphasize(rule.fix[lang], 'good')}</p>
+          </div>
+        </article>`;
       })
       .join('');
 
     result.innerHTML = `
-      <div class="summary">
-        <span class="risk-badge risk-${riskKey}">${escapeHtml(t('tools.riskLabel'))}: ${escapeHtml(t('tools.risk.' + riskKey))}</span>
-        <span class="summary-text">${findings.length} ${escapeHtml(t('tools.foundOne'))}</span>
+      <div class="summary risk-${riskKey}">
+        <div class="sum-icon">${riskKey === 'high' ? '🚨' : '⚠️'}</div>
+        <div class="sum-body">
+          <div class="sum-risk">${escapeHtml(t('tools.riskLabel'))}: <strong>${escapeHtml(t('tools.risk.' + riskKey))}</strong></div>
+          <div class="sum-sub">${escapeHtml(t('tools.urgent'))}</div>
+        </div>
+        <div class="sum-count"><strong>${findings.length}</strong><span>${escapeHtml(t('tools.foundOne'))}</span></div>
       </div>
       ${cards}`;
   }
