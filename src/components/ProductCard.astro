@@ -5,9 +5,10 @@ import BuyButton from './BuyButton.astro';
 import { productUrl, formatVnd, discountPct, type Product } from '../data/products';
 interface Props {
   product: Product;
+  href?: string; // trang chi tiết; mặc định /tai-lieu/<slug>
 }
-const { product: p } = Astro.props;
-const url = productUrl(p);
+const { product: p, href } = Astro.props;
+const url = href ?? productUrl(p);
 const off = discountPct(p);
 ---
 

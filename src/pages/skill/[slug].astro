@@ -1,0 +1,633 @@
+---
+// Trang bán từng skill (/skill/<slug>), bố cục tham khảo noti.vn/skill:
+// hero + số liệu → tình huống → quy trình → thư viện mẫu → pháp lý → kết quả trả về → gói nhận được → CTA.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import PaymentModal from '../../components/PaymentModal.astro';
+import { SKILLS, type Skill } from '../../data/skills';
+import { formatVnd, discountPct } from '../../data/products';
+
+export function getStaticPaths() {
+  return SKILLS.map((s) => ({ params: { slug: s.slug }, props: { skill: s } }));
+}
+const { skill: s } = Astro.props as { skill: Skill };
+const off = discountPct(s);
+const total = s.groups.reduce((n, g) => n + g.items.length, 0);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: s.name.vi,
+  description: s.desc.vi,
+  brand: { '@type': 'Brand', name: 'Sunz Làm Marketing' },
+  ...(s.price != null && {
+    offers: { '@type': 'Offer', price: s.price, priceCurrency: 'VND', availability: 'https://schema.org/InStock' },
+  }),
+};
+---
+
+<BaseLayout title={s.name.vi} description={s.desc.vi}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- HERO -->
+  <section class="sk-hero">
+    <div class="container sk-hero-inner">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/" data-i18n="nav.home">Trang chủ</a> <span>/</span>
+        <a href="/skill" data-i18n-vi="Skill AI" data-i18n-en="AI Skills">Skill AI</a>
+      </nav>
+      <span class="sk-live"><i></i> <span data-i18n-vi="Đang mở bán" data-i18n-en="Now available">Đang mở bán</span></span>
+      <h1 data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</h1>
+      <p class="sk-lead" data-i18n-vi={s.desc.vi} data-i18n-en={s.desc.en}>{s.desc.vi}</p>
+
+      <div class="sk-stats">
+        {s.stats.map((st) => (
+          <div class="sk-stat">
+            <b>{st.value}</b>
+            <span data-i18n-vi={st.label.vi} data-i18n-en={st.label.en}>{st.label.vi}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="sk-buy">
+        <div class="sk-price">
+          {s.price != null ? (
+            <>
+              {off && (
+                <span class="sk-old"><s>{formatVnd(s.originalPrice!)}</s> <b>-{off}%</b></span>
+              )}
+              <span class="sk-now">{formatVnd(s.price)}</span>
+            </>
+          ) : (
+            <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
+          )}
+        </div>
+        <BuyButton product={s} size="lg" />
+        <a href="#tinh-huong" class="sk-ghost" data-i18n-vi="Skill làm được gì? ↓" data-i18n-en="What does it do? ↓">Skill làm được gì? ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TÌNH HUỐNG -->
+  <section class="container sk-sec" id="tinh-huong">
+    <span class="sk-label" data-i18n-vi="Bắt đầu từ vấn đề, không từ công thức" data-i18n-en="Start from the problem, not the formula">Bắt đầu từ vấn đề, không từ công thức</span>
+    <h2 data-i18n-vi="Bạn đang gặp tình huống nào?" data-i18n-en="Which situation are you in?">Bạn đang gặp tình huống nào?</h2>
+    <p class="sk-sub" data-i18n-vi="Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn mẫu phù hợp. Đây là 8 tình huống chính:" data-i18n-en="Just describe the problem — the skill matches it to the right templates. The 8 main situations:">
+      Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn mẫu phù hợp. Đây là 8 tình huống chính:
+    </p>
+    <div class="sk-situ">
+      {s.situations.map((x) => (
+        <div class="sk-situ-card">
+          <b>“{x.problem}”</b>
+          <ul>
+            {x.picks.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- QUY TRÌNH -->
+  <section class="sk-band">
+    <div class="container sk-sec">
+      <span class="sk-label" data-i18n-vi="Quy trình bắt buộc" data-i18n-en="Built-in workflow">Quy trình bắt buộc</span>
+      <h2 data-i18n-vi={`${s.steps.length} bước Claude làm mỗi lần bạn nhờ`} data-i18n-en={`${s.steps.length} steps Claude follows every time`}>{s.steps.length} bước Claude làm mỗi lần bạn nhờ</h2>
+      <ol class="sk-steps">
+        {s.steps.map((st, i) => (
+          <li>
+            <span class="sk-step-no">{String(i + 1).padStart(2, '0')}</span>
+            <b>{st.title}</b>
+            <p>{st.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- THƯ VIỆN MẪU -->
+  <section class="container sk-sec">
+    <span class="sk-label" data-i18n-vi="Thư viện mẫu" data-i18n-en="Template library">Thư viện mẫu</span>
+    <h2 data-i18n-vi={`${total} mẫu caption, ${s.groups.length} nhóm mục tiêu`} data-i18n-en={`${total} caption templates, ${s.groups.length} goal groups`}>{total} mẫu caption, {s.groups.length} nhóm mục tiêu</h2>
+    <p class="sk-sub" data-i18n-vi="Mỗi mẫu có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai." data-i18n-en="Each template includes when to use it, a detailed frame, best channels and pitfalls to avoid.">
+      Mỗi mẫu có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai.
+    </p>
+    <div class="sk-groups">
+      {s.groups.map((g, gi) => (
+        <div class="sk-group">
+          <div class="sk-group-head">
+            <span class="sk-group-code">{g.code}</span>
+            <div>
+              <b>{g.name}</b>
+              <small>{g.goal}</small>
+            </div>
+          </div>
+          <ol start={gi * 5 + 1}>
+            {g.items.map((it) => <li>{it}</li>)}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- PHÁP LÝ -->
+  <section class="sk-band">
+    <div class="container sk-sec sk-legal-wrap">
+      <div>
+        <span class="sk-label" data-i18n-vi="An toàn khi đăng" data-i18n-en="Safe to publish">An toàn khi đăng</span>
+        <h2 data-i18n-vi={`Tự soát ${s.legal.length} điểm pháp lý quảng cáo VN`} data-i18n-en={`Checks ${s.legal.length} Vietnamese ad-law points`}>Tự soát {s.legal.length} điểm pháp lý quảng cáo VN</h2>
+        <p class="sk-sub" data-i18n-vi="Mỗi caption được kiểm tra trước khi giao, chỉ rõ chỗ cần sửa và cách sửa." data-i18n-en="Every caption is checked before delivery, with what to fix and how.">
+          Mỗi caption được kiểm tra trước khi giao, chỉ rõ chỗ cần sửa và cách sửa.
+        </p>
+      </div>
+      <ul class="sk-legal">
+        {s.legal.map((l) => <li>{l}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- KẾT QUẢ -->
+  <section class="container sk-sec sk-out-wrap">
+    <div>
+      <span class="sk-label" data-i18n-vi="Kết quả trả về" data-i18n-en="What you get back">Kết quả trả về</span>
+      <h2 data-i18n-vi="2-3 phiên bản caption, sẵn sàng A/B test" data-i18n-en="2-3 caption versions, ready to A/B test">2-3 phiên bản caption, sẵn sàng A/B test</h2>
+      <p class="sk-sub" data-i18n-vi="Mỗi phiên bản ghi rõ dùng mẫu nào, vì sao hợp tình huống, kèm kết quả soát pháp lý và gợi ý chỉ số để đo." data-i18n-en="Each version states the template used and why, plus the legal check and what to measure.">
+        Mỗi phiên bản ghi rõ dùng mẫu nào, vì sao hợp tình huống, kèm kết quả soát pháp lý và gợi ý chỉ số để đo.
+      </p>
+    </div>
+    <pre class="sk-out"><code>{s.output}</code></pre>
+  </section>
+
+  <!-- GÓI NHẬN ĐƯỢC + CTA -->
+  <section class="sk-band">
+    <div class="container sk-sec">
+      <div class="sk-final">
+        <div class="sk-final-info">
+          <span class="sk-label" data-i18n-vi="Bạn nhận được" data-i18n-en="You receive">Bạn nhận được</span>
+          <ul class="sk-check">
+            {s.includes.map((x) => <li>{x}</li>)}
+          </ul>
+          <span class="sk-label" data-i18n-vi="Yêu cầu" data-i18n-en="Requirements">Yêu cầu</span>
+          <ul class="sk-dot">
+            {s.requires.map((x) => <li>{x}</li>)}
+          </ul>
+        </div>
+        <div class="sk-final-buy">
+          <b class="sk-final-name" data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</b>
+          <div class="sk-price">
+            {s.price != null ? (
+              <>
+                {off && (
+                  <span class="sk-old"><s>{formatVnd(s.originalPrice!)}</s> <b>-{off}%</b></span>
+                )}
+                <span class="sk-now">{formatVnd(s.price)}</span>
+              </>
+            ) : (
+              <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
+            )}
+          </div>
+          <BuyButton product={s} size="lg" />
+          <p class="sk-final-note" data-i18n-vi="Thanh toán chuyển khoản QR, nhận skill qua Zalo / email." data-i18n-en="Pay by QR bank transfer, receive the skill via Zalo / email.">
+            Thanh toán chuyển khoản QR, nhận skill qua Zalo / email.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <PaymentModal />
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .sk-hero {
+    color: #fff;
+    background:
+      radial-gradient(circle at 85% 10%, rgba(255, 119, 89, 0.35), transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(99, 102, 241, 0.45), transparent 45%),
+      linear-gradient(135deg, #1e1b4b, #312e81 55%, #3730a3);
+    padding-block: var(--space-head-top) 48px;
+  }
+  .sk-hero-inner {
+    text-align: center;
+  }
+  .crumbs {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 18px;
+  }
+  .crumbs a {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .crumbs span {
+    margin-inline: 4px;
+  }
+  .sk-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    color: #6ee7b7;
+  }
+  .sk-live i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+    animation: sk-pulse 1.8s infinite;
+  }
+  @keyframes sk-pulse {
+    70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
+  .sk-hero h1 {
+    margin: 16px auto 12px;
+    max-width: 820px;
+    font-size: clamp(1.8rem, 4.6vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .sk-lead {
+    margin: 0 auto;
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .sk-stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin: 32px auto 0;
+    max-width: 960px;
+  }
+  .sk-stat {
+    padding: 16px 10px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .sk-stat b {
+    display: block;
+    font-size: 1.7rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .sk-stat span {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .sk-buy {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px 20px;
+    flex-wrap: wrap;
+  }
+  .sk-hero .sk-price {
+    color: #fff;
+  }
+  .sk-price {
+    display: grid;
+    line-height: 1.15;
+    text-align: left;
+  }
+  .sk-old {
+    font-size: 0.95rem;
+    opacity: 0.75;
+  }
+  .sk-old b {
+    font-size: 0.75rem;
+    color: #fff;
+    background: #ef4444;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+  .sk-now {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .sk-ghost {
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* SECTION CHUNG */
+  .sk-sec {
+    padding-block: 56px;
+  }
+  .sk-band {
+    background: var(--bg-soft);
+    border-block: 1px solid var(--border);
+  }
+  .sk-label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e2553b;
+    margin-bottom: 8px;
+  }
+  .sk-sec h2 {
+    margin: 0 0 8px;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .sk-sub {
+    margin: 0 0 24px;
+    color: var(--ink-soft);
+    max-width: 720px;
+  }
+
+  /* TÌNH HUỐNG */
+  .sk-situ {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .sk-situ-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .sk-situ-card b {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--brand);
+  }
+  .sk-situ-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+  }
+  .sk-situ-card li::before {
+    content: '→ ';
+    color: #e2553b;
+    font-weight: 800;
+  }
+
+  /* QUY TRÌNH */
+  .sk-steps {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    counter-reset: none;
+  }
+  .sk-steps li {
+    position: relative;
+    padding: 18px;
+    border-radius: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+  .sk-step-no {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-weight: 900;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    margin-bottom: 10px;
+  }
+  .sk-steps b {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sk-steps p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* THƯ VIỆN */
+  .sk-groups {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .sk-group {
+    padding: 16px;
+    border-radius: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+  .sk-group-head {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .sk-group-code {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    font-weight: 900;
+    color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .sk-group-head b {
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+  .sk-group-head small {
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+  }
+  .sk-group ol {
+    margin: 0;
+    padding-left: 26px;
+    display: grid;
+    gap: 3px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  /* PHÁP LÝ */
+  .sk-legal-wrap,
+  .sk-out-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .sk-legal {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+  .sk-legal li {
+    position: relative;
+    padding: 12px 14px 12px 44px;
+    border-radius: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+  .sk-legal li::before {
+    content: '⚖️';
+    position: absolute;
+    left: 14px;
+    top: 11px;
+  }
+
+  /* KẾT QUẢ */
+  .sk-out {
+    margin: 0;
+    padding: 20px 22px;
+    border-radius: 18px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* GÓI + CTA */
+  .sk-final {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .sk-final-info ul {
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+  .sk-final-info li {
+    position: relative;
+    padding-left: 26px;
+    color: var(--ink-soft);
+    word-break: break-word;
+  }
+  .sk-check li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 900;
+  }
+  .sk-dot li::before {
+    content: '•';
+    position: absolute;
+    left: 8px;
+    color: var(--brand);
+    font-weight: 900;
+  }
+  .sk-final-buy {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+    padding: 24px;
+    border-radius: 24px;
+    background: var(--bg-card);
+    border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--border));
+    box-shadow: var(--shadow-lg);
+  }
+  .sk-final-name {
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+  .sk-final-buy .sk-now {
+    color: var(--brand);
+  }
+  .sk-final-buy .sk-old {
+    color: var(--ink-faint);
+    opacity: 1;
+  }
+  .sk-final-buy :global(.buy-btn) {
+    width: 100%;
+  }
+  .sk-final-note {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  :global([data-theme='dark']) .sk-label {
+    color: #ffa48f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .sk-label {
+      color: #ffa48f;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .sk-stats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .sk-situ {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sk-steps {
+      grid-template-columns: 1fr;
+    }
+    .sk-groups {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sk-legal-wrap,
+    .sk-out-wrap,
+    .sk-final {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+  @media (max-width: 560px) {
+    .sk-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sk-situ,
+    .sk-groups {
+      grid-template-columns: 1fr;
+    }
+    .sk-sec {
+      padding-block: 40px;
+    }
+    .sk-buy :global(.buy-btn) {
+      width: 100%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sk-live i {
+      animation: none;
+    }
+  }
+</style>
