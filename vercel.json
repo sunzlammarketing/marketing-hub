@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/tai-lieu-mien-phi", "destination": "/tai-lieu", "permanent": true },
+    { "source": "/tai-lieu-mien-phi/", "destination": "/tai-lieu", "permanent": true }
+  ]
+}
