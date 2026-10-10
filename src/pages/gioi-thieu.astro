@@ -8,7 +8,7 @@ import { getCollection } from 'astro:content';
 
 // Ảnh đại diện: bỏ ảnh vào public/ rồi điền đường dẫn, ví dụ '/sunz-avatar.jpg'.
 // Để trống thì hiện khối chữ "S" theo màu thương hiệu.
-const AVATAR = '';
+const AVATAR = '/logo-full.png';
 const EMAIL = 'sunzlammarketing@gmail.com';
 const SITE = 'https://marketing-hub-flax.vercel.app';
 
@@ -31,7 +31,7 @@ const values = [
 ];
 
 const resources = [
-  { k: 'about.res.logo', label: 'Logo Sunz', copy: `${SITE}/favicon.svg`, preview: 'logo' },
+  { k: 'about.res.logo', label: 'Logo Sunz', copy: `${SITE}/logo-full.png`, preview: 'logo' },
   { k: 'about.res.web', label: 'Website', copy: SITE, preview: 'web' },
   { k: 'about.res.email', label: 'Email hợp tác', copy: EMAIL, preview: 'mail' },
 ];
@@ -143,7 +143,7 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
           {resources.map((r) => (
             <button type="button" class="ab-res-item" data-copy={r.copy}>
               <span class={`ab-res-prev prev-${r.preview}`}>
-                {r.preview === 'logo' ? <img src="/favicon.svg" alt="" width="44" height="44" /> : r.preview === 'web' ? '🌐' : '✉️'}
+                {r.preview === 'logo' ? <img src="/logo-mark.png" alt="" width="56" height="56" /> : r.preview === 'web' ? '🌐' : '✉️'}
               </span>
               <b data-i18n={r.k}>{r.label}</b>
               <small data-i18n="about.res.copy">Copy link</small>
@@ -219,10 +219,15 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
       radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.28), transparent 45%),
       linear-gradient(135deg, var(--brand), var(--accent));
   }
+  .ab-photo:has(img) {
+    background: #fff;
+    border: 1px solid var(--border);
+  }
   .ab-photo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 12%;
   }
   .ab-photo span {
     color: #fff;

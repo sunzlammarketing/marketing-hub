@@ -16,7 +16,7 @@
 <!-- Khung chat -->
 <div class="chat-panel" data-chat-panel role="dialog" aria-label="Trợ lý tư vấn">
   <div class="chat-header">
-    <div class="chat-avatar">S</div>
+    <div class="chat-avatar"><img src="/logo-mark.png" alt="" width="28" height="28" /></div>
     <div class="chat-head-text">
       <b data-i18n="chat.title">Trợ lý Marketing</b>
       <span data-i18n="chat.subtitle">Thường trả lời ngay lập tức</span>
@@ -117,8 +117,13 @@
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: rgba(255, 255, 255, 0.2);
-    font-weight: 900;
+    background: #fff;
+    overflow: hidden;
+  }
+  .chat-avatar img {
+    width: 74%;
+    height: 74%;
+    object-fit: contain;
   }
   .chat-head-text {
     display: flex;

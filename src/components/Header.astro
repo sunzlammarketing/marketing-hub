@@ -17,7 +17,7 @@ const isActive = (href: string) =>
 <header class="site-header">
   <div class="container header-inner">
     <a href="/" class="logo" aria-label="Sunz Làm Marketing - Trang chủ">
-      <span class="logo-mark">S</span>
+      <span class="logo-mark"><img src="/logo-mark.png" alt="" width="34" height="34" /></span>
       <span class="logo-text">Sunz Làm <b>Marketing</b></span>
     </a>
 
@@ -122,14 +122,19 @@ const isActive = (href: string) =>
     text-decoration: none;
   }
   .logo-mark {
-    display: grid;
-    place-items: center;
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    background: linear-gradient(135deg, var(--brand), var(--accent));
-    color: #fff;
-    font-weight: 900;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .logo-mark img {
+    width: 82%;
+    height: 82%;
+    object-fit: contain;
   }
   .logo-text b {
     color: var(--brand);

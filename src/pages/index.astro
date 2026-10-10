@@ -98,7 +98,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   <section class="section me-section" id="sunz-la-ai">
     <div class="container me-grid">
       <div class="me-card">
-        <div class="me-avatar">S</div>
+        <div class="me-avatar"><img src="/logo-mark.png" alt="Logo Sunz Làm Marketing" width="86" height="86" /></div>
         <b class="me-name">Sunz Làm Marketing</b>
         <span class="me-handle">@sunzlammarketing</span>
         <p class="me-bio" data-i18n="home.me.bio">
@@ -351,11 +351,16 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     width: 86px;
     height: 86px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand), var(--accent));
-    color: #fff;
-    font-weight: 900;
-    font-size: 2.2rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
     margin-bottom: 8px;
+  }
+  .me-avatar img {
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
   }
   .me-name {
     font-size: 1.15rem;
