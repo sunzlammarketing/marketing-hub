@@ -177,13 +177,14 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
 <style>
   .ab-hero {
     text-align: center;
-    padding-block: var(--space-head-top) var(--space-head-bottom);
+    /* Gọn hơn các trang khác: phần hồ sơ bên dưới đã đủ nổi bật */
+    padding-block: 32px 24px;
   }
   .ab-hero h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin: 0 0 10px;
+    margin: 0 0 6px;
   }
   .ab-hero p {
     color: var(--ink-soft);
@@ -507,6 +508,9 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
     }
   }
   @media (max-width: 560px) {
+    .ab-hero {
+      padding-block: 24px 20px;
+    }
     .ab-values,
     .ab-links,
     .ab-post-grid {
