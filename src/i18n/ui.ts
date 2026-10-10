@@ -144,28 +144,9 @@ export const ui = {
 
     // Trang Tài liệu miễn phí
     'resources.badge': '📂 Tài liệu miễn phí',
-    'resources.title': 'Tài liệu Marketing miễn phí',
+    'resources.title': 'Tài liệu Marketing',
     'resources.lead':
-      'Ebook, checklist và template thực chiến — tải về, dùng ngay.',
-    'resources.d1.name': 'Ebook: Nhập môn Marketing cho người mới',
-    'resources.d1.desc': 'Tổng quan các khái niệm và tư duy Marketing nền tảng, trình bày dễ hiểu cho người mới bắt đầu.',
-    'resources.d1.type': 'PDF · 24 trang',
-    'resources.d2.name': 'Checklist: 30 điểm tối ưu SEO on-page',
-    'resources.d2.desc': 'Danh sách kiểm tra giúp bạn tối ưu từng bài viết chuẩn SEO trước khi xuất bản.',
-    'resources.d2.type': 'PDF · 2 trang',
-    'resources.d3.name': 'Template: Kế hoạch content 30 ngày',
-    'resources.d3.desc': 'Mẫu lịch nội dung dựng sẵn cấu trúc, chỉ việc điền chủ đề và triển khai.',
-    'resources.d3.type': 'Google Sheet',
-    'resources.d4.name': 'Ebook: Cẩm nang chạy Facebook Ads',
-    'resources.d4.desc': 'Hướng dẫn từ tạo chiến dịch đến tối ưu chi phí, kèm ví dụ thực tế dễ áp dụng.',
-    'resources.d4.type': 'PDF · 32 trang',
-    'resources.d5.name': 'Template: Phễu Marketing AARRR',
-    'resources.d5.desc': 'Khung phễu giúp bạn vẽ và đo lường hành trình khách hàng qua 5 giai đoạn.',
-    'resources.d5.type': 'Google Sheet',
-    'resources.d6.name': 'Swipe file: 50 mẫu caption bán hàng',
-    'resources.d6.desc': 'Bộ 50 mẫu caption theo nhiều công thức copywriting để bạn tham khảo và biến tấu.',
-    'resources.d6.type': 'PDF',
-    'resources.download': 'Tải xuống',
+      'Template, ebook và checklist thực chiến — mua về là dùng được ngay.',
 
     // Trang Công cụ - Kiểm tra content quảng cáo
     'tools.title': 'Kiểm tra content quảng cáo',
@@ -367,28 +348,9 @@ export const ui = {
 
     // Free Resources page
     'resources.badge': '📂 Free Resources',
-    'resources.title': 'Free Marketing Resources',
+    'resources.title': 'Marketing Resources',
     'resources.lead':
-      'Practical ebooks, checklists and templates — download and use today.',
-    'resources.d1.name': 'Ebook: Marketing Basics for Beginners',
-    'resources.d1.desc': 'An overview of core marketing concepts and mindset, easy to grasp for beginners.',
-    'resources.d1.type': 'PDF · 24 pages',
-    'resources.d2.name': 'Checklist: 30 On-page SEO Optimizations',
-    'resources.d2.desc': 'A checklist to optimize every article for SEO before you publish.',
-    'resources.d2.type': 'PDF · 2 pages',
-    'resources.d3.name': 'Template: 30-Day Content Plan',
-    'resources.d3.desc': 'A content calendar template with the structure ready — just add your topics.',
-    'resources.d3.type': 'Google Sheet',
-    'resources.d4.name': 'Ebook: Facebook Ads Handbook',
-    'resources.d4.desc': 'From setting up campaigns to optimizing cost, with real examples.',
-    'resources.d4.type': 'PDF · 32 pages',
-    'resources.d5.name': 'Template: AARRR Marketing Funnel',
-    'resources.d5.desc': 'A funnel framework to map and measure the customer journey across 5 stages.',
-    'resources.d5.type': 'Google Sheet',
-    'resources.d6.name': 'Swipe file: 50 Sales Caption Examples',
-    'resources.d6.desc': '50 caption examples across multiple copywriting formulas to reference and adapt.',
-    'resources.d6.type': 'PDF',
-    'resources.download': 'Download',
+      'Practical templates, ebooks and checklists — ready to use right away.',
 
     // Tools page - Ad content checker
     'tools.title': 'Ad Content Checker',

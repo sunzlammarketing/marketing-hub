@@ -1,48 +1,68 @@
 ---
+// Trang Tài liệu: lưới thẻ sản phẩm (ảnh · nhãn · tên · mô tả · giá · Mua ngay).
+// Dữ liệu sản phẩm ở src/data/products.ts
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { PRODUCTS, MESSENGER, formatVnd } from '../data/products';
 
-const docs = [
-  { k: 'resources.d1', icon: '📘', color: '#4f46e5' },
-  { k: 'resources.d2', icon: '✅', color: '#2563eb' },
-  { k: 'resources.d3', icon: '🗓️', color: '#7c3aed' },
-  { k: 'resources.d4', icon: '📣', color: '#dc2626' },
-  { k: 'resources.d5', icon: '🔻', color: '#16a34a' },
-  { k: 'resources.d6', icon: '✍️', color: '#ca8a04' },
-];
+const buyHref = (p: (typeof PRODUCTS)[number], name: string) =>
+  p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn mua sản phẩm: ${name}`)}`;
 ---
 
 <BaseLayout
-  title="Tài liệu miễn phí"
-  description="Tài liệu Marketing miễn phí của Sunz Làm Marketing: ebook, checklist và template giúp bạn học và làm Marketing hiệu quả hơn."
+  title="Tài liệu Marketing"
+  description="Template, ebook và checklist Marketing thực chiến của Sunz Làm Marketing — dùng được ngay cho công việc."
 >
   <section class="page-head">
     <div class="container">
-      <h1 data-i18n="resources.title">Tài liệu Marketing miễn phí</h1>
-      <p data-i18n="resources.lead">
-        Ebook, checklist và template thực chiến — tải về, dùng ngay.
-      </p>
+      <h1 data-i18n="resources.title">Tài liệu Marketing</h1>
+      <p data-i18n="resources.lead">Template, ebook và checklist thực chiến — mua về là dùng được ngay.</p>
     </div>
   </section>
 
   <section class="container" style="padding-block:var(--space-content-top) var(--space-section)">
-    <div class="docs-grid">
-      {docs.map((d) => (
-        <article class="doc-card" style={`--c:${d.color}`}>
-          <div class="doc-top">
-            <span class="doc-icon">{d.icon}</span>
+    <div class="pd-grid">
+      {PRODUCTS.map((p) => (
+        <article class="pd-card" style={`--c:${p.color}`}>
+          <div class="pd-media">
+            {p.image ? (
+              <img src={p.image} alt={p.name.vi} loading="lazy" width="800" height="600" />
+            ) : (
+              <div class="pd-cover" aria-hidden="true">
+                <span class="pd-cover-type" data-i18n-vi={p.type.vi} data-i18n-en={p.type.en}>{p.type.vi}</span>
+                <span class="pd-cover-icon">{p.icon}</span>
+                <span class="pd-cover-brand">
+                  <img src="/logo-mark.png" alt="" width="18" height="18" /> Sunz Làm Marketing
+                </span>
+              </div>
+            )}
           </div>
-          <h3 data-i18n={`${d.k}.name`}>Tài liệu</h3>
-          <p data-i18n={`${d.k}.desc`}>Mô tả tài liệu.</p>
-          <div class="doc-foot">
-            <span class="doc-type" data-i18n={`${d.k}.type`}>PDF</span>
-            <button class="btn btn-primary doc-btn" data-demo-download data-i18n="resources.download">
-              Tải xuống
-            </button>
+          <div class="pd-body">
+            <span class="pd-tag" data-i18n-vi={p.tag.vi} data-i18n-en={p.tag.en}>{p.tag.vi}</span>
+            <h3 class="pd-name" data-i18n-vi={p.name.vi} data-i18n-en={p.name.en}>{p.name.vi}</h3>
+            <p class="pd-desc" data-i18n-vi={p.desc.vi} data-i18n-en={p.desc.en}>{p.desc.vi}</p>
+            <div class="pd-foot">
+              {p.price != null ? (
+                <span class="pd-price">{formatVnd(p.price)}</span>
+              ) : (
+                <span class="pd-price pd-price-ask" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
+              )}
+              <a
+                class="pd-buy"
+                href={buyHref(p, p.name.vi)}
+                target="_blank"
+                rel="noopener"
+                data-name-vi={p.name.vi}
+                data-name-en={p.name.en}
+                data-custom={p.buyUrl ? '1' : undefined}
+              >
+                <span aria-hidden="true">🛒</span>
+                <span data-i18n-vi="Mua ngay" data-i18n-en="Buy now">Mua ngay</span>
+              </a>
+            </div>
           </div>
         </article>
       ))}
     </div>
-    <p id="demo-note" class="demo-note" hidden></p>
   </section>
 </BaseLayout>
 
@@ -64,107 +84,209 @@ const docs = [
     margin: 0 auto;
     max-width: 720px;
   }
-  .docs-grid {
+
+  .pd-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
-  .doc-card {
+  .pd-card {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 24px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
+    border-radius: 28px;
+    overflow: hidden;
     background: var(--bg-card);
-    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
-  .doc-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-    border-color: color-mix(in srgb, var(--c) 45%, var(--border));
+  .pd-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px -12px rgba(15, 23, 42, 0.22);
   }
-  .doc-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+  /* Ảnh xem trước 4:3 */
+  .pd-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--bg-soft);
   }
-  .doc-icon {
-    font-size: 1.6rem;
-    width: 52px;
-    height: 52px;
+  .pd-media > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.3s ease;
+  }
+  .pd-card:hover .pd-media > img {
+    transform: scale(1.04);
+  }
+  .pd-cover {
+    position: relative;
+    height: 100%;
     display: grid;
     place-items: center;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--c) 12%, transparent);
+    background:
+      radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.35), transparent 45%),
+      radial-gradient(circle at 10% 100%, rgba(255, 255, 255, 0.18), transparent 50%),
+      linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 55%, #1e1b4b));
   }
-  .doc-tag {
-    font-size: 0.7rem;
+  .pd-cover-icon {
+    font-size: 4rem;
+    width: 116px;
+    height: 116px;
+    display: grid;
+    place-items: center;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease;
+  }
+  .pd-card:hover .pd-cover-icon {
+    transform: rotate(-6deg) scale(1.06);
+  }
+  .pd-cover-type {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 0.72rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--ink-faint);
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    padding: 3px 9px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
     border-radius: 999px;
   }
-  .doc-card h3 {
-    margin: 4px 0 0;
-    font-size: 1.15rem;
+  .pd-cover-brand {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
     font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .pd-cover-brand img {
+    background: #fff;
+    border-radius: 5px;
+    padding: 2px;
+  }
+
+  /* Nội dung thẻ */
+  .pd-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 22px 22px;
+  }
+  .pd-tag {
+    align-self: flex-start;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #e2553b;
+    background: color-mix(in srgb, #ff7759 14%, transparent);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  .pd-name {
+    margin: 14px 0 8px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
     color: var(--ink);
   }
-  .doc-card p {
+  .pd-desc {
     margin: 0;
     color: var(--ink-soft);
-    font-size: 0.95rem;
-    flex: 1;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
   }
-  .doc-foot {
+  .pd-foot {
+    margin-top: auto;
+    padding-top: 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-top: 8px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
   }
-  .doc-type {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--ink-faint);
+  .pd-price {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: var(--brand);
+    letter-spacing: -0.01em;
   }
-  .doc-btn {
-    padding: 8px 16px;
-    font-size: 0.88rem;
+  .pd-price-ask {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
   }
-  .demo-note {
-    margin-top: 24px;
-    text-align: center;
-    color: var(--ink-faint);
-    font-size: 0.92rem;
+  .pd-buy {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    box-shadow: 0 10px 22px -10px rgba(55, 48, 163, 0.75);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
   }
-  @media (max-width: 640px) {
-    .docs-grid {
+  .pd-buy:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px -10px rgba(55, 48, 163, 0.9);
+  }
+
+  :global([data-theme='dark']) .pd-tag {
+    color: #ffa48f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .pd-tag {
+      color: #ffa48f;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .pd-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .pd-grid {
       grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .pd-card {
+      border-radius: 22px;
     }
   }
 </style>
 
 <script>
-  // Bản mẫu: nút tải xuống chưa gắn file thật. Hiện thông báo nhắc thay file.
-  const note = document.getElementById('demo-note');
-  const msg = {
-    vi: '📄 Link tải đang được cập nhật — bạn quay lại sau nhé, hoặc liên hệ để nhận tài liệu sớm.',
-    en: '📄 Download links are being updated — please check back soon, or contact us to get it early.',
+  // Tin nhắn soạn sẵn theo ngôn ngữ đang chọn
+  const MSG = {
+    vi: (n: string) => `Xin chào Sunz, mình muốn mua sản phẩm: ${n}`,
+    en: (n: string) => `Hi Sunz, I'd like to buy: ${n}`,
   };
-  document.querySelectorAll('[data-demo-download]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (!note) return;
+  document.querySelectorAll<HTMLAnchorElement>('.pd-buy:not([data-custom])').forEach((a) => {
+    a.addEventListener('click', () => {
       const lang = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
-      note.textContent = msg[lang];
-      note.hidden = false;
+      const name = (lang === 'en' ? a.dataset.nameEn : a.dataset.nameVi) || '';
+      const url = new URL(a.href);
+      url.searchParams.set('text', MSG[lang](name));
+      a.href = url.toString();
     });
   });
 </script>
