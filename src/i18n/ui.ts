@@ -30,7 +30,7 @@ export const ui = {
     'home.hero.title':
       'Hiểu Marketing <span class="grad">đúng</span>,<br /> làm Marketing <span class="grad">hiệu quả</span>.',
     'home.hero.sub':
-      'Kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng xuyên suốt hành trình Marketing từ nghiên cứu thị trường, xây dựng chiến lược đến triển khai, đo lường và tối ưu hiệu quả.',
+      'Kiến thức Marketing dễ hiểu, áp dụng được ngay.',
     'home.hero.cta1': 'Kho tài liệu Marketing miễn phí',
     'home.hero.cta2': 'Sunz Làm Marketing là ai?',
     'home.stat.posts': 'Bài viết',
@@ -117,7 +117,7 @@ export const ui = {
     'products.badge': '🎓 Dịch vụ Marketing',
     'products.title': 'Dịch vụ Marketing',
     'products.lead':
-      'Đồng hành cùng bạn từ chiến lược đến triển khai — chọn dịch vụ phù hợp với mục tiêu và giai đoạn của doanh nghiệp.',
+      'Đồng hành cùng doanh nghiệp từ chiến lược đến triển khai.',
     'products.p1.name': 'Tư vấn chiến lược Marketing',
     'products.p1.desc':
       'Phân tích thị trường, định vị và xây dựng lộ trình Marketing tổng thể bám sát mục tiêu kinh doanh.',
@@ -148,7 +148,7 @@ export const ui = {
     'resources.badge': '📂 Tài liệu miễn phí',
     'resources.title': 'Tài liệu Marketing miễn phí',
     'resources.lead':
-      'Tổng hợp ebook, checklist và template thực chiến — tải về và áp dụng ngay vào công việc của bạn.',
+      'Ebook, checklist và template thực chiến — tải về, dùng ngay.',
     'resources.d1.name': 'Ebook: Nhập môn Marketing cho người mới',
     'resources.d1.desc': 'Tổng quan các khái niệm và tư duy Marketing nền tảng, trình bày dễ hiểu cho người mới bắt đầu.',
     'resources.d1.type': 'PDF · 24 trang',
@@ -172,7 +172,7 @@ export const ui = {
     // Trang Công cụ - Kiểm tra content quảng cáo
     'tools.title': 'Kiểm tra content quảng cáo',
     'tools.lead':
-      'Dán nội dung quảng cáo của bạn để rà soát nhanh những từ ngữ dễ vi phạm chính sách Facebook và Luật Quảng cáo Việt Nam, kèm gợi ý sửa.',
+      'Rà soát từ ngữ dễ vi phạm chính sách Facebook & Luật Quảng cáo, kèm gợi ý sửa.',
     'tools.input.label': 'Nội dung quảng cáo',
     'tools.input.ph':
       'Dán toàn bộ nội dung bài quảng cáo vào đây, gồm cả câu kêu gọi hành động (Mua ngay, Inbox tư vấn...)',
@@ -205,7 +205,7 @@ export const ui = {
     'contact.badge': '📬 Liên hệ',
     'contact.title': 'Kết nối với chúng tôi',
     'contact.lead':
-      'Bạn có câu hỏi, góp ý, hoặc muốn hợp tác? Hãy gửi tin nhắn cho chúng tôi — chúng tôi luôn sẵn lòng lắng nghe và phản hồi sớm nhất có thể.',
+      'Câu hỏi, góp ý hay hợp tác — nhắn cho Sunz nhé!',
     'contact.form.name': 'Họ và tên',
     'contact.form.name.ph': 'Nguyễn Văn A',
     'contact.form.email': 'Email',
@@ -255,7 +255,7 @@ export const ui = {
     'home.hero.title':
       'Understand marketing <span class="grad">right</span>,<br /> do marketing <span class="grad">effectively</span>.',
     'home.hero.sub':
-      'Marketing knowledge that is clear, practical and applicable across the entire journey — from market research and strategy to execution, measurement and optimization.',
+      'Clear, practical marketing you can apply today.',
     'home.hero.cta1': 'Free marketing resource hub',
     'home.hero.cta2': 'Who is Sunz Làm Marketing?',
     'home.stat.posts': 'Articles',
@@ -342,7 +342,7 @@ export const ui = {
     'products.badge': '🎓 Marketing Services',
     'products.title': 'Marketing Services',
     'products.lead':
-      'We support you from strategy to execution — pick the service that fits your goals and stage of growth.',
+      'Your partner from strategy to execution.',
     'products.p1.name': 'Marketing Strategy Consulting',
     'products.p1.desc':
       'Market analysis, positioning and a full marketing roadmap aligned with your business goals.',
@@ -373,7 +373,7 @@ export const ui = {
     'resources.badge': '📂 Free Resources',
     'resources.title': 'Free Marketing Resources',
     'resources.lead':
-      'A collection of practical ebooks, checklists and templates — download and apply them to your work right away.',
+      'Practical ebooks, checklists and templates — download and use today.',
     'resources.d1.name': 'Ebook: Marketing Basics for Beginners',
     'resources.d1.desc': 'An overview of core marketing concepts and mindset, easy to grasp for beginners.',
     'resources.d1.type': 'PDF · 24 pages',
@@ -397,7 +397,7 @@ export const ui = {
     // Tools page - Ad content checker
     'tools.title': 'Ad Content Checker',
     'tools.lead':
-      'Paste your ad copy to quickly scan for wording that commonly breaches Facebook ad policies and Vietnamese advertising law, with suggested fixes.',
+      'Scan ad copy for wording that breaks Facebook policy & ad law, with fixes.',
     'tools.input.label': 'Ad content',
     'tools.input.ph':
       'Paste your full ad copy here, including the call to action (Buy now, Message us...)',
@@ -430,7 +430,7 @@ export const ui = {
     'contact.badge': '📬 Contact',
     'contact.title': 'Get in touch with us',
     'contact.lead':
-      'Have a question, feedback, or want to collaborate? Send us a message — we are always happy to listen and reply as soon as we can.',
+      'Questions, feedback or partnerships — message Sunz!',
     'contact.form.name': 'Full name',
     'contact.form.name.ph': 'John Doe',
     'contact.form.email': 'Email',
