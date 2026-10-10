@@ -69,8 +69,6 @@ export const ui = {
     'footer.tagline':
       'Nơi chia sẻ kiến thức Marketing dễ hiểu, thực tế và có thể áp dụng ngay.',
     'footer.follow': 'Theo dõi Sunz',
-    'footer.copyright': 'Nội dung mang tính tham khảo & học tập.',
-    'footer.built': 'Xây dựng bằng Astro 🚀',
 
     // Trang Giới thiệu
     'about.hero.title': 'Về Sunz Làm Marketing',
@@ -294,8 +292,6 @@ export const ui = {
     'footer.tagline':
       'A place to share marketing knowledge that is clear, practical and ready to apply.',
     'footer.follow': 'Follow Sunz',
-    'footer.copyright': 'Content is for reference and learning purposes.',
-    'footer.built': 'Built with Astro 🚀',
 
     // About page
     'about.hero.title': 'About Sunz Làm Marketing',
