@@ -3,6 +3,7 @@
 // Dữ liệu sản phẩm ở src/data/products.ts
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
+import PaymentModal from '../components/PaymentModal.astro';
 import { PRODUCTS } from '../data/products';
 ---
 
@@ -22,6 +23,7 @@ import { PRODUCTS } from '../data/products';
       {PRODUCTS.map((p) => <ProductCard product={p} />)}
     </div>
   </section>
+  <PaymentModal />
 </BaseLayout>
 
 <style>

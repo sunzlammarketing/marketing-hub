@@ -14,6 +14,7 @@ export interface Product {
   price: number | null;
   image?: string;
   buyUrl?: string;
+  code?: string; // mã ngắn trong nội dung chuyển khoản (không dấu). Bỏ trống → tự tạo từ slug
   // Trang chi tiết (/tai-lieu/<slug>) — tuỳ chọn, có thì hiện:
   intro?: { vi: string; en: string };       // đoạn giới thiệu dài
   includes?: { vi: string[]; en: string[] }; // "Bạn nhận được gì"
@@ -107,6 +108,9 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const MESSENGER = 'https://m.me/sunzlammarketing';
+// Mã sản phẩm cho nội dung chuyển khoản: chữ đầu mỗi cụm của slug, giữ nguyên số (vd ke-hoach-content-30-ngay → KHC30N)
+export const productCode = (p: Product) =>
+  (p.code || p.slug.split('-').map((w) => (/^\d+$/.test(w) ? w : w[0])).join('')).toUpperCase().slice(0, 8);
 export const productUrl = (p: Product) => `/tai-lieu/${p.slug}`;
 export const buyHref = (p: Product) =>
   p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn mua sản phẩm: ${p.name.vi}`)}`;

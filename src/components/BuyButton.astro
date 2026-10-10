@@ -1,14 +1,31 @@
 ---
-// Nút "Mua ngay": mở Messenger fanpage kèm tin nhắn soạn sẵn tên sản phẩm (theo ngôn ngữ đang chọn),
-// hoặc mở buyUrl riêng nếu sản phẩm có khai báo.
-import { buyHref, type Product } from '../data/products';
+// Nút "Mua ngay":
+// - Có giá (price) và không có buyUrl → mở cửa sổ QR thanh toán (PaymentModal phải có trên trang).
+// - Chưa có giá → mở Messenger fanpage kèm tin nhắn soạn sẵn tên sản phẩm (theo ngôn ngữ đang chọn).
+// - Có buyUrl → mở link đó.
+import { buyHref, productCode, type Product } from '../data/products';
 interface Props {
   product: Product;
   size?: 'md' | 'lg';
 }
 const { product: p, size = 'md' } = Astro.props;
+const payQr = p.price != null && !p.buyUrl;
 ---
 
+{payQr ? (
+<button
+  type="button"
+  class={`buy-btn buy-${size}`}
+  data-pay
+  data-price={p.price}
+  data-code={productCode(p)}
+  data-name-vi={p.name.vi}
+  data-name-en={p.name.en}
+>
+  <span aria-hidden="true">🛒</span>
+  <span data-i18n-vi="Mua ngay" data-i18n-en="Buy now">Mua ngay</span>
+</button>
+) : (
 <a
   class={`buy-btn buy-${size}`}
   href={buyHref(p)}
@@ -21,9 +38,13 @@ const { product: p, size = 'md' } = Astro.props;
   <span aria-hidden="true">🛒</span>
   <span data-i18n-vi="Mua ngay" data-i18n-en="Buy now">Mua ngay</span>
 </a>
+)}
 
 <style>
   .buy-btn {
+    font: inherit;
+    border: 0;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -55,7 +76,7 @@ const { product: p, size = 'md' } = Astro.props;
     vi: (n: string) => `Xin chào Sunz, mình muốn mua sản phẩm: ${n}`,
     en: (n: string) => `Hi Sunz, I'd like to buy: ${n}`,
   };
-  document.querySelectorAll<HTMLAnchorElement>('.buy-btn:not([data-custom])').forEach((a) => {
+  document.querySelectorAll<HTMLAnchorElement>('a.buy-btn:not([data-custom])').forEach((a) => {
     a.addEventListener('click', () => {
       const lang = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
       const name = (lang === 'en' ? a.dataset.nameEn : a.dataset.nameVi) || '';

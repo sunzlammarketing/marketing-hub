@@ -1,0 +1,315 @@
+---
+// Cửa sổ thanh toán VietQR (Mức 1: khách chuyển khoản → bấm "Tôi đã chuyển khoản" → Messenger,
+// Sunz kiểm tra tài khoản rồi gửi file). Mở bởi nút [data-pay] trong BuyButton.
+// Đặt 1 lần trên mỗi trang có nút mua.
+import { BANK } from '../data/payment';
+import { MESSENGER } from '../data/products';
+---
+
+<dialog class="pay" id="pay-modal" data-bin={BANK.bin} data-account={BANK.account} data-holder={BANK.holder} data-messenger={MESSENGER} aria-labelledby="pay-title">
+  <div class="pay-box">
+    <button type="button" class="pay-x" data-pay-close aria-label="Đóng">✕</button>
+    <h2 id="pay-title" data-i18n-vi="Thanh toán chuyển khoản" data-i18n-en="Bank transfer payment">Thanh toán chuyển khoản</h2>
+    <p class="pay-product" data-pay-name></p>
+
+    <div class="pay-grid">
+      <div class="pay-qr">
+        <img data-pay-qr alt="Mã QR thanh toán" width="300" height="340" />
+        <a class="pay-save" data-pay-save target="_blank" rel="noopener" data-i18n-vi="Mở ảnh QR để lưu" data-i18n-en="Open QR image to save">Mở ảnh QR để lưu</a>
+      </div>
+
+      <dl class="pay-info">
+        <div>
+          <dt data-i18n-vi="Ngân hàng" data-i18n-en="Bank">Ngân hàng</dt>
+          <dd><b>{BANK.name}</b></dd>
+        </div>
+        <div>
+          <dt data-i18n-vi="Số tài khoản" data-i18n-en="Account number">Số tài khoản</dt>
+          <dd><b>{BANK.account}</b> <button type="button" class="pay-copy" data-copy-val={BANK.account}>Copy</button></dd>
+        </div>
+        <div>
+          <dt data-i18n-vi="Chủ tài khoản" data-i18n-en="Account holder">Chủ tài khoản</dt>
+          <dd><b>{BANK.holder}</b></dd>
+        </div>
+        <div>
+          <dt data-i18n-vi="Số tiền" data-i18n-en="Amount">Số tiền</dt>
+          <dd><b class="pay-amount" data-pay-amount></b> <button type="button" class="pay-copy" data-pay-copy-amount>Copy</button></dd>
+        </div>
+        <div class="pay-note-row">
+          <dt data-i18n-vi="Nội dung chuyển khoản" data-i18n-en="Transfer note">Nội dung chuyển khoản</dt>
+          <dd><b class="pay-code" data-pay-code></b> <button type="button" class="pay-copy" data-pay-copy-code>Copy</button></dd>
+        </div>
+      </dl>
+    </div>
+
+    <ol class="pay-steps">
+      <li data-i18n-vi="Mở app ngân hàng, quét mã QR (trên điện thoại: lưu ảnh QR rồi chọn quét từ thư viện ảnh)." data-i18n-en="Open your banking app and scan the QR (on a phone: save the QR image, then scan it from your gallery).">
+        Mở app ngân hàng, quét mã QR (trên điện thoại: lưu ảnh QR rồi chọn quét từ thư viện ảnh).
+      </li>
+      <li data-i18n-vi="Giữ nguyên số tiền và nội dung chuyển khoản, xác nhận thanh toán." data-i18n-en="Keep the amount and transfer note as filled in, then confirm.">
+        Giữ nguyên số tiền và nội dung chuyển khoản, xác nhận thanh toán.
+      </li>
+      <li data-i18n-vi="Bấm “Tôi đã chuyển khoản” để báo Sunz qua Messenger — Sunz gửi tài liệu cho bạn." data-i18n-en="Tap “I've paid” to notify Sunz on Messenger — Sunz will send you the file.">
+        Bấm “Tôi đã chuyển khoản” để báo Sunz qua Messenger — Sunz gửi tài liệu cho bạn.
+      </li>
+    </ol>
+
+    <a class="pay-done" data-pay-done target="_blank" rel="noopener">
+      ✅ <span data-i18n-vi="Tôi đã chuyển khoản" data-i18n-en="I've paid">Tôi đã chuyển khoản</span>
+    </a>
+    <div class="pay-toast" role="status" aria-live="polite"></div>
+  </div>
+</dialog>
+
+<style>
+  .pay {
+    width: min(720px, calc(100vw - 24px));
+    max-height: calc(100dvh - 24px);
+    padding: 0;
+    border: none;
+    border-radius: 24px;
+    background: var(--bg-card);
+    color: var(--ink);
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.45);
+  }
+  .pay::backdrop {
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(3px);
+  }
+  .pay-box {
+    position: relative;
+    padding: 26px 28px 28px;
+  }
+  .pay-x {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .pay h2 {
+    margin: 0;
+    padding-right: 44px;
+    font-size: clamp(1.15rem, 4.5vw, 1.35rem);
+    font-weight: 900;
+  }
+  .pay-product {
+    margin: 4px 40px 18px 0;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .pay-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .pay-qr {
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+  }
+  .pay-qr img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 300 / 340;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    object-fit: contain;
+  }
+  .pay-save {
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .pay-info {
+    margin: 0;
+    display: grid;
+    gap: 2px;
+  }
+  .pay-info > div {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .pay-info dt {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
+  .pay-info dd {
+    margin: 2px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 1.02rem;
+  }
+  .pay-amount {
+    color: var(--brand);
+    font-size: 1.2rem;
+  }
+  .pay-note-row {
+    background: color-mix(in srgb, #ff7759 10%, transparent);
+    border-radius: 12px;
+    padding: 10px 12px !important;
+    border-bottom: none !important;
+    margin-top: 6px;
+  }
+  .pay-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.04em;
+    color: #c2410c;
+  }
+  .pay-copy {
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--brand);
+    background: var(--brand-soft);
+    border: 0;
+    border-radius: 999px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .pay-steps {
+    margin: 18px 0 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 4px;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .pay-done {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, #10b981, #047857);
+    box-shadow: 0 10px 22px -10px rgba(4, 120, 87, 0.7);
+  }
+  .pay-done:hover {
+    text-decoration: none;
+    filter: brightness(1.05);
+  }
+  .pay-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 2147483647;
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  .pay-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  :global([data-theme='dark']) .pay-code {
+    color: #fdba74;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .pay-code {
+      color: #fdba74;
+    }
+  }
+  @media (max-width: 640px) {
+    .pay-box {
+      padding: 22px 18px 20px;
+    }
+    .pay-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .pay-qr img {
+      max-width: 240px;
+    }
+  }
+</style>
+
+<script>
+  const dlg = document.getElementById('pay-modal') as HTMLDialogElement | null;
+  const toast = dlg?.querySelector('.pay-toast') as HTMLElement | null;
+  if (dlg) {
+    const $ = <T extends HTMLElement>(s: string) => dlg.querySelector(s) as T;
+    const lang = () => (document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi');
+    const vnd = (n: number) => n.toLocaleString('vi-VN') + ' ₫';
+    let current = { amount: 0, code: '' };
+    let timer: number | undefined;
+
+    const notify = (msg: string) => {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(timer);
+      timer = window.setTimeout(() => toast.classList.remove('show'), 1600);
+    };
+    const copy = async (text: string) => {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.append(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      notify(lang() === 'en' ? '✓ Copied' : '✓ Đã copy');
+    };
+
+    document.querySelectorAll<HTMLElement>('[data-pay]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const amount = Number(btn.dataset.price);
+        const name = (lang() === 'en' ? btn.dataset.nameEn : btn.dataset.nameVi) || '';
+        // Mã đơn: SUNZ + mã sản phẩm + 4 số ngẫu nhiên → nhận ra ai mua gì khi xem sao kê
+        const code = `SUNZ ${btn.dataset.code} ${Math.floor(1000 + Math.random() * 9000)}`;
+        current = { amount, code };
+
+        const qr =
+          `https://img.vietqr.io/image/${dlg.dataset.bin}-${dlg.dataset.account}-compact.png` +
+          `?amount=${amount}&addInfo=${encodeURIComponent(code)}&accountName=${encodeURIComponent(dlg.dataset.holder || '')}`;
+        $<HTMLImageElement>('[data-pay-qr]').src = qr;
+        $<HTMLAnchorElement>('[data-pay-save]').href = qr;
+        $('[data-pay-name]').textContent = name;
+        $('[data-pay-amount]').textContent = vnd(amount);
+        $('[data-pay-code]').textContent = code;
+
+        const msg =
+          lang() === 'en'
+            ? `Hi Sunz, I've paid ${vnd(amount)} for "${name}". Transfer note: ${code}`
+            : `Xin chào Sunz, mình đã chuyển khoản ${vnd(amount)} mua "${name}". Nội dung CK: ${code}`;
+        $<HTMLAnchorElement>('[data-pay-done]').href = `${dlg.dataset.messenger}?text=${encodeURIComponent(msg)}`;
+
+        dlg.showModal();
+      })
+    );
+
+    dlg.querySelector('[data-pay-close]')?.addEventListener('click', () => dlg.close());
+    // Bấm ra ngoài khung để đóng
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+    dlg.querySelectorAll<HTMLElement>('[data-copy-val]').forEach((b) =>
+      b.addEventListener('click', () => copy(b.dataset.copyVal!))
+    );
+    dlg.querySelector('[data-pay-copy-amount]')?.addEventListener('click', () => copy(String(current.amount)));
+    dlg.querySelector('[data-pay-copy-code]')?.addEventListener('click', () => copy(current.code));
+  }
+</script>
