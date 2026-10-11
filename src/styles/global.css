@@ -421,6 +421,21 @@ img {
   animation: hx-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(var(--i, 0) * 0.14s + 0.1s);
 }
+/* Bóng đen đổ lệch (không nhoè) cho chữ tiêu đề: nổi khối kiểu sticker */
+.hx {
+  text-shadow: 0.055em 0.055em 0 #0f172a;
+}
+.hero-kicker .hx {
+  text-shadow: 0.05em 0.05em 0 #0f172a;
+}
+:root[data-theme='dark'] .hx {
+  text-shadow: 0.055em 0.055em 0 #000;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .hx {
+    text-shadow: 0.055em 0.055em 0 #000;
+  }
+}
 @keyframes hx-in {
   to {
     opacity: 1;
