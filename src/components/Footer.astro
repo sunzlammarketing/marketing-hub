@@ -33,23 +33,18 @@ import { POLICIES, OWNER } from '../data/legal';
       </div>
     </div>
   </div>
-  <!-- Dải cuối: chính sách + thông tin chủ sở hữu (dữ liệu ở src/data/legal.ts) -->
+  <!-- Dải cuối: bản quyền + liên kết chính sách trên cùng 1 hàng (dữ liệu ở src/data/legal.ts) -->
   <div class="container footer-legal">
+    <p class="fl-copy">© {new Date().getFullYear()} {OWNER.brand}</p>
     <nav class="fl-links" aria-label="Chính sách">
       {POLICIES.map((p) => <a href={`/chinh-sach/${p.slug}`}>{p.title}</a>)}
     </nav>
-    <p class="fl-owner">
-      © {new Date().getFullYear()} {OWNER.brand} · Chủ sở hữu: {OWNER.name}
-      {OWNER.taxCode && <> · MST: {OWNER.taxCode}</>}
-      {OWNER.address && <> · {OWNER.address}</>}
-      · <a href={`mailto:${OWNER.email}`}>{OWNER.email}</a>
-    </p>
   </div>
 </footer>
 
 <style>
   .footer-legal {
-    padding-block: 16px 22px;
+    padding-block: 10px 12px;
     border-top: 1px solid var(--border);
     display: flex;
     flex-wrap: wrap;
@@ -64,21 +59,20 @@ import { POLICIES, OWNER } from '../data/legal';
     flex-wrap: wrap;
     gap: 6px 18px;
   }
-  .fl-links a,
-  .fl-owner a {
+  .fl-links a {
     color: var(--ink-soft);
   }
-  .fl-owner {
+  .fl-copy {
     margin: 0;
   }
   .site-footer {
     border-top: 1px solid var(--border);
     background: var(--panel);
     backdrop-filter: blur(8px);
-    margin-top: 40px;
+    margin-top: 32px;
   }
   .footer-grid {
-    padding-block: 36px 24px;
+    padding-block: 26px 16px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -159,8 +153,8 @@ import { POLICIES, OWNER } from '../data/legal';
   }
   /* Điện thoại: chừa chỗ dưới cùng cho nút nổi (đặt cuối để thắng padding-block ở trên) */
   @media (max-width: 760px) {
-    .footer-grid {
-      padding-bottom: 96px;
+    .footer-legal {
+      padding-bottom: 88px;
     }
   }
 </style>
