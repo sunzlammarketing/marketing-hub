@@ -14,6 +14,10 @@ export interface Skill extends Product {
   output: string; // ví dụ định dạng kết quả
   includes: string[]; // khách nhận được gì
   requires: string[]; // yêu cầu để dùng
+  compat: string; // một dòng tương thích hiển thị ở hero
+  platforms: { name: string; badge: string; best?: boolean; note?: string; steps: string[] }[]; // cách cài theo nền tảng
+  tryPrompts: { label: string; text: string }[]; // câu mẫu để thử ngay
+  updated: string; // ghi chú cập nhật giao diện nền tảng
 }
 
 export const SKILLS: Skill[] = [
@@ -29,8 +33,8 @@ export const SKILLS: Skill[] = [
       en: 'Sales-situation content writing skill',
     },
     desc: {
-      vi: 'Mô tả vấn đề bán hàng bạn đang gặp, Claude tự chẩn đoán, chọn 2-3 mẫu phù hợp trong 50 mẫu swipe file, viết caption hoàn chỉnh và soát pháp lý quảng cáo VN trước khi giao.',
-      en: 'Describe your sales problem; Claude diagnoses it, picks 2-3 of 50 swipe-file templates, writes ready-to-post captions and checks Vietnamese ad law before handing over.',
+      vi: 'Mô tả vấn đề bán hàng bạn đang gặp, AI tự chẩn đoán, chọn 2-3 mẫu phù hợp trong 50 mẫu swipe file, viết caption hoàn chỉnh và soát pháp lý quảng cáo VN trước khi giao. Dùng được trên Claude, Codex, ChatGPT và Gemini.',
+      en: 'Describe your sales problem; the AI diagnoses it, picks 2-3 of 50 swipe-file templates, writes ready-to-post captions and checks Vietnamese ad law. Works on Claude, Codex, ChatGPT and Gemini.',
     },
     price: null,
     file: 'viet-content-theo-tinh-huong-ban-hang-by-sunzlammarketing.skill',
@@ -39,8 +43,8 @@ export const SKILLS: Skill[] = [
       { value: '10', label: { vi: 'nhóm mục tiêu', en: 'goal groups' } },
       { value: '16', label: { vi: 'tình huống tra nhanh', en: 'quick-match situations' } },
       { value: '8', label: { vi: 'điểm soát pháp lý', en: 'legal checks' } },
-      { value: '393', label: { vi: 'dòng hướng dẫn', en: 'lines of instructions' } },
-      { value: '44 KB', label: { vi: 'dung lượng SKILL.md', en: 'SKILL.md size' } },
+      { value: '4', label: { vi: 'nền tảng AI dùng được', en: 'AI platforms supported' } },
+      { value: '395', label: { vi: 'dòng hướng dẫn', en: 'lines of instructions' } },
     ],
     situations: [
       { problem: 'Khách chưa biết bạn là ai', picks: ['06 Câu chuyện người sáng lập', '08 Hậu trường sản xuất', '10 Một ngày của...', '26 Mẹo nhanh + gợi ý SP'] },
@@ -97,10 +101,70 @@ export const SKILLS: Skill[] = [
 📌 Cần bạn bổ sung: các thông tin còn trống
 💡 Gợi ý đo: chỉ số nên so sánh giữa 2 phiên bản`,
     includes: [
-      'File skill viet-content-theo-tinh-huong-ban-hang-by-sunzlammarketing.skill',
-      'Tài liệu hướng dẫn cài skill vào Claude (PDF)',
+      'File skill .zip để cài trên Claude và Codex',
+      'Bộ dùng cho ChatGPT / Gemini: file .md + file Instructions dán sẵn',
+      'PDF hướng dẫn cài đặt 2 trang cho cả 4 nền tảng',
     ],
-    requires: ['Tài khoản Claude có tính năng Skills (claude.ai hoặc Claude Code)', 'Dùng tiếng Việt, tối ưu cho thị trường Việt Nam'],
+    requires: [
+      'Một trong các tài khoản: Claude (Free, Pro, Max, Team, Enterprise), Codex, ChatGPT hoặc Gemini',
+      'Dùng tiếng Việt, tối ưu cho thị trường Việt Nam',
+    ],
+    compat: 'Dùng tốt nhất trên Claude · Tương thích Codex, ChatGPT, Gemini',
+    platforms: [
+      {
+        name: 'Claude',
+        badge: 'Tốt nhất',
+        best: true,
+        note: 'Skill tự kích hoạt khi bạn mô tả tình huống.',
+        steps: [
+          'Vào Settings › Capabilities, bật Code execution and file creation (gói Team/Enterprise: nhờ quản trị viên bật trong Organization settings › Plugins & skills).',
+          'Vào Customize › Skills.',
+          'Bấm +, chọn Create skill › Upload a skill.',
+          'Chọn file .zip, giữ nguyên tên, không giải nén.',
+          'Bật công tắc skill là xong.',
+        ],
+      },
+      {
+        name: 'Codex (OpenAI)',
+        badge: 'Tương thích đầy đủ',
+        note: 'Skill tự kích hoạt khi bạn mô tả tình huống.',
+        steps: [
+          'Giải nén file .zip, được thư mục chứa SKILL.md.',
+          'Chép thư mục vào ~/.codex/skills/ (Mac/Linux) hoặc %USERPROFILE%\\.codex\\skills\\ (Windows).',
+          'Khởi động lại Codex rồi mô tả tình huống bán hàng.',
+        ],
+      },
+      {
+        name: 'ChatGPT',
+        badge: 'Qua Project',
+        note: 'AI đọc file làm tài liệu tham khảo, chất lượng có thể kém hơn một chút.',
+        steps: [
+          'Thanh bên › New project, đặt tên, ví dụ "Viết content bán hàng".',
+          'Thêm file .md vào project.',
+          'Bấm ••• › Project settings, dán nội dung file Instructions vào ô Instructions.',
+          'Mở chat mới bên trong project và mô tả tình huống.',
+        ],
+      },
+      {
+        name: 'Gemini',
+        badge: 'Qua Gem',
+        note: 'AI đọc file làm tài liệu tham khảo, chất lượng có thể kém hơn một chút.',
+        steps: [
+          'Vào gemini.google.com trên máy tính › Gems › New Gem.',
+          'Đặt tên Gem, dán nội dung file Instructions vào ô Instructions.',
+          'Ở mục Knowledge › Add files, tải lên file .md rồi bấm Save.',
+          'Mở Gem và mô tả tình huống bán hàng.',
+        ],
+      },
+    ],
+    tryPrompts: [
+      { label: 'Khách hỏi giá rồi im', text: 'Shop mình bán son dưỡng 189k, khách hay hỏi giá xong không mua. Viết caption Facebook giúp mình.' },
+      { label: 'Cần doanh số nhanh', text: 'Cuối tuần này mình chạy flash sale bình giữ nhiệt, viết caption cho Facebook và Zalo OA.' },
+      { label: 'Ra mắt sản phẩm', text: 'Tháng sau ra mắt trà hoa cúc mới, viết chuỗi caption nhá hàng đến mở bán.' },
+      { label: 'Gọi đúng mẫu', text: 'Viết theo mẫu 36 "Sao đắt vậy?" cho khóa học Excel 1.490k.' },
+    ],
+    updated:
+      'Thông tin cập nhật 10/2026. Giao diện các nền tảng có thể thay đổi, Sunz cập nhật hướng dẫn cho người mua.',
   },
 ];
 

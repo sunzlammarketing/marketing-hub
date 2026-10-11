@@ -39,6 +39,11 @@ const jsonLd = {
       <span class="sk-live"><i></i> <span data-i18n-vi="Đang mở bán" data-i18n-en="Now available">Đang mở bán</span></span>
       <h1 data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</h1>
       <p class="sk-lead" data-i18n-vi={s.desc.vi} data-i18n-en={s.desc.en}>{s.desc.vi}</p>
+      <div class="sk-compat">
+        {s.platforms.map((pl) => (
+          <a href="#nen-tang" class={`sk-chip${pl.best ? ' sk-chip-best' : ''}`}>{pl.best && '★ '}{pl.name}</a>
+        ))}
+      </div>
 
       <div class="sk-stats">
         {s.stats.map((st) => (
@@ -91,7 +96,7 @@ const jsonLd = {
   <section class="sk-band">
     <div class="container sk-sec">
       <span class="sk-label" data-i18n-vi="Quy trình bắt buộc" data-i18n-en="Built-in workflow">Quy trình bắt buộc</span>
-      <h2 data-i18n-vi={`${s.steps.length} bước Claude làm mỗi lần bạn nhờ`} data-i18n-en={`${s.steps.length} steps Claude follows every time`}>{s.steps.length} bước Claude làm mỗi lần bạn nhờ</h2>
+      <h2 data-i18n-vi={`${s.steps.length} bước AI làm mỗi lần bạn nhờ`} data-i18n-en={`${s.steps.length} steps the AI follows every time`}>{s.steps.length} bước AI làm mỗi lần bạn nhờ</h2>
       <ol class="sk-steps">
         {s.steps.map((st, i) => (
           <li>
@@ -155,6 +160,47 @@ const jsonLd = {
       </p>
     </div>
     <pre class="sk-out"><code>{s.output}</code></pre>
+  </section>
+
+  <!-- NỀN TẢNG -->
+  <section class="sk-band" id="nen-tang">
+    <div class="container sk-sec">
+      <span class="sk-label" data-i18n-vi="Dùng trên nền tảng nào?" data-i18n-en="Which platforms?">Dùng trên nền tảng nào?</span>
+      <h2 data-i18n-vi={s.compat} data-i18n-en="Best on Claude · Also works on Codex, ChatGPT, Gemini">{s.compat}</h2>
+      <p class="sk-sub" data-i18n-vi="Skill viết theo chuẩn mở Agent Skills (file SKILL.md). Mua một lần, dùng trên nền tảng bạn quen. Cài đặt chỉ mất vài phút:" data-i18n-en="Built on the open Agent Skills standard (SKILL.md). Buy once, use on the platform you prefer. Setup takes minutes:">
+        Skill viết theo chuẩn mở Agent Skills (file SKILL.md). Mua một lần, dùng trên nền tảng bạn quen. Cài đặt chỉ mất vài phút:
+      </p>
+      <div class="sk-plats">
+        {s.platforms.map((pl) => (
+          <div class={`sk-plat${pl.best ? ' sk-plat-best' : ''}`}>
+            <div class="sk-plat-head">
+              <b>{pl.name}</b>
+              <span class="sk-plat-badge">{pl.badge}</span>
+            </div>
+            <ol>
+              {pl.steps.map((st) => <li>{st}</li>)}
+            </ol>
+            {pl.note && <p class="sk-plat-note">{pl.note}</p>}
+          </div>
+        ))}
+      </div>
+      <p class="sk-updated">ℹ️ {s.updated}</p>
+    </div>
+  </section>
+
+  <!-- THỬ NGAY -->
+  <section class="container sk-sec">
+    <span class="sk-label" data-i18n-vi="Dùng thử ngay sau khi cài" data-i18n-en="Try right after installing">Dùng thử ngay sau khi cài</span>
+    <h2 data-i18n-vi="Chỉ cần mô tả tình huống như nói chuyện" data-i18n-en="Just describe your situation in plain words">Chỉ cần mô tả tình huống như nói chuyện</h2>
+    <div class="sk-tries">
+      {s.tryPrompts.map((t) => (
+        <button type="button" class="sk-try" data-copy={t.text}>
+          <span class="sk-try-label">{t.label}</span>
+          <span class="sk-try-text">“{t.text}”</span>
+          <span class="sk-try-copy" data-i18n-vi="Bấm để copy" data-i18n-en="Click to copy">Bấm để copy</span>
+        </button>
+      ))}
+    </div>
   </section>
 
   <!-- GÓI NHẬN ĐƯỢC + CTA -->
@@ -261,6 +307,34 @@ const jsonLd = {
     color: rgba(255, 255, 255, 0.82);
     font-size: 1.05rem;
     line-height: 1.7;
+  }
+  .sk-compat {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .sk-chip {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .sk-chip:hover {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .sk-chip-best {
+    color: #1e1b4b;
+    background: #fde68a;
+    border-color: #fde68a;
+  }
+  .sk-chip-best:hover {
+    background: #fcd34d;
   }
   .sk-stats {
     display: grid;
@@ -515,6 +589,115 @@ const jsonLd = {
     box-shadow: var(--shadow-lg);
   }
 
+  /* NỀN TẢNG */
+  .sk-plats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .sk-plat {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+  .sk-plat-best {
+    border: 2px solid var(--brand);
+    box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--brand) 60%, transparent);
+  }
+  .sk-plat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .sk-plat-head b {
+    font-size: 1.05rem;
+  }
+  .sk-plat-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 3px 8px;
+    border-radius: 999px;
+    color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .sk-plat-best .sk-plat-badge {
+    color: #fff;
+    background: var(--brand);
+  }
+  .sk-plat ol {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 6px;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    flex: 1;
+    overflow-wrap: anywhere;
+  }
+  .sk-plat-note {
+    margin: 12px 0 0;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+  .sk-updated {
+    margin: 16px 0 0;
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+
+  /* THỬ NGAY */
+  .sk-tries {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .sk-try {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    font: inherit;
+    color: var(--ink);
+    padding: 16px;
+    border-radius: 16px;
+    border: 1.5px dashed var(--border);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .sk-try:hover {
+    border-color: var(--brand);
+    transform: translateY(-2px);
+  }
+  .sk-try-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #e2553b;
+  }
+  .sk-try-text {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
+  }
+  .sk-try-copy {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--brand);
+  }
+
   /* GÓI + CTA */
   .sk-final {
     display: grid;
@@ -600,7 +783,9 @@ const jsonLd = {
     .sk-steps {
       grid-template-columns: 1fr;
     }
-    .sk-groups {
+    .sk-groups,
+    .sk-plats,
+    .sk-tries {
       grid-template-columns: repeat(2, 1fr);
     }
     .sk-legal-wrap,
@@ -615,7 +800,9 @@ const jsonLd = {
       grid-template-columns: repeat(2, 1fr);
     }
     .sk-situ,
-    .sk-groups {
+    .sk-groups,
+    .sk-plats,
+    .sk-tries {
       grid-template-columns: 1fr;
     }
     .sk-sec {
@@ -631,3 +818,20 @@ const jsonLd = {
     }
   }
 </style>
+
+<script>
+  // Bấm câu thử → copy vào clipboard, đổi nhãn tạm thời
+  document.querySelectorAll<HTMLButtonElement>('.sk-try').forEach((b) =>
+    b.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(b.dataset.copy || '');
+      } catch {
+        return;
+      }
+      const tag = b.querySelector('.sk-try-copy') as HTMLElement;
+      const old = tag.textContent;
+      tag.textContent = document.documentElement.lang === 'en' ? '✓ Copied' : '✓ Đã copy';
+      setTimeout(() => (tag.textContent = old), 1500);
+    })
+  );
+</script>
