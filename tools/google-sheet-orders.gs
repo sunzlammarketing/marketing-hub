@@ -349,7 +349,7 @@ function buildEmail_(o, p, links) {
     row('Số điện thoại', esc_(o.phone)) +
     row('Mã đơn', esc_(o.code)) +
     row('Số tiền', '<span style="color:#403bd3">' + vnd_(o.amount) + '</span>') +
-    row('Trạng thái', '<span style="display:inline-block;padding:5px 12px;border-radius:999px;background:#dcfce7;color:#15803d">Đã thanh toán</span>', true) +
+    row('Trạng thái', '<span style="display:inline-block;padding:5px 12px;border-radius:999px;background:#fff3ef;color:#e2553b;border:1px solid #ffd3c6">Đã thanh toán</span>', true) +
     '</table></div>' +
     // Lưu ý
     '<div style="background:#eeedfc;border-radius:14px;padding:14px 16px;margin:16px 0 0;color:#2e2a9e;font-size:14px;line-height:1.6">' +
