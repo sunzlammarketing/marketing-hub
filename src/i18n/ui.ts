@@ -234,7 +234,7 @@ export const ui = {
     // Home - Hero
     'home.badge': '📚 Practical marketing knowledge',
     'home.hero.title':
-      '<span class="hero-kicker"><b>Sunz Làm Marketing</b> helps you</span>Understand marketing <span class="hl">right</span>,<br /> do marketing <span class="hl">effectively</span>.',
+      '<span class="hero-kicker"><b>Sunz Làm Marketing</b> helps you</span><span class="hero-main-en">Understand marketing <span class="hl">right</span>,<br /> do marketing <span class="hl">effectively</span>.</span>',
     'home.hero.sub':
       'Clear, practical marketing you can apply today.',
     'home.hero.cta1': 'Free marketing resource hub',

@@ -391,6 +391,11 @@ img {
 .hero-kicker b {
   color: #403bd3;
 }
+/* Bản EN: thu nhỏ 2 dòng chính để "Understand marketing right," rộng bằng dòng "Sunz Làm Marketing helps you" */
+.hero-main-en {
+  display: block;
+  font-size: 0.8em;
+}
 :root[data-theme='dark'] .hero-kicker b {
   color: #8f8bff;
 }
