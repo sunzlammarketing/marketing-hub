@@ -344,6 +344,40 @@ img {
   }
 }
 
+/* Chữ logo cạnh ô vuông (header, footer): SUNZ xanh tím ở trên, LÀM MARKETING cam san hô ở dưới
+   — theo logo gốc. Hai dòng canh cùng độ rộng. */
+.brand-word {
+  display: inline-flex;
+  flex-direction: column;
+  font-family: 'Montserrat', var(--font);
+  line-height: 1;
+  text-transform: uppercase;
+}
+/* margin-right âm = letter-spacing: bỏ khoảng thừa sau chữ cuối để 2 dòng thẳng mép phải */
+.brand-word b {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin-right: -0.12em;
+  color: #403bd3;
+}
+.brand-word small {
+  margin-top: 3px;
+  font-size: 0.53rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-right: -0.14em;
+  color: #ff7759;
+}
+:root[data-theme='dark'] .brand-word b {
+  color: #8f8bff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .brand-word b {
+    color: #8f8bff;
+  }
+}
+
 /* Prose (bài viết) */
 .prose {
   font-size: 1.06rem;
