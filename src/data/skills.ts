@@ -42,6 +42,7 @@ export const SKILLS: Skill[] = [
       en: 'Describe your sales problem; the AI diagnoses it, picks 2-3 of 50 swipe-file templates, writes ready-to-post captions and checks Vietnamese ad law. Works on Claude, Codex, ChatGPT and Gemini.',
     },
     price: 399000,
+    cta: { vi: 'Đăng ký ngay', en: 'Register now' },
     promo: { price: 99000, from: '2026-10-11T00:00:00+07:00', until: '2026-10-20T23:59:59+07:00' },
     file: 'viet-content-theo-tinh-huong-ban-hang-by-sunzlammarketing.skill',
     stats: [

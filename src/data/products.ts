@@ -13,9 +13,11 @@ export interface Product {
   desc: { vi: string; en: string };
   price: number | null;
   originalPrice?: number; // giá gốc (gạch ngang) — chỉ hiện khi lớn hơn price
-  // Giá ưu đãi có hạn: trong khoảng from → until bán giá promo.price, gạch giá thường (price);
-  // hết hạn web tự quay về price (cả hiển thị lẫn số tiền QR). Thời gian theo giờ VN (+07:00).
+  // Giá mở bán có hạn: trong khoảng from → until bán promo.price, kèm dòng "Giá chính thức" = price
+  // (KHÔNG gạch giá, không nhãn %: tránh rủi ro giảm giá >50% theo TT 39/2025/TT-BCT).
+  // Hết hạn web tự quay về price (cả hiển thị lẫn số tiền QR). Thời gian theo giờ VN (+07:00).
   promo?: { price: number; from: string; until: string };
+  cta?: { vi: string; en: string }; // chữ trên nút mua (mặc định "Mua ngay")
   image?: string;
   buyUrl?: string;
   code?: string; // mã ngắn trong nội dung chuyển khoản (không dấu). Bỏ trống → tự tạo từ slug
@@ -128,8 +130,12 @@ export const buyHref = (p: Product) =>
 export const effectivePrice = (p: Product, at = Date.now()) => {
   const promoOn = p.promo && at >= Date.parse(p.promo.from) && at <= Date.parse(p.promo.until);
   const price = promoOn ? p.promo!.price : p.price;
-  const old = promoOn ? p.price : p.originalPrice;
+  // Giá mở bán không hiển thị dạng giảm giá; chỉ originalPrice mới gạch ngang
+  const old = promoOn ? null : p.originalPrice;
   const off = price != null && old && old > price ? Math.round((1 - price / old) * 100) : null;
   return { price, old: off ? old! : null, off, promo: promoOn ? p.promo! : null };
 };
+// Ngày (dd-mm, giờ VN) — dùng cho nhãn "đến hết 20-10" / "từ 21-10"
+export const vnDay = (iso: string, plusMs = 0) =>
+  new Date(Date.parse(iso) + plusMs).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' });
 export const formatVnd = (n: number) => n.toLocaleString('vi-VN') + ' ₫';

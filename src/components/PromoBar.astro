@@ -4,7 +4,7 @@
 import { formatVnd, type Product } from '../data/products';
 interface Props {
   product: Product;
-  tone?: 'dark' | 'light';
+  tone?: 'dark' | 'light' | 'auto'; // auto: sáng/tối theo giao diện web
 }
 const { product: p, tone = 'light' } = Astro.props;
 const promo = p.promo!;
@@ -21,7 +21,7 @@ const nextDay = new Date(end.getTime() + 1000).toLocaleDateString('vi-VN', {
 <div class={`promo promo-${tone}`} data-promo-bar data-from={promo.from} data-until={promo.until}>
   <div class="promo-top">
     <span class="promo-title">
-      ⏰ <span data-i18n-vi={`Giá ưu đãi ${formatVnd(promo.price)} đến hết ${endLabel}`} data-i18n-en={`Special price ${formatVnd(promo.price)} until ${endLabel}`}>Giá ưu đãi {formatVnd(promo.price)} đến hết {endLabel}</span>
+      ⏰ <span data-i18n-vi={`Giá mở bán ${formatVnd(promo.price)} đến hết ${endLabel}`} data-i18n-en={`Launch price ${formatVnd(promo.price)} until ${endLabel}`}>Giá mở bán {formatVnd(promo.price)} đến hết {endLabel}</span>
     </span>
     <span class="promo-clock" aria-live="off">
       <span><b data-cd="d">--</b><small data-i18n-vi="ngày" data-i18n-en="days">ngày</small></span>
@@ -30,33 +30,70 @@ const nextDay = new Date(end.getTime() + 1000).toLocaleDateString('vi-VN', {
       <span><b data-cd="s">--</b><small data-i18n-vi="giây" data-i18n-en="sec">giây</small></span>
     </span>
   </div>
-  <div class="promo-track" role="progressbar" aria-label="Thời gian ưu đãi đã trôi qua" aria-valuemin="0" aria-valuemax="100">
+  <div class="promo-track" role="progressbar" aria-label="Thời gian mở bán đã trôi qua" aria-valuemin="0" aria-valuemax="100">
     <div class="promo-fill" data-promo-fill></div>
   </div>
   <div class="promo-foot">
     <span data-promo-left></span>
-    <span data-i18n-vi={`Từ ${nextDay}: ${formatVnd(p.price!)}`} data-i18n-en={`From ${nextDay}: ${formatVnd(p.price!)}`}>Từ {nextDay}: {formatVnd(p.price!)}</span>
+    <span data-i18n-vi={`Giá chính thức từ ${nextDay}: ${formatVnd(p.price!)}`} data-i18n-en={`Regular price from ${nextDay}: ${formatVnd(p.price!)}`}>Giá chính thức từ {nextDay}: {formatVnd(p.price!)}</span>
   </div>
 </div>
 
 <style>
   .promo {
+    /* Bộ màu sáng (mặc định) */
+    --pb-bg: color-mix(in srgb, #ff7759 9%, #fff);
+    --pb-border: color-mix(in srgb, #ff7759 35%, #e2e8f0);
+    --pb-ink: #0f172a;
+    --pb-cell: #fff;
+    --pb-cell-border: #e2e8f0;
+    --pb-track: color-mix(in srgb, #ff7759 15%, transparent);
     width: 100%;
     max-width: 560px;
     padding: 14px 16px;
     border-radius: 16px;
     text-align: left;
-  }
-  .promo-dark {
-    margin: 24px auto 0;
-    background: rgba(0, 0, 0, 0.22);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: #fff;
+    background: var(--pb-bg);
+    border: 1px solid var(--pb-border);
+    color: var(--pb-ink);
   }
   .promo-light {
-    background: color-mix(in srgb, #ff7759 9%, var(--bg-card));
-    border: 1px solid color-mix(in srgb, #ff7759 35%, var(--border));
-    color: var(--ink);
+    --pb-bg: color-mix(in srgb, #ff7759 9%, var(--bg-card));
+    --pb-border: color-mix(in srgb, #ff7759 35%, var(--border));
+    --pb-ink: var(--ink);
+    --pb-cell: var(--bg-card);
+    --pb-cell-border: var(--border);
+  }
+  /* Bộ màu tối */
+  .promo-dark {
+    --pb-bg: rgba(0, 0, 0, 0.22);
+    --pb-border: rgba(255, 255, 255, 0.18);
+    --pb-ink: #fff;
+    --pb-cell: rgba(255, 255, 255, 0.12);
+    --pb-cell-border: transparent;
+    --pb-track: rgba(255, 255, 255, 0.15);
+  }
+  :global([data-theme='dark']) .promo-auto {
+    --pb-bg: rgba(0, 0, 0, 0.22);
+    --pb-border: rgba(255, 255, 255, 0.18);
+    --pb-ink: #fff;
+    --pb-cell: rgba(255, 255, 255, 0.12);
+    --pb-cell-border: transparent;
+    --pb-track: rgba(255, 255, 255, 0.15);
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .promo-auto {
+      --pb-bg: rgba(0, 0, 0, 0.22);
+      --pb-border: rgba(255, 255, 255, 0.18);
+      --pb-ink: #fff;
+      --pb-cell: rgba(255, 255, 255, 0.12);
+      --pb-cell-border: transparent;
+      --pb-track: rgba(255, 255, 255, 0.15);
+    }
+  }
+  .promo-dark,
+  .promo-auto {
+    margin: 24px auto 0;
   }
   .promo-top {
     display: flex;
@@ -80,13 +117,8 @@ const nextDay = new Date(end.getTime() + 1000).toLocaleDateString('vi-VN', {
     padding: 4px 6px;
     border-radius: 10px;
     line-height: 1.1;
-  }
-  .promo-dark .promo-clock > span {
-    background: rgba(255, 255, 255, 0.12);
-  }
-  .promo-light .promo-clock > span {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--pb-cell);
+    border: 1px solid var(--pb-cell-border);
   }
   .promo-clock b {
     font-size: 1.05rem;
@@ -102,12 +134,7 @@ const nextDay = new Date(end.getTime() + 1000).toLocaleDateString('vi-VN', {
     height: 10px;
     border-radius: 999px;
     overflow: hidden;
-  }
-  .promo-dark .promo-track {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  .promo-light .promo-track {
-    background: color-mix(in srgb, #ff7759 15%, transparent);
+    background: var(--pb-track);
   }
   .promo-fill {
     height: 100%;

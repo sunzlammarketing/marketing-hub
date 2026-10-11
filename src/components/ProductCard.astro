@@ -2,7 +2,7 @@
 // Thẻ sản phẩm: bấm ảnh/tên → trang chi tiết; nút Mua ngay → mua thẳng.
 import ProductCover from './ProductCover.astro';
 import BuyButton from './BuyButton.astro';
-import { productUrl, formatVnd, effectivePrice, type Product } from '../data/products';
+import { productUrl, formatVnd, effectivePrice, vnDay, type Product } from '../data/products';
 interface Props {
   product: Product;
   href?: string; // trang chi tiết; mặc định /tai-lieu/<slug>
@@ -36,8 +36,8 @@ const off = ep.off;
           )}
           <span class="pd-price" data-pnow>{formatVnd(ep.price)}</span>
           {ep.promo && (
-            <small class="pd-until" data-pold data-i18n-vi={`⏰ Ưu đãi đến ${new Date(ep.promo.until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })}`} data-i18n-en={`⏰ Offer ends ${new Date(ep.promo.until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })}`}>
-              ⏰ Ưu đãi đến {new Date(ep.promo.until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })}
+            <small class="pd-until" data-pold data-i18n-vi={`Giá mở bán đến ${vnDay(ep.promo.until)} · Chính thức ${formatVnd(p.price!)}`} data-i18n-en={`Launch price until ${vnDay(ep.promo.until)} · Then ${formatVnd(p.price!)}`}>
+              Giá mở bán đến {vnDay(ep.promo.until)} · Chính thức {formatVnd(p.price!)}
             </small>
           )}
         </div>

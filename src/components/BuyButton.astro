@@ -11,6 +11,7 @@ interface Props {
 const { product: p, size = 'md' } = Astro.props;
 const ep = effectivePrice(p);
 const payQr = ep.price != null && !p.buyUrl;
+const cta = p.cta ?? { vi: 'Mua ngay', en: 'Buy now' };
 ---
 
 {payQr ? (
@@ -26,7 +27,7 @@ const payQr = ep.price != null && !p.buyUrl;
   data-name-en={p.name.en}
 >
   <span aria-hidden="true">🛒</span>
-  <span data-i18n-vi="Mua ngay" data-i18n-en="Buy now">Mua ngay</span>
+  <span data-i18n-vi={cta.vi} data-i18n-en={cta.en}>{cta.vi}</span>
 </button>
 ) : (
 <a
@@ -39,7 +40,7 @@ const payQr = ep.price != null && !p.buyUrl;
   data-custom={p.buyUrl ? '1' : undefined}
 >
   <span aria-hidden="true">🛒</span>
-  <span data-i18n-vi="Mua ngay" data-i18n-en="Buy now">Mua ngay</span>
+  <span data-i18n-vi={cta.vi} data-i18n-en={cta.en}>{cta.vi}</span>
 </a>
 )}
 

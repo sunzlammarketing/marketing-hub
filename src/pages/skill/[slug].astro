@@ -72,6 +72,7 @@ const jsonLd = {
               {off && (
                 <span class="sk-old" data-pold><s>{formatVnd(ep.old!)}</s> <b>-{off}%</b></span>
               )}
+              {ep.promo && <span class="sk-plabel" data-pold data-i18n-vi="Giá mở bán" data-i18n-en="Launch price">Giá mở bán</span>}
               <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
             </span>
           ) : (
@@ -81,7 +82,7 @@ const jsonLd = {
         <BuyButton product={s} size="lg" />
         <a href="#so-sanh" class="sk-ghost" data-i18n-vi="Skill làm được gì? ↓" data-i18n-en="What does it do? ↓">Skill làm được gì? ↓</a>
       </div>
-      {ep.promo && <PromoBar product={s} tone="dark" />}
+      {ep.promo && <PromoBar product={s} tone="auto" />}
     </section>
 
     <!-- SO SÁNH ✕ / ✓ -->
@@ -270,13 +271,14 @@ const jsonLd = {
                 {off && (
                   <span class="sk-old" data-pold><s>{formatVnd(ep.old!)}</s> <b>-{off}%</b></span>
                 )}
-                <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
+                {ep.promo && <span class="sk-plabel" data-pold data-i18n-vi="Giá mở bán" data-i18n-en="Launch price">Giá mở bán</span>}
+              <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
               </span>
             ) : (
               <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
             )}
           </div>
-          {ep.promo && <PromoBar product={s} tone="dark" />}
+          {ep.promo && <PromoBar product={s} tone="auto" />}
           <BuyButton product={s} size="lg" />
           <p class="buy-note" data-i18n-vi="Thanh toán chuyển khoản QR, nhận link tải skill qua email." data-i18n-en="Pay by QR bank transfer, get the download link by email.">
             Thanh toán chuyển khoản QR, nhận link tải skill qua email.
@@ -291,27 +293,119 @@ const jsonLd = {
 
 <style>
   /* ===== Nền tối toàn trang, quầng sáng màu (giống noti.vn) ===== */
+  /* Bộ màu SÁNG (mặc định) — theo giao diện sáng noti.vn: nền trắng ngà, quầng pastel, thẻ trắng */
   .sk-page {
-    --ink-d: #e2e8f0;
-    --muted-d: #94a3b8;
-    --line-d: rgba(148, 163, 184, 0.16);
+    --pg: #f8fafc;
+    --g1: rgba(96, 165, 250, 0.35);
+    --g2: rgba(253, 164, 175, 0.32);
+    --g3: rgba(196, 181, 253, 0.35);
+    --g4: rgba(125, 211, 252, 0.35);
+    --dot: rgba(100, 116, 139, 0.12);
+    --h: #0f172a;
+    --ink-d: #1e293b;
+    --body: #475569;
+    --muted-d: #64748b;
+    --line-d: rgba(15, 23, 42, 0.08);
+    --panel: rgba(255, 255, 255, 0.72);
+    --panel-shadow: 0 24px 50px -30px rgba(15, 23, 42, 0.25);
+    --card: #ffffff;
+    --card-hover: rgba(15, 23, 42, 0.16);
+    --card-dim: linear-gradient(180deg, #fff1f2, #ffffff);
+    --card-glow: linear-gradient(180deg, #f5f3ff, #ffffff);
+    --glow-border: rgba(139, 92, 246, 0.45);
+    --glow-shadow: 0 20px 50px -28px rgba(139, 92, 246, 0.55);
+    --fit: #f1f5f9;
+    --fit-glow: #ede9fe;
+    --chip: #fff;
+    --hl: linear-gradient(90deg, #0061ff, #2563eb 45%, #7c3aed);
+    --tag-mix: #000 28%;
+    --ok: #059669;
+    --no: #dc2626;
+    --warn: #d97706;
+    --star: #7c3aed;
+    --code-bg: #0f172a;
     position: relative;
     color: var(--ink-d);
     background:
-      radial-gradient(900px 600px at 8% 18%, rgba(239, 68, 68, 0.22), transparent 60%),
-      radial-gradient(900px 700px at 92% 38%, rgba(59, 130, 246, 0.22), transparent 60%),
-      radial-gradient(800px 600px at 30% 70%, rgba(139, 92, 246, 0.2), transparent 60%),
-      radial-gradient(800px 600px at 85% 92%, rgba(255, 119, 89, 0.16), transparent 60%),
-      #070b1a;
+      radial-gradient(900px 600px at 6% 12%, var(--g1), transparent 60%),
+      radial-gradient(800px 600px at 18% 40%, var(--g2), transparent 60%),
+      radial-gradient(900px 700px at 95% 35%, var(--g4), transparent 60%),
+      radial-gradient(800px 600px at 70% 80%, var(--g3), transparent 60%),
+      var(--pg);
     overflow: hidden;
     padding-bottom: 8px;
+  }
+  /* Bộ màu TỐI */
+  :global([data-theme='dark']) .sk-page {
+    --pg: #070b1a;
+    --g1: rgba(239, 68, 68, 0.22);
+    --g2: rgba(139, 92, 246, 0.2);
+    --g3: rgba(255, 119, 89, 0.16);
+    --g4: rgba(59, 130, 246, 0.22);
+    --dot: rgba(148, 163, 184, 0.12);
+    --h: #fff;
+    --ink-d: #e2e8f0;
+    --body: #cbd5e1;
+    --muted-d: #94a3b8;
+    --line-d: rgba(148, 163, 184, 0.16);
+    --panel: linear-gradient(180deg, rgba(30, 41, 82, 0.55), rgba(15, 23, 42, 0.62));
+    --panel-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    --card: linear-gradient(180deg, rgba(51, 65, 85, 0.42), rgba(30, 41, 59, 0.35));
+    --card-hover: rgba(148, 163, 184, 0.32);
+    --card-dim: linear-gradient(180deg, rgba(69, 26, 26, 0.35), rgba(30, 41, 59, 0.35));
+    --card-glow: linear-gradient(180deg, rgba(76, 29, 149, 0.35), rgba(30, 41, 82, 0.45));
+    --glow-border: rgba(167, 139, 250, 0.55);
+    --glow-shadow: 0 20px 50px -24px rgba(139, 92, 246, 0.65);
+    --fit: rgba(148, 163, 184, 0.1);
+    --fit-glow: rgba(139, 92, 246, 0.16);
+    --chip: rgba(148, 163, 184, 0.08);
+    --hl: linear-gradient(90deg, #60a5fa, #38bdf8 45%, #a78bfa);
+    --tag-mix: transparent 0%;
+    --ok: #34d399;
+    --no: #f87171;
+    --warn: #fbbf24;
+    --star: #a78bfa;
+    --code-bg: rgba(2, 6, 23, 0.75);
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .sk-page {
+      --pg: #070b1a;
+      --g1: rgba(239, 68, 68, 0.22);
+      --g2: rgba(139, 92, 246, 0.2);
+      --g3: rgba(255, 119, 89, 0.16);
+      --g4: rgba(59, 130, 246, 0.22);
+      --dot: rgba(148, 163, 184, 0.12);
+      --h: #fff;
+      --ink-d: #e2e8f0;
+      --body: #cbd5e1;
+      --muted-d: #94a3b8;
+      --line-d: rgba(148, 163, 184, 0.16);
+      --panel: linear-gradient(180deg, rgba(30, 41, 82, 0.55), rgba(15, 23, 42, 0.62));
+      --panel-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --card: linear-gradient(180deg, rgba(51, 65, 85, 0.42), rgba(30, 41, 59, 0.35));
+      --card-hover: rgba(148, 163, 184, 0.32);
+      --card-dim: linear-gradient(180deg, rgba(69, 26, 26, 0.35), rgba(30, 41, 59, 0.35));
+      --card-glow: linear-gradient(180deg, rgba(76, 29, 149, 0.35), rgba(30, 41, 82, 0.45));
+      --glow-border: rgba(167, 139, 250, 0.55);
+      --glow-shadow: 0 20px 50px -24px rgba(139, 92, 246, 0.65);
+      --fit: rgba(148, 163, 184, 0.1);
+      --fit-glow: rgba(139, 92, 246, 0.16);
+      --chip: rgba(148, 163, 184, 0.08);
+      --hl: linear-gradient(90deg, #60a5fa, #38bdf8 45%, #a78bfa);
+      --tag-mix: transparent 0%;
+      --ok: #34d399;
+      --no: #f87171;
+      --warn: #fbbf24;
+      --star: #a78bfa;
+      --code-bg: rgba(2, 6, 23, 0.75);
+    }
   }
   /* Lưới chấm mờ phía sau */
   .sk-page::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+    background-image: radial-gradient(var(--dot) 1px, transparent 1px);
     background-size: 26px 26px;
     mask-image: linear-gradient(180deg, #000, transparent 90%);
     pointer-events: none;
@@ -331,7 +425,7 @@ const jsonLd = {
     margin-bottom: 18px;
   }
   .crumbs a {
-    color: #cbd5e1;
+    color: var(--body);
   }
   .crumbs span {
     margin-inline: 4px;
@@ -343,12 +437,12 @@ const jsonLd = {
     font-weight: 900;
     line-height: 1.15;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--h);
   }
   .sk-lead {
     margin: 0 auto;
     max-width: 760px;
-    color: #cbd5e1;
+    color: var(--body);
     font-size: 1.05rem;
     line-height: 1.7;
   }
@@ -362,15 +456,15 @@ const jsonLd = {
   .chip {
     font-size: 0.82rem;
     font-weight: 700;
-    color: #e2e8f0;
+    color: var(--ink-d);
     padding: 6px 14px;
     border-radius: 999px;
     border: 1px solid var(--line-d);
-    background: rgba(148, 163, 184, 0.08);
+    background: var(--chip);
   }
   .chip:hover {
     text-decoration: none;
-    background: rgba(148, 163, 184, 0.16);
+    border-color: var(--card-hover);
   }
   .chip-best {
     color: #1e1b4b;
@@ -387,16 +481,17 @@ const jsonLd = {
   .sk-stat {
     padding: 16px 10px;
     border-radius: 18px;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--card);
     border: 1px solid var(--line-d);
-    border-top: 2px solid var(--a);
+    border-top: 3px solid var(--a);
+    box-shadow: var(--panel-shadow);
   }
   .sk-stat b {
     display: block;
     font-size: 1.8rem;
     font-weight: 900;
     line-height: 1.1;
-    color: #fff;
+    color: var(--h);
   }
   .sk-stat span {
     font-size: 0.78rem;
@@ -431,11 +526,18 @@ const jsonLd = {
     font-size: 2.1rem;
     font-weight: 900;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--h);
+  }
+  .sk-plabel {
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #e2553b;
   }
   .sk-ghost {
     font-weight: 700;
-    color: #cbd5e1;
+    color: var(--body);
   }
 
   /* ===== Khối lớn (panel) ===== */
@@ -449,9 +551,9 @@ const jsonLd = {
     padding: 34px 32px;
     border-radius: 32px;
     border: 1px solid var(--line-d);
-    background: linear-gradient(180deg, rgba(30, 41, 82, 0.55), rgba(15, 23, 42, 0.62));
-    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(6px);
+    background: var(--panel);
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(8px);
   }
   .panel h2 {
     margin: 14px 0 8px;
@@ -459,18 +561,18 @@ const jsonLd = {
     font-weight: 900;
     letter-spacing: -0.02em;
     line-height: 1.2;
-    color: #fff;
+    color: var(--h);
   }
   /* Cụm chữ gradient trong tiêu đề */
   .hl {
-    background: linear-gradient(90deg, #60a5fa, #38bdf8 45%, #a78bfa);
+    background: var(--hl);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .sub {
     margin: 0 0 22px;
-    color: #cbd5e1;
+    color: var(--body);
     max-width: 760px;
   }
 
@@ -487,11 +589,24 @@ const jsonLd = {
     border-radius: 999px;
     border: 1px solid;
   }
-  .pill-red { color: #fca5a5; background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.35); }
-  .pill-blue { color: #93c5fd; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.35); }
-  .pill-purple { color: #c4b5fd; background: rgba(139, 92, 246, 0.14); border-color: rgba(139, 92, 246, 0.38); }
-  .pill-amber { color: #fcd34d; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
-  .pill-green { color: #6ee7b7; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.38); }
+  .pill-red { --pc: #fca5a5; --pd: #dc2626; --pr: 239, 68, 68; }
+  .pill-blue { --pc: #93c5fd; --pd: #0061ff; --pr: 59, 130, 246; }
+  .pill-purple { --pc: #c4b5fd; --pd: #7c3aed; --pr: 139, 92, 246; }
+  .pill-amber { --pc: #fcd34d; --pd: #b45309; --pr: 245, 158, 11; }
+  .pill-green { --pc: #6ee7b7; --pd: #047857; --pr: 16, 185, 129; }
+  .pill {
+    color: var(--pd);
+    background: rgba(var(--pr), 0.1);
+    border-color: rgba(var(--pr), 0.35);
+  }
+  :global([data-theme='dark']) .pill {
+    color: var(--pc);
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .pill {
+      color: var(--pc);
+    }
+  }
   .live-dot {
     width: 8px;
     height: 8px;
@@ -511,22 +626,23 @@ const jsonLd = {
     flex-direction: column;
     padding: 20px;
     border-radius: 22px;
-    background: linear-gradient(180deg, rgba(51, 65, 85, 0.42), rgba(30, 41, 59, 0.35));
+    background: var(--card);
     border: 1px solid var(--line-d);
+    box-shadow: 0 10px 30px -22px rgba(15, 23, 42, 0.35);
     color: var(--ink-d);
     transition: transform 0.18s ease, border-color 0.18s ease;
   }
   .card:hover {
     transform: translateY(-3px);
-    border-color: rgba(148, 163, 184, 0.32);
+    border-color: var(--card-hover);
   }
   .card-dim {
-    background: linear-gradient(180deg, rgba(69, 26, 26, 0.35), rgba(30, 41, 59, 0.35));
+    background: var(--card-dim);
   }
   .card-glow {
-    border-color: rgba(167, 139, 250, 0.55);
-    background: linear-gradient(180deg, rgba(76, 29, 149, 0.35), rgba(30, 41, 82, 0.45));
-    box-shadow: 0 20px 50px -24px rgba(139, 92, 246, 0.65);
+    border-color: var(--glow-border);
+    background: var(--card-glow);
+    box-shadow: var(--glow-shadow);
   }
   .tag {
     align-self: flex-start;
@@ -534,18 +650,18 @@ const jsonLd = {
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--a);
+    color: color-mix(in srgb, var(--a), var(--tag-mix));
   }
   .card h3 {
     margin: 8px 0 12px;
     font-size: 1.08rem;
     font-weight: 800;
     line-height: 1.35;
-    color: #fff;
+    color: var(--h);
   }
   .card p {
     margin: 0;
-    color: #cbd5e1;
+    color: var(--body);
     font-size: 0.9rem;
     line-height: 1.6;
   }
@@ -586,13 +702,13 @@ const jsonLd = {
     font-size: 0.85rem;
     line-height: 1;
   }
-  .ic-ok { color: #34d399; }
-  .ic-no { color: #f87171; }
-  .ic-plus { color: #34d399; font-size: 1.05rem; }
-  .ic-star { color: #a78bfa; font-size: 1.05rem; }
+  .ic-ok { color: var(--ok); }
+  .ic-no { color: var(--no); }
+  .ic-plus { color: var(--ok); font-size: 1.05rem; }
+  .ic-star { color: var(--star); font-size: 1.05rem; }
   .ic-warn {
-    color: #fbbf24;
-    border: 2px solid #fbbf24;
+    color: var(--warn);
+    border: 2px solid var(--warn);
     border-radius: 50%;
     width: 19px;
     height: 19px;
@@ -604,9 +720,9 @@ const jsonLd = {
     margin-top: auto !important;
     padding: 14px 16px;
     border-radius: 16px;
-    background: rgba(148, 163, 184, 0.1);
+    background: var(--fit);
     border: 1px solid var(--line-d);
-    color: #e2e8f0 !important;
+    color: var(--ink-d) !important;
     font-size: 0.88rem !important;
     line-height: 1.6;
   }
@@ -614,11 +730,11 @@ const jsonLd = {
     margin-top: 18px !important;
   }
   .fit b {
-    color: #fff;
+    color: var(--h);
   }
   .fit-glow {
-    background: rgba(139, 92, 246, 0.16);
-    border-color: rgba(167, 139, 250, 0.4);
+    background: var(--fit-glow);
+    border-color: var(--glow-border);
   }
 
   /* Lưới */
@@ -665,7 +781,7 @@ const jsonLd = {
     margin: 14px 0 0;
     padding: 20px 22px;
     border-radius: 20px;
-    background: rgba(2, 6, 23, 0.75);
+    background: var(--code-bg);
     border: 1px solid var(--line-d);
     color: #e2e8f0;
     font-size: 0.84rem;
@@ -681,12 +797,12 @@ const jsonLd = {
     display: grid;
     gap: 7px;
     font-size: 0.86rem;
-    color: #cbd5e1;
+    color: var(--body);
     line-height: 1.55;
     overflow-wrap: anywhere;
   }
   .num-list li::marker {
-    color: #a78bfa;
+    color: var(--star);
     font-weight: 800;
   }
   .card .fit .ic {
@@ -712,12 +828,12 @@ const jsonLd = {
     flex: 1;
     font-size: 0.93rem;
     line-height: 1.55;
-    color: #fff;
+    color: var(--h);
   }
   .try-copy {
     font-size: 0.78rem;
     font-weight: 700;
-    color: #93c5fd;
+    color: color-mix(in srgb, #3b82f6, var(--tag-mix));
   }
 
   /* Khối mua cuối */
@@ -730,9 +846,9 @@ const jsonLd = {
     justify-items: start;
     padding: 26px;
     border-radius: 26px;
-    border: 1px solid rgba(167, 139, 250, 0.5);
-    background: linear-gradient(180deg, rgba(76, 29, 149, 0.4), rgba(15, 23, 42, 0.6));
-    box-shadow: 0 30px 60px -30px rgba(139, 92, 246, 0.7);
+    border: 1px solid var(--glow-border);
+    background: var(--card-glow);
+    box-shadow: var(--glow-shadow);
   }
   .buy-card :global(.promo) {
     margin: 0;
@@ -746,7 +862,7 @@ const jsonLd = {
     font-weight: 900;
     text-transform: uppercase;
     line-height: 1.3;
-    color: #fff;
+    color: var(--h);
   }
   .buy-note {
     margin: 0;
