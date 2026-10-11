@@ -324,16 +324,16 @@ function buildEmail_(o, p, links) {
     '<div style="background:#eef2ff;padding:24px 10px;' + F + '">' +
     '<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 20px 40px -24px rgba(15,23,42,.35)">' +
     // Header gradient
-    '<div style="background:#3b82f6;background-image:linear-gradient(135deg,#4f46e5,#3b82f6 55%,#38bdf8);padding:34px 24px 30px;text-align:center;color:#fff">' +
+    '<div style="background:#403bd3;background-image:linear-gradient(135deg,#2e2a9e,#403bd3 55%,#5d58e6);padding:34px 24px 30px;text-align:center;color:#fff">' +
     '<img src="' + SITE + '/logo-mark.png" width="44" height="44" alt="Sunz" style="background:#fff;border-radius:12px;padding:5px;margin:0 auto 14px;display:block">' +
     '<div style="font-size:26px;font-weight:900;line-height:1.25">Thanh toán thành công</div>' +
     '<div style="font-size:14px;opacity:.9;margin-top:6px">' + esc_(p.name) + '</div>' +
     '</div>' +
     '<div style="padding:26px 26px 8px">' +
     // Hộp xác nhận
-    '<div style="background:#f0fdf4;border-radius:18px;padding:26px 20px;text-align:center">' +
-    '<div style="width:60px;height:60px;line-height:60px;margin:0 auto;border-radius:50%;background:#22c55e;background-image:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;font-size:30px;font-weight:900">✓</div>' +
-    '<div style="color:#15803d;font-size:20px;font-weight:900;margin-top:14px">Thanh toán đã được xác nhận!</div>' +
+    '<div style="background:#fff3ef;border-radius:18px;padding:26px 20px;text-align:center">' +
+    '<div style="width:60px;height:60px;line-height:60px;margin:0 auto;border-radius:50%;background:#ff7759;background-image:linear-gradient(135deg,#ffa184,#ff7759 55%,#e8573a);color:#fff;font-size:30px;font-weight:900">✓</div>' +
+    '<div style="color:#e2553b;font-size:20px;font-weight:900;margin-top:14px">Thanh toán đã được xác nhận!</div>' +
     '<div style="color:#64748b;font-size:14px;margin-top:4px">Cảm ơn bạn đã tin tưởng ' + BRAND + '.</div>' +
     '</div>' +
     // Lời chào
