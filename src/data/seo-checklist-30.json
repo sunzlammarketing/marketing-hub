@@ -288,7 +288,7 @@
       "auto_rule": "Có <link rel=canonical> tuyệt đối · trỏ về chính URL cuối (sau redirect, bỏ dấu / cuối và tham số utm khi so) = Đạt · trỏ URL khác = Cần cải thiện (hiển thị URL đó) · không có = Chưa đạt.",
       "why": "Khi cùng một nội dung truy cập được qua nhiều URL (có tham số, http/https, có/không www), tín hiệu bị chia nhỏ và Google tốn công thu thập vô ích.",
       "how": [
-        "Gắn thẻ `` tự trỏ về chính URL chuẩn của bài.",
+        "Gắn thẻ `<link rel=\"canonical\">` tự trỏ về chính URL chuẩn của bài.",
         "Trang trùng lặp (URL có tham số utm, bản in…) trỏ canonical về bản gốc. Ưu tiên chuyển hướng 301 khi có thể."
       ],
       "examples": [],
@@ -583,7 +583,7 @@
       "how": [
         "Tên file mô tả, không dấu, có gạch ngang.",
         "Alt text mô tả đúng nội dung ảnh trong ngữ cảnh bài — không nhồi từ khoá.",
-        "Đặt ảnh gần đoạn văn liên quan; dùng thẻ `` (Google không lập chỉ mục ảnh nền CSS)."
+        "Đặt ảnh gần đoạn văn liên quan; dùng thẻ `<img>` (Google không lập chỉ mục ảnh nền CSS)."
       ],
       "examples": [
         {
