@@ -15,9 +15,14 @@ export interface Skill extends Product {
   includes: string[]; // khách nhận được gì
   requires: string[]; // yêu cầu để dùng
   compat: string; // một dòng tương thích hiển thị ở hero
-  platforms: { name: string; badge: string; best?: boolean; note?: string; steps: string[] }[]; // cách cài theo nền tảng
+  platforms: { name: string; badge: string; best?: boolean; note?: string; warn?: boolean; steps: string[] }[]; // warn: ghi chú dạng lưu ý (icon !) // cách cài theo nền tảng
   tryPrompts: { label: string; text: string }[]; // câu mẫu để thử ngay
   updated: string; // ghi chú cập nhật giao diện nền tảng
+  // So sánh ✕ / ✓: chỉ ghi điều skill thật sự làm (theo SKILL.md)
+  compare: {
+    without: { title: string; no: string[]; warn: string[]; fit: string };
+    with: { title: string; ok: string[]; star: string[]; fit: string };
+  };
 }
 
 export const SKILLS: Skill[] = [
@@ -137,6 +142,7 @@ export const SKILLS: Skill[] = [
       },
       {
         name: 'ChatGPT',
+        warn: true,
         badge: 'Qua Project',
         note: 'AI đọc file làm tài liệu tham khảo, chất lượng có thể kém hơn một chút.',
         steps: [
@@ -148,6 +154,7 @@ export const SKILLS: Skill[] = [
       },
       {
         name: 'Gemini',
+        warn: true,
         badge: 'Qua Gem',
         note: 'AI đọc file làm tài liệu tham khảo, chất lượng có thể kém hơn một chút.',
         steps: [
@@ -166,6 +173,30 @@ export const SKILLS: Skill[] = [
     ],
     updated:
       'Thông tin cập nhật 10/2026. Giao diện các nền tảng có thể thay đổi, Sunz cập nhật hướng dẫn cho người mua.',
+    compare: {
+      without: {
+        title: 'Tự viết / hỏi AI chung chung',
+        no: [
+          'Bắt đầu từ công thức, không từ vấn đề bán hàng đang gặp',
+          'Thường chỉ ra một phiên bản, khó A/B test',
+          'Không soát pháp lý quảng cáo Việt Nam',
+          'AI dễ tự thêm số liệu, feedback cho "hay"',
+        ],
+        warn: ['Phải tự chỉnh độ dài, format cho từng kênh'],
+        fit: 'đã thuộc công thức, có thời gian tự soát lỗi và pháp lý từng bài.',
+      },
+      with: {
+        title: 'Dùng skill Sunz',
+        ok: [
+          'Chẩn đoán tình huống trước, rồi mới chọn mẫu',
+          '2-3 phiên bản góc khác nhau, sẵn sàng A/B test',
+          'Tự soát 8 điểm pháp lý trước khi giao',
+          'Không bịa: thiếu bằng chứng thì để [biến] cho bạn điền',
+        ],
+        star: ['50 mẫu chia 10 nhóm mục tiêu', 'Format riêng TikTok, Instagram, sàn TMĐT, Zalo OA'],
+        fit: 'cần caption bán được ngay, đúng tình huống, an toàn pháp lý.',
+      },
+    },
   },
 ];
 

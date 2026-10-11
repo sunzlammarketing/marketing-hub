@@ -1,11 +1,12 @@
 ---
-// Trang bán từng skill (/skill/<slug>), bố cục tham khảo noti.vn/skill:
-// hero + số liệu → tình huống → quy trình → thư viện mẫu → pháp lý → kết quả trả về → gói nhận được → CTA.
+// Trang bán từng skill (/skill/<slug>) — phong cách noti.vn/skill: nền tối có quầng sáng,
+// mỗi phần là một khối lớn (panel) với nhãn viên thuốc, tiêu đề có cụm chữ gradient,
+// thẻ có nhãn màu riêng, danh sách icon ✓ ✕ ! ☆ +, ô "Phù hợp khi" nổi bật.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BuyButton from '../../components/BuyButton.astro';
 import PaymentModal from '../../components/PaymentModal.astro';
-import { SKILLS, type Skill } from '../../data/skills';
 import PromoBar from '../../components/PromoBar.astro';
+import { SKILLS, type Skill } from '../../data/skills';
 import { formatVnd, effectivePrice } from '../../data/products';
 
 export function getStaticPaths() {
@@ -15,6 +16,14 @@ const { skill: s } = Astro.props as { skill: Skill };
 const ep = effectivePrice(s);
 const off = ep.off;
 const total = s.groups.reduce((n, g) => n + g.items.length, 0);
+// Màu nhãn xoay vòng cho các thẻ
+const ACCENTS = ['#f87171', '#60a5fa', '#a78bfa', '#fbbf24', '#34d399', '#f472b6', '#22d3ee', '#fb923c', '#818cf8', '#4ade80'];
+const accent = (i: number) => ACCENTS[i % ACCENTS.length];
+const pad2 = (n: number) => String(n).padStart(2, '0');
+// Ví dụ kết quả: escape HTML rồi đổi **chữ** thành chữ đậm
+const outputHtml = s.output
+  .replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!)
+  .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -22,8 +31,8 @@ const jsonLd = {
   name: s.name.vi,
   description: s.desc.vi,
   brand: { '@type': 'Brand', name: 'Sunz Làm Marketing' },
-  ...(s.price != null && {
-    offers: { '@type': 'Offer', price: s.price, priceCurrency: 'VND', availability: 'https://schema.org/InStock' },
+  ...(ep.price != null && {
+    offers: { '@type': 'Offer', price: ep.price, priceCurrency: 'VND', availability: 'https://schema.org/InStock' },
   }),
 };
 ---
@@ -31,25 +40,25 @@ const jsonLd = {
 <BaseLayout title={s.name.vi} description={s.desc.vi}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <!-- HERO -->
-  <section class="sk-hero">
-    <div class="container sk-hero-inner">
+  <div class="sk-page">
+    <!-- HERO -->
+    <section class="container sk-hero">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/" data-i18n="nav.home">Trang chủ</a> <span>/</span>
         <a href="/skill" data-i18n-vi="Skill AI" data-i18n-en="AI Skills">Skill AI</a>
       </nav>
-      <span class="sk-live"><i></i> <span data-i18n-vi="Đang mở bán" data-i18n-en="Now available">Đang mở bán</span></span>
+      <span class="pill pill-green"><i class="live-dot"></i> <span data-i18n-vi="Đang mở bán" data-i18n-en="Now available">Đang mở bán</span></span>
       <h1 data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</h1>
       <p class="sk-lead" data-i18n-vi={s.desc.vi} data-i18n-en={s.desc.en}>{s.desc.vi}</p>
       <div class="sk-compat">
         {s.platforms.map((pl) => (
-          <a href="#nen-tang" class={`sk-chip${pl.best ? ' sk-chip-best' : ''}`}>{pl.best && '★ '}{pl.name}</a>
+          <a href="#nen-tang" class={`chip${pl.best ? ' chip-best' : ''}`}>{pl.best && '★ '}{pl.name}</a>
         ))}
       </div>
 
       <div class="sk-stats">
-        {s.stats.map((st) => (
-          <div class="sk-stat">
+        {s.stats.map((st, i) => (
+          <div class="sk-stat" style={`--a:${accent(i)}`}>
             <b>{st.value}</b>
             <span data-i18n-vi={st.label.vi} data-i18n-en={st.label.en}>{st.label.vi}</span>
           </div>
@@ -70,158 +79,191 @@ const jsonLd = {
           )}
         </div>
         <BuyButton product={s} size="lg" />
-        <a href="#tinh-huong" class="sk-ghost" data-i18n-vi="Skill làm được gì? ↓" data-i18n-en="What does it do? ↓">Skill làm được gì? ↓</a>
+        <a href="#so-sanh" class="sk-ghost" data-i18n-vi="Skill làm được gì? ↓" data-i18n-en="What does it do? ↓">Skill làm được gì? ↓</a>
       </div>
       {ep.promo && <PromoBar product={s} tone="dark" />}
-    </div>
-  </section>
+    </section>
 
-  <!-- TÌNH HUỐNG -->
-  <section class="container sk-sec" id="tinh-huong">
-    <span class="sk-label" data-i18n-vi="Bắt đầu từ vấn đề, không từ công thức" data-i18n-en="Start from the problem, not the formula">Bắt đầu từ vấn đề, không từ công thức</span>
-    <h2 data-i18n-vi="Bạn đang gặp tình huống nào?" data-i18n-en="Which situation are you in?">Bạn đang gặp tình huống nào?</h2>
-    <p class="sk-sub" data-i18n-vi="Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn mẫu phù hợp. Đây là 8 tình huống chính:" data-i18n-en="Just describe the problem — the skill matches it to the right templates. The 8 main situations:">
-      Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn mẫu phù hợp. Đây là 8 tình huống chính:
-    </p>
-    <div class="sk-situ">
-      {s.situations.map((x) => (
-        <div class="sk-situ-card">
-          <b>“{x.problem}”</b>
-          <ul>
-            {x.picks.map((p) => <li>{p}</li>)}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- QUY TRÌNH -->
-  <section class="sk-band">
-    <div class="container sk-sec">
-      <span class="sk-label" data-i18n-vi="Quy trình bắt buộc" data-i18n-en="Built-in workflow">Quy trình bắt buộc</span>
-      <h2 data-i18n-vi={`${s.steps.length} bước AI làm mỗi lần bạn nhờ`} data-i18n-en={`${s.steps.length} steps the AI follows every time`}>{s.steps.length} bước AI làm mỗi lần bạn nhờ</h2>
-      <ol class="sk-steps">
-        {s.steps.map((st, i) => (
-          <li>
-            <span class="sk-step-no">{String(i + 1).padStart(2, '0')}</span>
-            <b>{st.title}</b>
-            <p>{st.text}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- THƯ VIỆN MẪU -->
-  <section class="container sk-sec">
-    <span class="sk-label" data-i18n-vi="Thư viện mẫu" data-i18n-en="Template library">Thư viện mẫu</span>
-    <h2 data-i18n-vi={`${total} mẫu caption, ${s.groups.length} nhóm mục tiêu`} data-i18n-en={`${total} caption templates, ${s.groups.length} goal groups`}>{total} mẫu caption, {s.groups.length} nhóm mục tiêu</h2>
-    <p class="sk-sub" data-i18n-vi="Mỗi mẫu có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai." data-i18n-en="Each template includes when to use it, a detailed frame, best channels and pitfalls to avoid.">
-      Mỗi mẫu có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai.
-    </p>
-    <div class="sk-groups">
-      {s.groups.map((g, gi) => (
-        <div class="sk-group">
-          <div class="sk-group-head">
-            <span class="sk-group-code">{g.code}</span>
-            <div>
-              <b>{g.name}</b>
-              <small>{g.goal}</small>
-            </div>
+    <!-- SO SÁNH ✕ / ✓ -->
+    <section class="container panel-wrap" id="so-sanh">
+      <div class="panel">
+        <span class="pill pill-red" data-i18n-vi="Vì sao nên dùng" data-i18n-en="Why use it">Vì sao nên dùng</span>
+        <h2>
+          <span data-i18n-vi="Viết caption kiểu cũ vs " data-i18n-en="The old way vs ">Viết caption kiểu cũ vs </span><span class="hl" data-i18n-vi="dùng skill Sunz" data-i18n-en="the Sunz skill">dùng skill Sunz</span>
+        </h2>
+        <div class="cmp">
+          <div class="card card-dim">
+            <span class="tag" style="--a:#f87171">{s.compare.without.title}</span>
+            <ul class="ic-list">
+              {s.compare.without.no.map((t) => <li><i class="ic ic-no">✕</i>{t}</li>)}
+              {s.compare.without.warn.map((t) => <li><i class="ic ic-warn">!</i>{t}</li>)}
+            </ul>
+            <p class="fit"><b>Phù hợp khi:</b> {s.compare.without.fit}</p>
           </div>
-          <ol start={gi * 5 + 1}>
-            {g.items.map((it) => <li>{it}</li>)}
-          </ol>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- PHÁP LÝ -->
-  <section class="sk-band">
-    <div class="container sk-sec sk-legal-wrap">
-      <div>
-        <span class="sk-label" data-i18n-vi="An toàn khi đăng" data-i18n-en="Safe to publish">An toàn khi đăng</span>
-        <h2 data-i18n-vi={`Tự soát ${s.legal.length} điểm pháp lý quảng cáo VN`} data-i18n-en={`Checks ${s.legal.length} Vietnamese ad-law points`}>Tự soát {s.legal.length} điểm pháp lý quảng cáo VN</h2>
-        <p class="sk-sub" data-i18n-vi="Mỗi caption được kiểm tra trước khi giao, chỉ rõ chỗ cần sửa và cách sửa." data-i18n-en="Every caption is checked before delivery, with what to fix and how.">
-          Mỗi caption được kiểm tra trước khi giao, chỉ rõ chỗ cần sửa và cách sửa.
-        </p>
-      </div>
-      <ul class="sk-legal">
-        {s.legal.map((l) => <li>{l}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <!-- KẾT QUẢ -->
-  <section class="container sk-sec sk-out-wrap">
-    <div>
-      <span class="sk-label" data-i18n-vi="Kết quả trả về" data-i18n-en="What you get back">Kết quả trả về</span>
-      <h2 data-i18n-vi="2-3 phiên bản caption, sẵn sàng A/B test" data-i18n-en="2-3 caption versions, ready to A/B test">2-3 phiên bản caption, sẵn sàng A/B test</h2>
-      <p class="sk-sub" data-i18n-vi="Mỗi phiên bản ghi rõ dùng mẫu nào, vì sao hợp tình huống, kèm kết quả soát pháp lý và gợi ý chỉ số để đo." data-i18n-en="Each version states the template used and why, plus the legal check and what to measure.">
-        Mỗi phiên bản ghi rõ dùng mẫu nào, vì sao hợp tình huống, kèm kết quả soát pháp lý và gợi ý chỉ số để đo.
-      </p>
-    </div>
-    <pre class="sk-out"><code>{s.output}</code></pre>
-  </section>
-
-  <!-- NỀN TẢNG -->
-  <section class="sk-band" id="nen-tang">
-    <div class="container sk-sec">
-      <span class="sk-label" data-i18n-vi="Dùng trên nền tảng nào?" data-i18n-en="Which platforms?">Dùng trên nền tảng nào?</span>
-      <h2 data-i18n-vi={s.compat} data-i18n-en="Best on Claude · Also works on Codex, ChatGPT, Gemini">{s.compat}</h2>
-      <p class="sk-sub" data-i18n-vi="Skill viết theo chuẩn mở Agent Skills (file SKILL.md). Mua một lần, dùng trên nền tảng bạn quen. Cài đặt chỉ mất vài phút:" data-i18n-en="Built on the open Agent Skills standard (SKILL.md). Buy once, use on the platform you prefer. Setup takes minutes:">
-        Skill viết theo chuẩn mở Agent Skills (file SKILL.md). Mua một lần, dùng trên nền tảng bạn quen. Cài đặt chỉ mất vài phút:
-      </p>
-      <div class="sk-plats">
-        {s.platforms.map((pl) => (
-          <div class={`sk-plat${pl.best ? ' sk-plat-best' : ''}`}>
-            <div class="sk-plat-head">
-              <b>{pl.name}</b>
-              <span class="sk-plat-badge">{pl.badge}</span>
-            </div>
-            <ol>
-              {pl.steps.map((st) => <li>{st}</li>)}
-            </ol>
-            {pl.note && <p class="sk-plat-note">{pl.note}</p>}
+          <div class="card card-glow">
+            <span class="tag" style="--a:#34d399">{s.compare.with.title}</span>
+            <ul class="ic-list">
+              {s.compare.with.ok.map((t) => <li><i class="ic ic-ok">✓</i>{t}</li>)}
+              {s.compare.with.star.map((t) => <li><i class="ic ic-star">☆</i>{t}</li>)}
+            </ul>
+            <p class="fit fit-glow"><b>Phù hợp khi:</b> {s.compare.with.fit}</p>
           </div>
-        ))}
+        </div>
       </div>
-      <p class="sk-updated">ℹ️ {s.updated}</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- THỬ NGAY -->
-  <section class="container sk-sec">
-    <span class="sk-label" data-i18n-vi="Dùng thử ngay sau khi cài" data-i18n-en="Try right after installing">Dùng thử ngay sau khi cài</span>
-    <h2 data-i18n-vi="Chỉ cần mô tả tình huống như nói chuyện" data-i18n-en="Just describe your situation in plain words">Chỉ cần mô tả tình huống như nói chuyện</h2>
-    <div class="sk-tries">
-      {s.tryPrompts.map((t) => (
-        <button type="button" class="sk-try" data-copy={t.text}>
-          <span class="sk-try-label">{t.label}</span>
-          <span class="sk-try-text">“{t.text}”</span>
-          <span class="sk-try-copy" data-i18n-vi="Bấm để copy" data-i18n-en="Click to copy">Bấm để copy</span>
-        </button>
-      ))}
-    </div>
-  </section>
+    <!-- TÌNH HUỐNG -->
+    <section class="container panel-wrap" id="tinh-huong">
+      <div class="panel">
+        <span class="pill pill-blue" data-i18n-vi="Bắt đầu từ vấn đề" data-i18n-en="Start from the problem">Bắt đầu từ vấn đề</span>
+        <h2>
+          <span data-i18n-vi="Bạn đang gặp " data-i18n-en="Which ">Bạn đang gặp </span><span class="hl" data-i18n-vi="tình huống nào?" data-i18n-en="situation are you in?">tình huống nào?</span>
+        </h2>
+        <p class="sub">Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn mẫu phù hợp. 8 tình huống chính:</p>
+        <div class="grid-4">
+          {s.situations.map((x, i) => (
+            <div class="card">
+              <span class="tag" style={`--a:${accent(i)}`}>Tình huống {pad2(i + 1)}</span>
+              <h3>{x.problem}</h3>
+              <ul class="ic-list ic-sm">
+                {x.picks.map((p) => <li><i class="ic ic-plus">+</i>Mẫu {p}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
 
-  <!-- GÓI NHẬN ĐƯỢC + CTA -->
-  <section class="sk-band">
-    <div class="container sk-sec">
-      <div class="sk-final">
-        <div class="sk-final-info">
-          <span class="sk-label" data-i18n-vi="Bạn nhận được" data-i18n-en="You receive">Bạn nhận được</span>
-          <ul class="sk-check">
-            {s.includes.map((x) => <li>{x}</li>)}
-          </ul>
-          <span class="sk-label" data-i18n-vi="Yêu cầu" data-i18n-en="Requirements">Yêu cầu</span>
-          <ul class="sk-dot">
-            {s.requires.map((x) => <li>{x}</li>)}
+    <!-- QUY TRÌNH -->
+    <section class="container panel-wrap">
+      <div class="panel">
+        <span class="pill pill-purple" data-i18n-vi="Quy trình bắt buộc" data-i18n-en="Built-in workflow">Quy trình bắt buộc</span>
+        <h2>
+          <span class="hl">{s.steps.length} bước</span> <span data-i18n-vi="AI làm mỗi lần bạn nhờ" data-i18n-en="the AI follows every time">AI làm mỗi lần bạn nhờ</span>
+        </h2>
+        <p class="sub">Không viết bừa: đi đúng thứ tự từ hiểu vấn đề đến soát lỗi.</p>
+        <ol class="steps">
+          {s.steps.map((st, i) => (
+            <li class="card">
+              <span class="tag" style={`--a:${accent(i + 1)}`}>Bước {pad2(i + 1)}</span>
+              <h3>{st.title}</h3>
+              <p>{st.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- THƯ VIỆN MẪU -->
+    <section class="container panel-wrap">
+      <div class="panel">
+        <span class="pill pill-amber" data-i18n-vi="Thư viện mẫu" data-i18n-en="Template library">Thư viện mẫu</span>
+        <h2>
+          <span class="hl">{total} mẫu caption</span>, <span>{s.groups.length} nhóm mục tiêu</span>
+        </h2>
+        <p class="sub">Mỗi mẫu có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai.</p>
+        <div class="grid-5">
+          {s.groups.map((g, gi) => (
+            <div class="card">
+              <span class="tag" style={`--a:${accent(gi)}`}>Nhóm {g.code} · {pad2(gi * 5 + 1)}–{pad2(gi * 5 + g.items.length)}</span>
+              <h3>{g.name}</h3>
+              <ul class="ic-list ic-sm">
+                {g.items.map((it) => <li><i class="ic ic-plus">+</i>{it}</li>)}
+              </ul>
+              <p class="fit"><b>Dùng khi:</b> {g.goal.toLowerCase()}.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- PHÁP LÝ + KẾT QUẢ -->
+    <section class="container panel-wrap">
+      <div class="panel two-col">
+        <div>
+          <span class="pill pill-green" data-i18n-vi="An toàn khi đăng" data-i18n-en="Safe to publish">An toàn khi đăng</span>
+          <h2>
+            <span data-i18n-vi="Tự soát " data-i18n-en="Checks ">Tự soát </span><span class="hl">{s.legal.length} điểm pháp lý</span>
+          </h2>
+          <ul class="ic-list">
+            {s.legal.map((l) => <li><i class="ic ic-ok">✓</i>{l}</li>)}
+            <li class="muted"><i class="ic ic-warn">!</i>Phần soát pháp lý là gợi ý tham khảo, không thay thế tư vấn pháp lý.</li>
           </ul>
         </div>
-        <div class="sk-final-buy">
-          <b class="sk-final-name" data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</b>
+        <div>
+          <span class="pill pill-blue" data-i18n-vi="Kết quả trả về" data-i18n-en="What you get back">Kết quả trả về</span>
+          <h2>
+            <span class="hl">2-3 phiên bản</span> <span data-i18n-vi="sẵn sàng A/B test" data-i18n-en="ready to A/B test">sẵn sàng A/B test</span>
+          </h2>
+          <pre class="out"><code set:html={outputHtml} /></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- NỀN TẢNG -->
+    <section class="container panel-wrap" id="nen-tang">
+      <div class="panel">
+        <span class="pill pill-purple" data-i18n-vi="Dùng trên nền tảng nào?" data-i18n-en="Which platforms?">Dùng trên nền tảng nào?</span>
+        <h2>
+          <span data-i18n-vi="Mua một lần, " data-i18n-en="Buy once, ">Mua một lần, </span><span class="hl" data-i18n-vi="dùng trên 4 nền tảng AI" data-i18n-en="use on 4 AI platforms">dùng trên 4 nền tảng AI</span>
+        </h2>
+        <p class="sub">Skill viết theo chuẩn mở Agent Skills (file SKILL.md). {s.compat}.</p>
+        <div class="grid-4">
+          {s.platforms.map((pl, i) => (
+            <div class={`card${pl.best ? ' card-glow' : ''}`}>
+              <div class="plat-head">
+                <span class="tag" style={`--a:${pl.best ? '#a78bfa' : accent(i + 1)}`}>{pl.best ? '★ ' : ''}{pl.badge}</span>
+              </div>
+              <h3>{pl.name}</h3>
+              <ol class="num-list">
+                {pl.steps.map((st) => <li>{st}</li>)}
+              </ol>
+              {pl.note && (
+                <p class={`fit${pl.best ? ' fit-glow' : ''}`}>
+                  <i class={`ic ${pl.best ? 'ic-star' : pl.warn ? 'ic-warn' : 'ic-ok'}`}>{pl.best ? '☆' : pl.warn ? '!' : '✓'}</i> {pl.note}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+        <p class="updated">ℹ️ {s.updated}</p>
+      </div>
+    </section>
+
+    <!-- THỬ NGAY -->
+    <section class="container panel-wrap">
+      <div class="panel">
+        <span class="pill pill-red" data-i18n-vi="Dùng thử ngay" data-i18n-en="Try it now">Dùng thử ngay</span>
+        <h2>
+          <span data-i18n-vi="Chỉ cần mô tả tình huống " data-i18n-en="Just describe your situation ">Chỉ cần mô tả tình huống </span><span class="hl" data-i18n-vi="như nói chuyện" data-i18n-en="in plain words">như nói chuyện</span>
+        </h2>
+        <div class="grid-4">
+          {s.tryPrompts.map((t, i) => (
+            <button type="button" class="card try" data-copy={t.text}>
+              <span class="tag" style={`--a:${accent(i)}`}>{t.label}</span>
+              <span class="try-text">“{t.text}”</span>
+              <span class="try-copy" data-i18n-vi="Bấm để copy" data-i18n-en="Click to copy">Bấm để copy</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- GÓI NHẬN ĐƯỢC + CTA -->
+    <section class="container panel-wrap panel-last">
+      <div class="panel two-col final">
+        <div>
+          <span class="pill pill-green" data-i18n-vi="Bạn nhận được" data-i18n-en="You receive">Bạn nhận được</span>
+          <ul class="ic-list">
+            {s.includes.map((x) => <li><i class="ic ic-ok">✓</i>{x}</li>)}
+          </ul>
+          <span class="pill pill-amber" data-i18n-vi="Yêu cầu" data-i18n-en="Requirements">Yêu cầu</span>
+          <ul class="ic-list">
+            {s.requires.map((x) => <li><i class="ic ic-plus">+</i>{x}</li>)}
+          </ul>
+        </div>
+        <div class="buy-card">
+          <b class="buy-name" data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</b>
           <div class="sk-price">
             {ep.price != null ? (
               <span class="sk-pbox" data-price-box data-until={ep.promo?.until} data-regular={s.price != null ? formatVnd(s.price) : undefined}>
@@ -234,81 +276,79 @@ const jsonLd = {
               <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
             )}
           </div>
-          {ep.promo && <PromoBar product={s} />}
+          {ep.promo && <PromoBar product={s} tone="dark" />}
           <BuyButton product={s} size="lg" />
-          <p class="sk-final-note" data-i18n-vi="Thanh toán chuyển khoản QR, nhận link tải skill qua email." data-i18n-en="Pay by QR bank transfer, get the download link by email.">
+          <p class="buy-note" data-i18n-vi="Thanh toán chuyển khoản QR, nhận link tải skill qua email." data-i18n-en="Pay by QR bank transfer, get the download link by email.">
             Thanh toán chuyển khoản QR, nhận link tải skill qua email.
           </p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <PaymentModal />
 </BaseLayout>
 
 <style>
-  /* HERO */
-  .sk-hero {
-    color: #fff;
+  /* ===== Nền tối toàn trang, quầng sáng màu (giống noti.vn) ===== */
+  .sk-page {
+    --ink-d: #e2e8f0;
+    --muted-d: #94a3b8;
+    --line-d: rgba(148, 163, 184, 0.16);
+    position: relative;
+    color: var(--ink-d);
     background:
-      radial-gradient(circle at 85% 10%, rgba(255, 119, 89, 0.35), transparent 40%),
-      radial-gradient(circle at 10% 90%, rgba(99, 102, 241, 0.45), transparent 45%),
-      linear-gradient(135deg, #1e1b4b, #312e81 55%, #3730a3);
-    padding-block: var(--space-head-top) 48px;
+      radial-gradient(900px 600px at 8% 18%, rgba(239, 68, 68, 0.22), transparent 60%),
+      radial-gradient(900px 700px at 92% 38%, rgba(59, 130, 246, 0.22), transparent 60%),
+      radial-gradient(800px 600px at 30% 70%, rgba(139, 92, 246, 0.2), transparent 60%),
+      radial-gradient(800px 600px at 85% 92%, rgba(255, 119, 89, 0.16), transparent 60%),
+      #070b1a;
+    overflow: hidden;
+    padding-bottom: 8px;
   }
-  .sk-hero-inner {
+  /* Lưới chấm mờ phía sau */
+  .sk-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: linear-gradient(180deg, #000, transparent 90%);
+    pointer-events: none;
+  }
+  .sk-page > * {
+    position: relative;
+  }
+
+  /* ===== HERO ===== */
+  .sk-hero {
     text-align: center;
+    padding-block: var(--space-head-top) 36px;
   }
   .crumbs {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--muted-d);
     margin-bottom: 18px;
   }
   .crumbs a {
-    color: rgba(255, 255, 255, 0.8);
+    color: #cbd5e1;
   }
   .crumbs span {
     margin-inline: 4px;
   }
-  .sk-live {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: rgba(16, 185, 129, 0.16);
-    border: 1px solid rgba(16, 185, 129, 0.5);
-    color: #6ee7b7;
-  }
-  .sk-live i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #34d399;
-    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
-    animation: sk-pulse 1.8s infinite;
-  }
-  @keyframes sk-pulse {
-    70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
-  }
   .sk-hero h1 {
     margin: 16px auto 12px;
-    max-width: 820px;
-    font-size: clamp(1.8rem, 4.6vw, 2.8rem);
+    max-width: 860px;
+    font-size: clamp(1.9rem, 4.8vw, 3rem);
     font-weight: 900;
     line-height: 1.15;
     letter-spacing: -0.02em;
+    color: #fff;
   }
   .sk-lead {
     margin: 0 auto;
     max-width: 760px;
-    color: rgba(255, 255, 255, 0.82);
+    color: #cbd5e1;
     font-size: 1.05rem;
     line-height: 1.7;
   }
@@ -319,72 +359,66 @@ const jsonLd = {
     gap: 8px;
     margin-top: 18px;
   }
-  .sk-chip {
+  .chip {
     font-size: 0.82rem;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
-    padding: 5px 12px;
+    color: #e2e8f0;
+    padding: 6px 14px;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line-d);
+    background: rgba(148, 163, 184, 0.08);
   }
-  .sk-chip:hover {
+  .chip:hover {
     text-decoration: none;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(148, 163, 184, 0.16);
   }
-  .sk-chip-best {
+  .chip-best {
     color: #1e1b4b;
     background: #fde68a;
     border-color: #fde68a;
-  }
-  .sk-chip-best:hover {
-    background: #fcd34d;
   }
   .sk-stats {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 12px;
-    margin: 32px auto 0;
-    max-width: 960px;
+    margin: 30px auto 0;
+    max-width: 980px;
   }
   .sk-stat {
     padding: 16px 10px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--line-d);
+    border-top: 2px solid var(--a);
   }
   .sk-stat b {
     display: block;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     font-weight: 900;
     line-height: 1.1;
+    color: #fff;
   }
   .sk-stat span {
     font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--muted-d);
   }
   .sk-buy {
-    margin-top: 30px;
+    margin-top: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px 20px;
+    gap: 16px 22px;
     flex-wrap: wrap;
   }
-  .sk-hero .sk-price {
-    color: #fff;
-  }
+  .sk-price,
   .sk-pbox {
-    display: grid;
-  }
-  .sk-price {
     display: grid;
     line-height: 1.15;
     text-align: left;
   }
   .sk-old {
     font-size: 0.95rem;
-    opacity: 0.75;
+    color: var(--muted-d);
   }
   .sk-old b {
     font-size: 0.75rem;
@@ -394,448 +428,395 @@ const jsonLd = {
     border-radius: 6px;
   }
   .sk-now {
-    font-size: 2rem;
+    font-size: 2.1rem;
     font-weight: 900;
     letter-spacing: -0.02em;
+    color: #fff;
   }
   .sk-ghost {
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.85);
+    color: #cbd5e1;
   }
 
-  /* SECTION CHUNG */
-  .sk-sec {
-    padding-block: 56px;
+  /* ===== Khối lớn (panel) ===== */
+  .panel-wrap {
+    padding-block: 14px;
   }
-  .sk-band {
-    background: var(--bg-soft);
-    border-block: 1px solid var(--border);
+  .panel-last {
+    padding-bottom: var(--space-section);
   }
-  .sk-label {
-    display: block;
-    font-size: 0.76rem;
+  .panel {
+    padding: 34px 32px;
+    border-radius: 32px;
+    border: 1px solid var(--line-d);
+    background: linear-gradient(180deg, rgba(30, 41, 82, 0.55), rgba(15, 23, 42, 0.62));
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+  }
+  .panel h2 {
+    margin: 14px 0 8px;
+    font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #fff;
+  }
+  /* Cụm chữ gradient trong tiêu đề */
+  .hl {
+    background: linear-gradient(90deg, #60a5fa, #38bdf8 45%, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sub {
+    margin: 0 0 22px;
+    color: #cbd5e1;
+    max-width: 760px;
+  }
+
+  /* Nhãn viên thuốc */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.74rem;
     font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #e2553b;
-    margin-bottom: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid;
   }
-  .sk-sec h2 {
-    margin: 0 0 8px;
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    font-weight: 900;
-    letter-spacing: -0.02em;
+  .pill-red { color: #fca5a5; background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.35); }
+  .pill-blue { color: #93c5fd; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.35); }
+  .pill-purple { color: #c4b5fd; background: rgba(139, 92, 246, 0.14); border-color: rgba(139, 92, 246, 0.38); }
+  .pill-amber { color: #fcd34d; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
+  .pill-green { color: #6ee7b7; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.38); }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    animation: live 1.8s infinite;
   }
-  .sk-sub {
-    margin: 0 0 24px;
-    color: var(--ink-soft);
-    max-width: 720px;
+  @keyframes live {
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
   }
 
-  /* TÌNH HUỐNG */
-  .sk-situ {
+  /* Thẻ bên trong panel */
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(51, 65, 85, 0.42), rgba(30, 41, 59, 0.35));
+    border: 1px solid var(--line-d);
+    color: var(--ink-d);
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(148, 163, 184, 0.32);
+  }
+  .card-dim {
+    background: linear-gradient(180deg, rgba(69, 26, 26, 0.35), rgba(30, 41, 59, 0.35));
+  }
+  .card-glow {
+    border-color: rgba(167, 139, 250, 0.55);
+    background: linear-gradient(180deg, rgba(76, 29, 149, 0.35), rgba(30, 41, 82, 0.45));
+    box-shadow: 0 20px 50px -24px rgba(139, 92, 246, 0.65);
+  }
+  .tag {
+    align-self: flex-start;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--a);
+  }
+  .card h3 {
+    margin: 8px 0 12px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: #fff;
+  }
+  .card p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* Danh sách có icon */
+  .ic-list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    color: var(--ink-d);
+  }
+  .ic-sm {
+    gap: 7px;
+    font-size: 0.88rem;
+    margin-top: 0;
+  }
+  .ic-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .ic-list li.muted {
+    color: var(--muted-d);
+    font-size: 0.88rem;
+  }
+  .ic {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+  .ic-ok { color: #34d399; }
+  .ic-no { color: #f87171; }
+  .ic-plus { color: #34d399; font-size: 1.05rem; }
+  .ic-star { color: #a78bfa; font-size: 1.05rem; }
+  .ic-warn {
+    color: #fbbf24;
+    border: 2px solid #fbbf24;
+    border-radius: 50%;
+    width: 19px;
+    height: 19px;
+    font-size: 0.72rem;
+  }
+
+  /* Ô "Phù hợp khi" */
+  .fit {
+    margin-top: auto !important;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 1px solid var(--line-d);
+    color: #e2e8f0 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.6;
+  }
+  .card .ic-list + .fit {
+    margin-top: 18px !important;
+  }
+  .fit b {
+    color: #fff;
+  }
+  .fit-glow {
+    background: rgba(139, 92, 246, 0.16);
+    border-color: rgba(167, 139, 250, 0.4);
+  }
+
+  /* Lưới */
+  .cmp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 22px;
+  }
+  .grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
-  .sk-situ-card {
-    padding: 18px;
-    border-radius: 18px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-  }
-  .sk-situ-card b {
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    color: var(--brand);
-  }
-  .sk-situ-card ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 6px;
-    font-size: 0.86rem;
-    color: var(--ink-soft);
-  }
-  .sk-situ-card li::before {
-    content: '→ ';
-    color: #e2553b;
-    font-weight: 800;
-  }
-
-  /* QUY TRÌNH */
-  .sk-steps {
-    list-style: none;
-    margin: 20px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-    counter-reset: none;
-  }
-  .sk-steps li {
-    position: relative;
-    padding: 18px;
-    border-radius: 18px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-  }
-  .sk-step-no {
-    display: inline-grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    font-weight: 900;
-    color: #fff;
-    background: linear-gradient(135deg, #4f46e5, #3730a3);
-    margin-bottom: 10px;
-  }
-  .sk-steps b {
-    display: block;
-    margin-bottom: 6px;
-  }
-  .sk-steps p {
-    margin: 0;
-    font-size: 0.88rem;
-    color: var(--ink-soft);
-    line-height: 1.6;
-  }
-
-  /* THƯ VIỆN */
-  .sk-groups {
+  .grid-5 {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 14px;
   }
-  .sk-group {
-    padding: 16px;
-    border-radius: 18px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+  .grid-5 .fit {
+    margin-top: 14px !important;
   }
-  .sk-group-head {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  .sk-group-code {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    font-weight: 900;
-    color: var(--brand);
-    background: var(--brand-soft);
-  }
-  .sk-group-head b {
-    display: block;
-    font-size: 0.95rem;
-    line-height: 1.3;
-  }
-  .sk-group-head small {
-    color: var(--ink-faint);
-    font-size: 0.78rem;
-  }
-  .sk-group ol {
+  .steps {
+    list-style: none;
     margin: 0;
-    padding-left: 26px;
+    padding: 0;
     display: grid;
-    gap: 3px;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
   }
-
-  /* PHÁP LÝ */
-  .sk-legal-wrap,
-  .sk-out-wrap {
+  .two-col {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 1fr 1.1fr;
     gap: 32px;
     align-items: start;
   }
-  .sk-legal {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 10px;
+  .two-col .pill + .ic-list {
+    margin-bottom: 22px;
   }
-  .sk-legal li {
-    position: relative;
-    padding: 12px 14px 12px 44px;
-    border-radius: 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    font-size: 0.92rem;
+  .out :global(b) {
+    color: #93c5fd;
   }
-  .sk-legal li::before {
-    content: '⚖️';
-    position: absolute;
-    left: 14px;
-    top: 11px;
-  }
-
-  /* KẾT QUẢ */
-  .sk-out {
-    margin: 0;
+  .out {
+    margin: 14px 0 0;
     padding: 20px 22px;
-    border-radius: 18px;
-    background: #0f172a;
+    border-radius: 20px;
+    background: rgba(2, 6, 23, 0.75);
+    border: 1px solid var(--line-d);
     color: #e2e8f0;
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     line-height: 1.7;
     white-space: pre-wrap;
     overflow-x: auto;
-    box-shadow: var(--shadow-lg);
   }
 
-  /* NỀN TẢNG */
-  .sk-plats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-  }
-  .sk-plat {
-    display: flex;
-    flex-direction: column;
-    padding: 18px;
-    border-radius: 18px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-  }
-  .sk-plat-best {
-    border: 2px solid var(--brand);
-    box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--brand) 60%, transparent);
-  }
-  .sk-plat-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .sk-plat-head b {
-    font-size: 1.05rem;
-  }
-  .sk-plat-badge {
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    padding: 3px 8px;
-    border-radius: 999px;
-    color: var(--brand);
-    background: var(--brand-soft);
-  }
-  .sk-plat-best .sk-plat-badge {
-    color: #fff;
-    background: var(--brand);
-  }
-  .sk-plat ol {
-    margin: 0;
+  /* Nền tảng */
+  .num-list {
+    margin: 0 0 16px;
     padding-left: 20px;
     display: grid;
-    gap: 6px;
+    gap: 7px;
     font-size: 0.86rem;
-    color: var(--ink-soft);
+    color: #cbd5e1;
     line-height: 1.55;
-    flex: 1;
     overflow-wrap: anywhere;
   }
-  .sk-plat-note {
-    margin: 12px 0 0;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border);
-    font-size: 0.8rem;
-    color: var(--ink-faint);
+  .num-list li::marker {
+    color: #a78bfa;
+    font-weight: 800;
   }
-  .sk-updated {
+  .card .fit .ic {
+    display: inline-grid;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  .updated {
     margin: 16px 0 0;
     font-size: 0.82rem;
-    color: var(--ink-faint);
+    color: var(--muted-d);
   }
 
-  /* THỬ NGAY */
-  .sk-tries {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-  }
-  .sk-try {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    text-align: left;
+  /* Thử ngay */
+  .try {
     font: inherit;
-    color: var(--ink);
-    padding: 16px;
-    border-radius: 16px;
-    border: 1.5px dashed var(--border);
-    background: var(--bg-card);
+    text-align: left;
     cursor: pointer;
-    transition: border-color 0.15s, transform 0.15s;
+    gap: 10px;
+    border-style: dashed;
   }
-  .sk-try:hover {
-    border-color: var(--brand);
-    transform: translateY(-2px);
-  }
-  .sk-try-label {
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #e2553b;
-  }
-  .sk-try-text {
-    font-size: 0.92rem;
-    line-height: 1.55;
+  .try-text {
     flex: 1;
+    font-size: 0.93rem;
+    line-height: 1.55;
+    color: #fff;
   }
-  .sk-try-copy {
+  .try-copy {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--brand);
+    color: #93c5fd;
   }
 
-  /* GÓI + CTA */
-  .sk-final {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 28px;
-    align-items: center;
+  /* Khối mua cuối */
+  .final .pill {
+    margin-bottom: 4px;
   }
-  .sk-final-info ul {
-    margin: 0 0 22px;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 8px;
-  }
-  .sk-final-info li {
-    position: relative;
-    padding-left: 26px;
-    color: var(--ink-soft);
-    word-break: break-word;
-  }
-  .sk-check li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: #10b981;
-    font-weight: 900;
-  }
-  .sk-dot li::before {
-    content: '•';
-    position: absolute;
-    left: 8px;
-    color: var(--brand);
-    font-weight: 900;
-  }
-  .sk-final-buy {
+  .buy-card {
     display: grid;
     gap: 14px;
     justify-items: start;
-    padding: 24px;
-    border-radius: 24px;
-    background: var(--bg-card);
-    border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--border));
-    box-shadow: var(--shadow-lg);
+    padding: 26px;
+    border-radius: 26px;
+    border: 1px solid rgba(167, 139, 250, 0.5);
+    background: linear-gradient(180deg, rgba(76, 29, 149, 0.4), rgba(15, 23, 42, 0.6));
+    box-shadow: 0 30px 60px -30px rgba(139, 92, 246, 0.7);
   }
-  .sk-final-name {
-    font-size: 1.1rem;
+  .buy-card :global(.promo) {
+    margin: 0;
+    max-width: none;
+  }
+  .buy-card :global(.buy-btn) {
+    width: 100%;
+  }
+  .buy-name {
+    font-size: 1.15rem;
     font-weight: 900;
     text-transform: uppercase;
     line-height: 1.3;
+    color: #fff;
   }
-  .sk-final-buy .sk-now {
-    color: var(--brand);
-  }
-  .sk-final-buy .sk-old {
-    color: var(--ink-faint);
-    opacity: 1;
-  }
-  .sk-final-buy :global(.buy-btn) {
-    width: 100%;
-  }
-  .sk-final-note {
+  .buy-note {
     margin: 0;
     font-size: 0.85rem;
-    color: var(--ink-faint);
+    color: var(--muted-d);
   }
 
-  :global([data-theme='dark']) .sk-label {
-    color: #ffa48f;
-  }
-  @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme='light'])) .sk-label {
-      color: #ffa48f;
+  /* ===== Responsive ===== */
+  @media (max-width: 1100px) {
+    .grid-5 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
-
   @media (max-width: 1000px) {
     .sk-stats {
       grid-template-columns: repeat(3, 1fr);
     }
-    .sk-situ {
+    .grid-4 {
       grid-template-columns: repeat(2, 1fr);
     }
-    .sk-steps {
+    .two-col {
       grid-template-columns: 1fr;
+      gap: 24px;
     }
-    .sk-groups,
-    .sk-plats,
-    .sk-tries {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .sk-legal-wrap,
-    .sk-out-wrap,
-    .sk-final {
+  }
+  @media (max-width: 700px) {
+    .cmp,
+    .grid-5,
+    .steps {
       grid-template-columns: 1fr;
-      gap: 16px;
     }
   }
   @media (max-width: 560px) {
     .sk-stats {
       grid-template-columns: repeat(2, 1fr);
     }
-    .sk-situ,
-    .sk-groups,
-    .sk-plats,
-    .sk-tries {
+    .grid-4 {
       grid-template-columns: 1fr;
     }
-    .sk-sec {
-      padding-block: 40px;
+    .panel {
+      padding: 24px 18px;
+      border-radius: 24px;
     }
     .sk-buy :global(.buy-btn) {
       width: 100%;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .sk-live i {
+    .live-dot {
       animation: none;
+    }
+    .card:hover {
+      transform: none;
     }
   }
 </style>
 
 <script>
   // Bấm câu thử → copy vào clipboard, đổi nhãn tạm thời
-  document.querySelectorAll<HTMLButtonElement>('.sk-try').forEach((b) =>
+  document.querySelectorAll<HTMLButtonElement>('.try').forEach((b) =>
     b.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(b.dataset.copy || '');
       } catch {
         return;
       }
-      const tag = b.querySelector('.sk-try-copy') as HTMLElement;
+      const tag = b.querySelector('.try-copy') as HTMLElement;
       const old = tag.textContent;
       tag.textContent = document.documentElement.lang === 'en' ? '✓ Copied' : '✓ Đã copy';
       setTimeout(() => (tag.textContent = old), 1500);
