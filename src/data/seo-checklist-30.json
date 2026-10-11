@@ -1,0 +1,716 @@
+{
+  "meta": {
+    "title": "Checklist 30 điểm tối ưu SEO on-page",
+    "brand": "Sunz Làm Marketing",
+    "scoring": {
+      "points_by_priority": {
+        "Bắt buộc": 3,
+        "Quan trọng": 2,
+        "Nên có": 1
+      },
+      "max_points": 71,
+      "status_factor": {
+        "pass": 1,
+        "warn": 0.5,
+        "fail": 0,
+        "na": null,
+        "manual_checked": 1,
+        "manual_unchecked": 0
+      },
+      "rating": [
+        {
+          "min": 0.9,
+          "label": "Xuất sắc — đăng ngay"
+        },
+        {
+          "min": 0.75,
+          "label": "Tốt — đăng, cải thiện dần"
+        },
+        {
+          "min": 0.6,
+          "label": "Cần chỉnh thêm trước khi đăng"
+        },
+        {
+          "min": 0,
+          "label": "Chưa nên đăng"
+        }
+      ],
+      "rule_mandatory": "Còn bất kỳ mục 'Bắt buộc' nào ở trạng thái fail → xếp loại 'Chưa nên đăng' bất kể tỷ lệ."
+    },
+    "check_types": {
+      "paste": "Chấm tự động ở cả chế độ Dán nội dung và chế độ URL",
+      "url": "Chấm tự động chỉ ở chế độ URL; ở chế độ Dán nội dung hiển thị dạng tự tick",
+      "ai": "Giai đoạn 2 chấm bằng AI; giai đoạn 1 hiển thị dạng tự tick",
+      "self": "Luôn là tự tick"
+    }
+  },
+  "groups": [
+    {
+      "key": "A",
+      "name": "Từ khoá & ý định tìm kiếm",
+      "intro": "Trước khi viết chữ nào, hãy chắc chắn bạn đang trả lời đúng câu hỏi mà người dùng thật sự gõ lên Google."
+    },
+    {
+      "key": "B",
+      "name": "Tiêu đề, meta & URL",
+      "intro": "Đây là “bộ mặt” của bài viết trên trang kết quả tìm kiếm — quyết định người dùng có bấm vào bạn hay đối thủ."
+    },
+    {
+      "key": "C",
+      "name": "Cấu trúc & trình bày",
+      "intro": "Người đọc lướt trước, đọc sau. Một bài có khung rõ ràng giữ chân người đọc lâu hơn và dễ được Google trích dẫn hơn."
+    },
+    {
+      "key": "D",
+      "name": "Chất lượng nội dung & độ tin cậy",
+      "intro": "Google ưu tiên nội dung hữu ích, đáng tin cậy, viết cho con người. Trong mọi yếu tố, Google nhấn mạnh: niềm tin là quan trọng nhất."
+    },
+    {
+      "key": "E",
+      "name": "Liên kết & hình ảnh",
+      "intro": "Liên kết giúp Google tìm thấy và hiểu bài viết. Hình ảnh giúp người đọc ở lại — nếu chúng nhẹ và được mô tả đúng."
+    },
+    {
+      "key": "F",
+      "name": "Kỹ thuật & trải nghiệm trang",
+      "intro": "Bài viết hay đến đâu cũng vô nghĩa nếu Google không lập chỉ mục được, hoặc người đọc thoát ra vì trang quá chậm."
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "group": "A",
+      "title": "Chọn 1 từ khoá chính cho 1 URL",
+      "short": "Mỗi bài có 1 từ khoá chính + nhóm từ khoá phụ, không trùng với bài khác",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "self",
+      "auto_rule": "Người dùng tự tick. Gợi ý: hiển thị nút mở Google với truy vấn site:<tên miền> \"<từ khoá>\" để họ tự kiểm tra trùng từ khoá.",
+      "why": "Mỗi bài nên trả lời một nhu cầu tìm kiếm chính. Hai bài cùng nhắm một từ khoá sẽ “giành nhau” thứ hạng (keyword cannibalization) và cả hai cùng yếu.",
+      "how": [
+        "Chọn 1 từ khoá chính + 3–8 từ khoá phụ có cùng ý định tìm kiếm.",
+        "Gõ `site:tenmien.vn \"từ khoá\"` để xem website đã có bài nào nhắm từ khoá này chưa. Nếu có: cập nhật bài cũ thay vì viết bài mới.",
+        "Ghi từ khoá chính của từng URL vào bảng quản lý nội dung để không trùng về sau."
+      ],
+      "examples": [
+        {
+          "kind": "info",
+          "text": "Chính: **kem chống nắng cho da dầu**"
+        },
+        {
+          "kind": "info",
+          "text": "Phụ: kem chống nắng kiềm dầu · cách chọn kem chống nắng cho da dầu mụn · kem chống nắng không bết"
+        }
+      ],
+      "tools": "Google Search Console, Google Keyword Planner, Ahrefs/Semrush (nếu có)"
+    },
+    {
+      "id": 2,
+      "group": "A",
+      "title": "Xác định đúng ý định tìm kiếm",
+      "short": "Loại trang (blog, so sánh, sản phẩm…) khớp với ý định tìm kiếm trên top 10",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "ai",
+      "auto_rule": "Giai đoạn 1: tự tick. Giai đoạn 2: AI so nội dung với ý định tìm kiếm của từ khoá.",
+      "why": "Google xếp hạng nội dung đáp ứng đúng điều người dùng muốn. Sai ý định tìm kiếm (search intent) thì tối ưu kỹ đến mấy cũng khó lên top.",
+      "how": [
+        "Mở tab ẩn danh, gõ từ khoá và xem top 10 kết quả.",
+        "Xác định người dùng đang muốn: **tìm hiểu** (informational), **so sánh – cân nhắc** (commercial), **mua ngay** (transactional) hay **tìm một trang cụ thể** (navigational).",
+        "Chọn loại trang phù hợp: bài blog, bài so sánh/top list, trang sản phẩm hay trang danh mục."
+      ],
+      "examples": [
+        {
+          "kind": "info",
+          "text": "“kem chống nắng cho da dầu” → top 10 đa số là bài hướng dẫn chọn và top list → nên viết bài **cách chọn + gợi ý sản phẩm**, không nên đẩy một trang sản phẩm đơn lẻ."
+        }
+      ],
+      "tools": "Google (tab ẩn danh)"
+    },
+    {
+      "id": 3,
+      "group": "A",
+      "title": "Phân tích trang kết quả trước khi viết",
+      "short": "Đã xem định dạng, ý chung của top 3 và mục “Mọi người cũng hỏi”",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "self",
+      "auto_rule": "Người dùng tự tick. Gợi ý: nút mở Google tìm từ khoá trong tab mới.",
+      "why": "Trang kết quả tìm kiếm (SERP) cho bạn biết định dạng, độ sâu và những câu hỏi phụ mà Google đang đánh giá là hữu ích.",
+      "how": [
+        "Ghi lại định dạng chiếm ưu thế: danh sách, hướng dẫn từng bước, bảng so sánh hay video.",
+        "Liệt kê các ý mà top 3 đều có (bắt buộc phải có) và các câu hỏi trong mục **“Mọi người cũng hỏi”**.",
+        "Tìm “khoảng trống” đối thủ chưa nói để bài của bạn khác biệt."
+      ],
+      "examples": [],
+      "tools": "Mục “Mọi người cũng hỏi”, “Tìm kiếm liên quan” cuối trang Google"
+    },
+    {
+      "id": 4,
+      "group": "A",
+      "title": "Đặt từ khoá chính ở các vị trí quan trọng",
+      "short": "Từ khoá có trong title, H1, URL, 100 chữ đầu, 1 H2, alt ảnh chính — tự nhiên",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Chuẩn hoá chữ thường; khớp cả có dấu và không dấu. Kiểm 6 vị trí: title, H1, slug (so bản không dấu, gạch ngang), 100 chữ đầu thân bài, ít nhất 1 H2, alt của ít nhất 1 ảnh. Đạt ≥5/6 · Cần cải thiện 3–4 · Chưa đạt ≤2. Nếu cụm từ khoá chiếm >3% tổng số chữ → cảnh báo nhồi từ khoá (hạ 1 bậc). Hiển thị danh sách vị trí có/thiếu.",
+      "why": "Giúp cả Google và người đọc xác nhận ngay bài viết nói về điều gì.",
+      "how": [
+        "Có mặt tự nhiên trong: thẻ title, H1, URL, 100 chữ đầu tiên, ít nhất 1 H2 và alt của ảnh chính.",
+        "Không đếm “mật độ từ khoá”. Lặp từ khoá quá mức gây khó chịu cho người đọc và vi phạm chính sách spam của Google."
+      ],
+      "examples": [
+        {
+          "kind": "bad",
+          "text": "Kem chống nắng cho da dầu là kem chống nắng cho da dầu tốt nhất cho người da dầu…"
+        },
+        {
+          "kind": "good",
+          "text": "Da dầu cần kem chống nắng có kết cấu mỏng nhẹ, kiềm dầu và không gây bít tắc lỗ chân lông."
+        }
+      ],
+      "tools": "Plugin Rank Math / Yoast SEO (kiểm tra nhanh vị trí từ khoá)"
+    },
+    {
+      "id": 5,
+      "group": "A",
+      "title": "Dùng từ đồng nghĩa & chủ đề liên quan",
+      "short": "Bài có biến thể từ khoá và các khái niệm liên quan đến chủ đề",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "ai",
+      "auto_rule": "Giai đoạn 1: tự tick. Giai đoạn 2: AI đề xuất từ/khái niệm liên quan còn thiếu.",
+      "why": "Google hiểu từ đồng nghĩa và ngữ cảnh. Bài nhắc đủ các khái niệm liên quan cho thấy bạn hiểu sâu chủ đề, đồng thời bắt được nhiều cách tìm kiếm khác nhau.",
+      "how": [
+        "Liệt kê các cách gọi khác của từ khoá và các khái niệm đi kèm (thành phần, chỉ số, vấn đề, đối tượng).",
+        "Rải tự nhiên vào H2/H3 và thân bài — không cần dùng đúng từng chữ của từ khoá."
+      ],
+      "examples": [
+        {
+          "kind": "info",
+          "text": "SPF · PA++++ · chống nắng vật lý / hoá học · niacinamide · “non-comedogenic” · bóng nhờn · lỗ chân lông to"
+        }
+      ],
+      "tools": "Google Autocomplete, “Tìm kiếm liên quan”, AnswerThePublic"
+    },
+    {
+      "id": 6,
+      "group": "B",
+      "title": "Thẻ title rõ ràng, hấp dẫn",
+      "short": "Title duy nhất, đúng nội dung, ~50–60 ký tự, từ khoá đầu, thương hiệu cuối",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Có title · độ dài 30–60 ký tự = Đạt; 61–70 hoặc 20–29 = Cần cải thiện; >70, <20 hoặc trống = Chưa đạt · phải chứa từ khoá (thiếu → hạ 1 bậc) · từ khoá nằm trong nửa đầu title = ghi chú tốt · một từ lặp >2 lần → cảnh báo. Hiển thị số ký tự và bản xem trước kiểu kết quả Google (cắt ở ~60 ký tự).",
+      "why": "Thẻ title là nguồn chính Google dùng để tạo tiêu đề hiển thị trên kết quả tìm kiếm, ảnh hưởng trực tiếp đến tỷ lệ nhấp (CTR).",
+      "how": [
+        "Mỗi trang một title riêng, mô tả đúng nội dung, không nhồi từ khoá.",
+        "Đưa từ khoá chính lên đầu; thêm con số, lợi ích hoặc năm nếu phù hợp.",
+        "Giữ khoảng 50–60 ký tự để ít bị cắt (Google không giới hạn độ dài nhưng sẽ cắt theo bề ngang màn hình). Tên thương hiệu đặt cuối, ngăn bằng “|” hoặc “–”."
+      ],
+      "examples": [
+        {
+          "kind": "good",
+          "text": "Kem chống nắng cho da dầu: 7 tiêu chí chọn đúng | MyPhamABC"
+        },
+        {
+          "kind": "bad",
+          "text": "Bài viết mới"
+        },
+        {
+          "kind": "bad",
+          "text": "Kem chống nắng, kem chống nắng da dầu, kem chống nắng tốt"
+        }
+      ],
+      "tools": "Rank Math / Yoast SEO (xem trước kết quả hiển thị)"
+    },
+    {
+      "id": 7,
+      "group": "B",
+      "title": "Meta description thuyết phục",
+      "short": "Meta description duy nhất, ~140–160 ký tự, nêu lợi ích + lời kêu gọi",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "paste",
+      "auto_rule": "Có meta description · 120–160 ký tự = Đạt; 70–119 hoặc 161–180 = Cần cải thiện; trống, <70 hoặc >180 = Chưa đạt · chứa từ khoá (thiếu → hạ 1 bậc) · trùng y hệt title → Chưa đạt.",
+      "why": "Meta description không phải yếu tố xếp hạng, nhưng khi Google dùng nó làm đoạn mô tả, nó quyết định người dùng có bấm vào hay không.",
+      "how": [
+        "Mỗi trang một mô tả riêng, khoảng 140–160 ký tự.",
+        "Tóm tắt lợi ích chính của bài + từ khoá + lời kêu gọi hành động. Không chép lại nguyên title."
+      ],
+      "examples": [
+        {
+          "kind": "good",
+          "text": "Da dầu, dễ nổi mụn? Bỏ túi 7 tiêu chí chọn kem chống nắng kiềm dầu, không bết rít, kèm bảng so sánh chỉ số SPF/PA. Xem ngay!"
+        }
+      ],
+      "tools": "Rank Math / Yoast SEO"
+    },
+    {
+      "id": 8,
+      "group": "B",
+      "title": "URL ngắn, rõ nghĩa, không dấu",
+      "short": "URL chữ thường, không dấu, gạch ngang, 3–6 từ, chứa từ khoá",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Lấy slug (phần path cuối). Đạt khi: chữ thường, không dấu, chỉ a-z 0-9 và '-', không '_' hay khoảng trắng, không dạng ?p=123 / chỉ toàn số, 3–6 từ, chứa từ khoá bản không dấu. 7–8 từ hoặc thiếu từ khoá = Cần cải thiện. >8 từ, có dấu, có '_' hoặc dạng ID = Chưa đạt. Gợi ý slug chuẩn tự sinh từ từ khoá.",
+      "why": "URL dễ đọc giúp người dùng tin tưởng và đoán được nội dung trước khi bấm. Google khuyên dùng từ có nghĩa thay vì dãy số/ID ngẫu nhiên.",
+      "how": [
+        "Chữ thường, không dấu, các từ ngăn bằng dấu gạch ngang “-”; dài 3–6 từ, chứa từ khoá chính.",
+        "Bỏ từ thừa (những, của, là…) và bỏ năm nếu bài sẽ được cập nhật lâu dài.",
+        "Không đổi URL sau khi đã xuất bản. Nếu bắt buộc phải đổi: chuyển hướng 301 từ URL cũ."
+      ],
+      "examples": [
+        {
+          "kind": "good",
+          "text": "myphamabc.vn/kem-chong-nang-cho-da-dau"
+        },
+        {
+          "kind": "bad",
+          "text": "myphamabc.vn/?p=1832"
+        },
+        {
+          "kind": "bad",
+          "text": "myphamabc.vn/top-10-nhung-loai-kem-chong-nang-tot-nhat-cho-da-dau-nam-2026"
+        }
+      ],
+      "tools": "Cài đặt Permalink (WordPress): chọn “Tên bài viết”"
+    },
+    {
+      "id": 9,
+      "group": "B",
+      "title": "Canonical: mỗi nội dung chỉ một URL",
+      "short": "Có thẻ canonical trỏ về URL chuẩn, không có bản trùng lặp",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "url",
+      "auto_rule": "Có <link rel=canonical> tuyệt đối · trỏ về chính URL cuối (sau redirect, bỏ dấu / cuối và tham số utm khi so) = Đạt · trỏ URL khác = Cần cải thiện (hiển thị URL đó) · không có = Chưa đạt.",
+      "why": "Khi cùng một nội dung truy cập được qua nhiều URL (có tham số, http/https, có/không www), tín hiệu bị chia nhỏ và Google tốn công thu thập vô ích.",
+      "how": [
+        "Gắn thẻ `` tự trỏ về chính URL chuẩn của bài.",
+        "Trang trùng lặp (URL có tham số utm, bản in…) trỏ canonical về bản gốc. Ưu tiên chuyển hướng 301 khi có thể."
+      ],
+      "examples": [],
+      "tools": "Search Console → Kiểm tra URL (mục “URL chuẩn do Google chọn”)"
+    },
+    {
+      "id": 10,
+      "group": "B",
+      "title": "Open Graph cho mạng xã hội",
+      "short": "Có og:title, og:description, og:image 1200×630 px",
+      "priority": "Nên có",
+      "points": 1,
+      "check_type": "url",
+      "auto_rule": "Có đủ og:title, og:description, og:image = Đạt · thiếu 1 = Cần cải thiện · thiếu ≥2 = Chưa đạt. Nếu tải được ảnh og:image thì báo kích thước, khuyến nghị 1200×630.",
+      "why": "Quyết định cách bài hiển thị khi được chia sẻ lên Facebook, Zalo, LinkedIn. og:title cũng là một trong các nguồn Google tham khảo khi tạo tiêu đề.",
+      "how": [
+        "Khai báo og:title, og:description, og:url và og:image (khuyến nghị 1200×630 px).",
+        "Ảnh chia sẻ có chữ lớn, dễ đọc trên điện thoại và nhận diện được thương hiệu."
+      ],
+      "examples": [],
+      "tools": "Facebook Sharing Debugger (developers.facebook.com/tools/debug)"
+    },
+    {
+      "id": 11,
+      "group": "C",
+      "title": "Một H1 duy nhất, khớp với title",
+      "short": "Bài có đúng 1 H1, chứa từ khoá, cùng ý với title",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Đúng 1 thẻ H1 có nội dung = Đạt (H1 không chứa từ khoá → Cần cải thiện) · 0 hoặc ≥2 H1 = Chưa đạt (liệt kê các H1 tìm thấy). Chế độ dán nội dung: nếu không có H1 trong nội dung thì coi ô Title bài viết là H1 và ghi chú.",
+      "why": "H1 là tiêu đề nổi bật nhất trên trang. Google khuyên tiêu đề chính hiển thị rõ ràng và nhất quán với thẻ title.",
+      "how": [
+        "Mỗi bài 1 H1 (thường là tên bài), chứa từ khoá chính; có thể dài và đầy đủ hơn title.",
+        "Kiểm tra theme có tự gắn thêm H1 cho logo hay tên website không."
+      ],
+      "examples": [
+        {
+          "kind": "info",
+          "text": "Title: **Kem chống nắng cho da dầu: 7 tiêu chí chọn đúng | MyPhamABC**"
+        },
+        {
+          "kind": "info",
+          "text": "H1: **Cách chọn kem chống nắng cho da dầu: 7 tiêu chí bạn cần biết**"
+        }
+      ],
+      "tools": "Chrome: chuột phải → Kiểm tra (Inspect), tìm “<h1”"
+    },
+    {
+      "id": 12,
+      "group": "C",
+      "title": "H2–H3 phân cấp như một dàn ý",
+      "short": "H2/H3 logic, chứa từ khoá phụ & câu hỏi; đọc heading là hiểu bài",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Bài >600 chữ cần ≥2 H2 · không nhảy cấp (H2 → H4) · ≥1 H2 chứa từ khoá hoặc một phần của nó. Đủ 3 = Đạt · thiếu 1 = Cần cải thiện · thiếu ≥2 = Chưa đạt. Hiển thị dàn ý heading dạng cây.",
+      "why": "Heading giúp người đọc lướt nhanh và giúp Google hiểu cấu trúc các ý. Google không đòi thứ tự heading cứng nhắc, nhưng cấu trúc rõ ràng giúp mọi người dùng — kể cả người dùng trình đọc màn hình.",
+      "how": [
+        "Mỗi ý chính là một H2, ý con là H3. Không dùng heading chỉ để làm chữ to.",
+        "Đưa từ khoá phụ và câu hỏi thật của khách hàng vào H2/H3.",
+        "Thử đọc riêng các heading: nếu đã hiểu được bài nói gì là đạt."
+      ],
+      "examples": [
+        {
+          "kind": "info",
+          "text": "H2 Da dầu có cần kem chống nắng không?\nH2 7 tiêu chí chọn kem chống nắng cho da dầu\n   H3 1. Kết cấu gel hoặc fluid mỏng nhẹ\n   H3 2. SPF 30–50, PA+++ trở lên"
+        }
+      ],
+      "tools": "Tiện ích Chrome “Detailed SEO Extension” hoặc “HeadingsMap”"
+    },
+    {
+      "id": 13,
+      "group": "C",
+      "title": "Trả lời ngay ở đoạn mở bài",
+      "short": "2–3 câu đầu trả lời trực tiếp câu hỏi chính (40–60 chữ)",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "ai",
+      "auto_rule": "Giai đoạn 1: tự tick, kèm thông tin đo được: đoạn đầu dài bao nhiêu chữ, có chứa từ khoá không (khuyến nghị 40–60 chữ). Giai đoạn 2: AI đánh giá đoạn mở bài có trả lời thẳng câu hỏi không.",
+      "why": "Người đọc cần biết ngay mình đã đến đúng chỗ. Câu trả lời ngắn gọn, rõ ràng cũng dễ được chọn làm đoạn trích nổi bật (featured snippet) và được trích dẫn trong AI Overviews.",
+      "how": [
+        "2–3 câu đầu (khoảng 40–60 chữ) trả lời thẳng câu hỏi chính, sau đó mới mở rộng.",
+        "Bỏ kiểu mở bài vòng vo như “Trong cuộc sống hiện đại ngày nay…”."
+      ],
+      "examples": [
+        {
+          "kind": "good",
+          "text": "Da dầu nên chọn kem chống nắng dạng gel hoặc fluid, SPF 30–50, PA+++ trở lên, ghi rõ “non-comedogenic” (không gây bít tắc lỗ chân lông) và bôi lại sau mỗi 2–3 giờ khi ở ngoài trời."
+        }
+      ],
+      "tools": ""
+    },
+    {
+      "id": 14,
+      "group": "C",
+      "title": "Dễ đọc: đoạn ngắn, danh sách, bảng",
+      "short": "Đoạn 2–4 câu; có bullet, bảng, in đậm ý chính",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "paste",
+      "auto_rule": "Đo: số chữ trung bình mỗi đoạn, % đoạn >100 chữ, có danh sách (ul/ol) hoặc bảng không. Đạt: trung bình ≤70 chữ, ≤10% đoạn >100 chữ, bài >800 chữ có ≥1 danh sách/bảng. Lệch 1 tiêu chí = Cần cải thiện, ≥2 = Chưa đạt.",
+      "why": "Người dùng điện thoại lướt rất nhanh; khối chữ dày khiến họ rời trang. Nội dung có cấu trúc cũng dễ được Google trích xuất.",
+      "how": [
+        "Đoạn văn 2–4 câu. Dùng gạch đầu dòng khi liệt kê, đánh số khi hướng dẫn từng bước, bảng khi so sánh.",
+        "In đậm ý quan trọng (không in đậm cả đoạn); thêm hộp “Lưu ý”, “Mẹo” để ngắt nhịp."
+      ],
+      "examples": [],
+      "tools": "Hemingway Editor (tham khảo độ dài câu)"
+    },
+    {
+      "id": 15,
+      "group": "C",
+      "title": "Mục lục cho bài dài",
+      "short": "Bài trên ~1.500 chữ có mục lục với liên kết nhảy đến từng phần",
+      "priority": "Nên có",
+      "points": 1,
+      "check_type": "paste",
+      "auto_rule": "Chỉ áp dụng khi bài >1.500 chữ hoặc ≥5 H2 (ngược lại = Không áp dụng). Đạt khi tìm thấy mục lục: phần tử có class/id chứa 'toc' hoặc 'muc-luc', hoặc ≥3 link href='#...' trỏ tới id của heading. Không có = Chưa đạt.",
+      "why": "Giúp người đọc nhảy đến phần cần xem. Google có thể hiển thị liên kết “Chuyển đến” (jump link) tới từng phần ngay trên kết quả tìm kiếm.",
+      "how": [
+        "Thêm mục lục có liên kết neo (anchor link) cho bài trên ~1.500 chữ hoặc có từ 5 H2 trở lên.",
+        "Đặt mục lục ngay sau đoạn mở bài."
+      ],
+      "examples": [],
+      "tools": "Easy Table of Contents, khối Mục lục của Rank Math"
+    },
+    {
+      "id": 16,
+      "group": "D",
+      "title": "Nội dung gốc, có giá trị tăng thêm",
+      "short": "Có ít nhất 1–2 yếu tố riêng: trải nghiệm, ảnh thật, số liệu, case study",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "ai",
+      "auto_rule": "Giai đoạn 1: tự tick. Giai đoạn 2: AI đánh giá yếu tố riêng (trải nghiệm, số liệu, ví dụ thật).",
+      "why": "Google tìm nội dung có thông tin, nghiên cứu hoặc phân tích gốc — vượt hơn những điều hiển nhiên, không chỉ tóm tắt lại bài của người khác.",
+      "how": [
+        "Thêm ít nhất 1–2 thứ đối thủ không có: trải nghiệm dùng thực tế, ảnh tự chụp, số liệu nội bộ, case study, bảng so sánh tự làm, ý kiến chuyên gia.",
+        "Tự hỏi: “Người đọc có muốn lưu hoặc chia sẻ bài này không?”"
+      ],
+      "examples": [
+        {
+          "kind": "info",
+          "text": "Ảnh chụp kết cấu 5 loại kem trên mu bàn tay + bảng ghi lại độ bóng dầu sau 4 giờ dùng thực tế."
+        }
+      ],
+      "tools": ""
+    },
+    {
+      "id": 17,
+      "group": "D",
+      "title": "Bao phủ trọn vẹn chủ đề",
+      "short": "Trả lời đủ câu hỏi phụ; không viết lan man cho đủ số chữ",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "ai",
+      "auto_rule": "Giai đoạn 1: tự tick, kèm số chữ để tham khảo (ghi rõ: độ dài không phải yếu tố xếp hạng). Giai đoạn 2: AI tìm câu hỏi phụ còn thiếu.",
+      "why": "Google xác nhận độ dài bài tự nó không phải yếu tố xếp hạng. Điều quan trọng là người đọc có đủ thông tin để đạt được mục tiêu sau khi đọc.",
+      "how": [
+        "Trả lời các câu hỏi từ “Mọi người cũng hỏi”, bình luận và tin nhắn của khách hàng.",
+        "Thêm phần Hỏi – Đáp cuối bài nếu phù hợp; cắt bỏ đoạn lặp ý, lan man."
+      ],
+      "examples": [],
+      "tools": "Inbox/fanpage, bình luận, đội chăm sóc khách hàng"
+    },
+    {
+      "id": 18,
+      "group": "D",
+      "title": "Tác giả rõ ràng, nguồn đáng tin",
+      "short": "Có tên tác giả + trang giới thiệu; trích nguồn số liệu",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "url",
+      "auto_rule": "Tìm tác giả ở: meta name=author, schema author, rel=author, phần tử có class chứa 'author'/'byline'. Có tên + link trang tác giả = Đạt · chỉ có tên = Cần cải thiện · không có = Chưa đạt.",
+      "why": "“Ai viết bài này?” là câu hỏi Google khuyến khích trả lời rõ ràng. Với chủ đề sức khoẻ, tài chính, pháp lý (YMYL), độ tin cậy càng quan trọng.",
+      "how": [
+        "Hiển thị tên tác giả và liên kết đến trang giới thiệu tác giả (kinh nghiệm, chuyên môn).",
+        "Trích dẫn và dẫn liên kết đến nguồn số liệu. Nếu có chuyên gia tham vấn thật, ghi rõ tên và chuyên môn.",
+        "Tuyệt đối không bịa hồ sơ tác giả hay chuyên gia — Google coi đây là hành vi lừa dối."
+      ],
+      "examples": [],
+      "tools": ""
+    },
+    {
+      "id": 19,
+      "group": "D",
+      "title": "Ngày đăng & cập nhật thực chất",
+      "short": "Hiển thị ngày đăng/cập nhật; có lịch rà soát bài định kỳ",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "url",
+      "auto_rule": "Tìm ngày ở: article:published_time / modified_time, schema datePublished / dateModified, thẻ <time>. Có ngày đăng và ngày cập nhật = Đạt · chỉ 1 loại = Cần cải thiện · không có = Chưa đạt. Hiển thị ngày tìm được.",
+      "why": "Người đọc cần biết thông tin còn mới không. Google cảnh báo việc đổi ngày cho “có vẻ mới” trong khi nội dung không thay đổi đáng kể.",
+      "how": [
+        "Hiển thị ngày xuất bản và “Cập nhật lần cuối”.",
+        "Rà soát bài quan trọng mỗi 6–12 tháng: cập nhật số liệu, giá, quy định. Chỉ đổi ngày khi đã sửa nội dung thật."
+      ],
+      "examples": [],
+      "tools": "Google Sheet quản lý nội dung (kèm template)"
+    },
+    {
+      "id": 20,
+      "group": "D",
+      "title": "Biên tập kỹ, nhất là nội dung viết bằng AI",
+      "short": "Đã soát chính tả, kiểm chứng số liệu, thêm góc nhìn riêng",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "ai",
+      "auto_rule": "Giai đoạn 1: tự tick. Giai đoạn 2: AI soát chính tả, ngữ pháp, câu khẳng định thiếu nguồn.",
+      "why": "Google không cấm nội dung tạo bằng AI, nhưng dùng AI để sản xuất hàng loạt nhằm thao túng thứ hạng là vi phạm chính sách spam. Lỗi chính tả, sai sự thật làm mất niềm tin.",
+      "how": [
+        "Soát chính tả, ngữ pháp; kiểm chứng mọi con số, tên riêng, trích dẫn.",
+        "Thêm trải nghiệm và góc nhìn riêng; đọc to để chỉnh giọng văn tự nhiên.",
+        "Ngành mỹ phẩm, thực phẩm, sức khoẻ: rà soát lại các tuyên bố công dụng theo quy định quảng cáo."
+      ],
+      "examples": [],
+      "tools": "Google Docs (soát chính tả), Claude/ChatGPT để rà lỗi — người duyệt cuối vẫn là bạn"
+    },
+    {
+      "id": 21,
+      "group": "E",
+      "title": "Liên kết nội bộ đi ra từ bài",
+      "short": "3–5 link nội bộ trong ngữ cảnh, anchor text mô tả rõ đích đến",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Link nội bộ = link tương đối hoặc cùng tên miền (chế độ dán: người dùng nhập tên miền website). ≥3 link = Đạt · 1–2 = Cần cải thiện · 0 = Chưa đạt. Anchor chung chung ('tại đây', 'bấm vào đây', 'xem tại đây', 'xem thêm', 'click here', 'here', 'link', URL trần) → hạ 1 bậc và liệt kê.",
+      "why": "Liên kết nội bộ giúp Google khám phá trang và hiểu mối quan hệ giữa các nội dung; đồng thời giữ người đọc ở lại website lâu hơn.",
+      "how": [
+        "Thêm 3–5 liên kết đến bài/trang liên quan, đặt trong câu văn có ngữ cảnh.",
+        "Luôn có liên kết về trang trụ cột (pillar) của chủ đề và trang sản phẩm/dịch vụ liên quan.",
+        "Anchor text (chữ gắn link) mô tả đúng trang đích."
+      ],
+      "examples": [
+        {
+          "kind": "good",
+          "text": "…xem thêm quy trình skincare buổi sáng cho da dầu"
+        },
+        {
+          "kind": "bad",
+          "text": "…xem thêm tại đây / bấm vào đây"
+        }
+      ],
+      "tools": "Plugin Link Whisper, Rank Math (gợi ý link nội bộ)"
+    },
+    {
+      "id": 22,
+      "group": "E",
+      "title": "Nhận liên kết nội bộ, không để trang “mồ côi”",
+      "short": "Đã chèn link từ 2–3 bài cũ liên quan về bài mới",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "self",
+      "auto_rule": "Người dùng tự tick (công cụ không biết bài cũ nào đã link về).",
+      "why": "Trang không có liên kết nào trỏ đến rất khó được Google tìm thấy và bị đánh giá thấp mức độ quan trọng.",
+      "how": [
+        "Sau khi đăng, vào 2–3 bài cũ cùng chủ đề (ưu tiên bài đang có lượt truy cập) và chèn link về bài mới.",
+        "Đưa bài vào danh mục, menu hoặc trang trụ cột phù hợp."
+      ],
+      "examples": [],
+      "tools": "Tìm bài liên quan: `site:tenmien.vn \"từ khoá\"`; Search Console → Liên kết"
+    },
+    {
+      "id": 23,
+      "group": "E",
+      "title": "Liên kết ra ngoài đúng cách",
+      "short": "Dẫn nguồn uy tín; link tài trợ/affiliate gắn sponsored; không link hỏng",
+      "priority": "Nên có",
+      "points": 1,
+      "check_type": "paste",
+      "auto_rule": "Liệt kê link ra ngoài kèm rel. Chế độ URL: kiểm tối đa 20 link ngoài bằng HEAD/GET (timeout 5 giây), báo link lỗi 4xx/5xx. Có link lỗi = Chưa đạt · không có link ngoài nào = Cần cải thiện (gợi ý dẫn nguồn) · còn lại = Đạt. Nhắc: link affiliate/tài trợ cần rel='sponsored' (công cụ không tự nhận biết được).",
+      "why": "Dẫn nguồn uy tín giúp tăng độ tin cậy với người đọc. Liên kết quảng cáo, tài trợ cần được đánh dấu để tuân thủ chính sách của Google.",
+      "how": [
+        "Liên kết tới nguồn gốc của số liệu, nghiên cứu, cơ quan chính thức.",
+        "Gắn `rel=\"sponsored\"` cho link tài trợ/affiliate, `rel=\"ugc\"` cho link do người dùng đăng, `rel=\"nofollow\"` cho link bạn không muốn bảo chứng.",
+        "Kiểm tra không có link hỏng (lỗi 404)."
+      ],
+      "examples": [],
+      "tools": "Tiện ích Chrome “Check My Links”, Screaming Frog (bản miễn phí ≤500 URL)"
+    },
+    {
+      "id": 24,
+      "group": "E",
+      "title": "Ảnh: tên file, alt text, vị trí",
+      "short": "Tên file mô tả, alt text đúng ngữ cảnh, ảnh đặt gần đoạn văn liên quan",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "paste",
+      "auto_rule": "Với mọi <img> trong nội dung chính: thiếu alt hoặc alt rỗng; alt >125 ký tự; tên file chung chung (IMG_, DSC, image\\d, screenshot, ảnh, chỉ toàn số), tên file có dấu/khoảng trắng/'_'. Không lỗi = Đạt · lỗi ≤25% số ảnh = Cần cải thiện · >25% = Chưa đạt · không có ảnh = Không áp dụng. Liệt kê từng ảnh lỗi.",
+      "why": "Google dùng alt text, tên file và đoạn văn xung quanh để hiểu nội dung ảnh — giúp ảnh xuất hiện trên Google Hình ảnh và hỗ trợ người khiếm thị.",
+      "how": [
+        "Tên file mô tả, không dấu, có gạch ngang.",
+        "Alt text mô tả đúng nội dung ảnh trong ngữ cảnh bài — không nhồi từ khoá.",
+        "Đặt ảnh gần đoạn văn liên quan; dùng thẻ `` (Google không lập chỉ mục ảnh nền CSS)."
+      ],
+      "examples": [
+        {
+          "kind": "good",
+          "text": "kem-chong-nang-dang-gel-cho-da-dau.webp"
+        },
+        {
+          "kind": "bad",
+          "text": "IMG_20261011.jpg"
+        },
+        {
+          "kind": "good",
+          "text": "alt=\"Kết cấu kem chống nắng dạng gel thấm nhanh trên mu bàn tay\""
+        },
+        {
+          "kind": "bad",
+          "text": "alt=\"kem chống nắng da dầu kem chống nắng tốt nhất\""
+        }
+      ],
+      "tools": ""
+    },
+    {
+      "id": 25,
+      "group": "E",
+      "title": "Ảnh & video nhẹ, tải nhanh",
+      "short": "Ảnh WebP/AVIF đã nén, có width/height; không lazy-load ảnh đầu bài",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "url",
+      "auto_rule": "Với ảnh trong nội dung: định dạng (webp/avif = tốt, jpg/png = gợi ý chuyển), có thuộc tính width/height, ảnh đầu tiên KHÔNG có loading=lazy, các ảnh sau có lazy. Nếu lấy được content-length: >200 KB = cảnh báo. Đạt khi không có cảnh báo nặng; tổng hợp thành Cần cải thiện/Chưa đạt theo số ảnh lỗi.",
+      "why": "Ảnh nặng là nguyên nhân phổ biến nhất khiến trang tải chậm, kéo tụt chỉ số LCP.",
+      "how": [
+        "Nén ảnh, dùng định dạng WebP/AVIF; ảnh trong bài thường không cần rộng quá 1.600 px, dung lượng mục tiêu dưới ~200 KB.",
+        "Khai báo width/height để bố cục không bị xô lệch khi tải.",
+        "Lazy-load ảnh phía dưới màn hình đầu — nhưng KHÔNG lazy-load ảnh đầu bài.",
+        "Video: nhúng kèm tiêu đề, mô tả và đoạn văn giải thích bên cạnh."
+      ],
+      "examples": [],
+      "tools": "Squoosh.app, TinyPNG, plugin ShortPixel/Imagify"
+    },
+    {
+      "id": 26,
+      "group": "F",
+      "title": "Trang được phép lập chỉ mục",
+      "short": "Không noindex nhầm, không chặn robots.txt, có trong sitemap, HTTPS, mã 200",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "url",
+      "auto_rule": "HTTP status cuối = 200 · URL dùng https · không có meta robots noindex · không có header X-Robots-Tag: noindex · robots.txt không Disallow path này. Có noindex hoặc status ≠ 200 = Chưa đạt. (Tuỳ chọn: thử /sitemap.xml hoặc /sitemap_index.xml xem URL có trong đó không → thiếu = Cần cải thiện.)",
+      "why": "Trang không được lập chỉ mục (index) thì không thể xuất hiện trên Google — mọi tối ưu khác đều vô nghĩa.",
+      "how": [
+        "Không có thẻ `noindex` nhầm; không chặn trang (kể cả CSS/JS) trong robots.txt.",
+        "Bài có trong sitemap.xml; trang dùng HTTPS và trả về mã 200.",
+        "Nội dung quan trọng hiển thị dạng văn bản, không “chôn” trong ảnh."
+      ],
+      "examples": [],
+      "tools": "Search Console → Kiểm tra URL → “Kiểm tra URL đang hoạt động”"
+    },
+    {
+      "id": 27,
+      "group": "F",
+      "title": "Thân thiện với điện thoại",
+      "short": "Responsive, chữ ≥16 px, nút dễ chạm, không popup che nội dung",
+      "priority": "Bắt buộc",
+      "points": 3,
+      "check_type": "url",
+      "auto_rule": "Có meta viewport chứa width=device-width = Đạt; thiếu = Chưa đạt. Kết hợp điểm Accessibility/mobile của PageSpeed (nếu có) để thêm ghi chú.",
+      "why": "Google lập chỉ mục ưu tiên phiên bản di động (mobile-first indexing), và phần lớn người dùng Việt Nam đọc bài trên điện thoại.",
+      "how": [
+        "Giao diện responsive; chữ thân bài từ 16 px; nút và link đủ lớn (~48 px) và cách xa nhau.",
+        "Bảng rộng có thanh cuộn ngang; không có popup che toàn bộ nội dung ngay khi vào trang."
+      ],
+      "examples": [],
+      "tools": "Mở thật trên điện thoại; Chrome DevTools (chế độ thiết bị)"
+    },
+    {
+      "id": 28,
+      "group": "F",
+      "title": "Core Web Vitals đạt mức “Tốt”",
+      "short": "LCP ≤ 2,5 s · INP ≤ 200 ms · CLS ≤ 0,1",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "url",
+      "auto_rule": "Gọi PageSpeed Insights API v5, strategy=mobile. Ưu tiên dữ liệu thực tế (loadingExperience): LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1. Cả 3 tốt = Đạt · 1 chỉ số kém = Cần cải thiện · ≥2 kém = Chưa đạt. Không có dữ liệu thực tế (trang ít traffic) → dùng số đo lab (LCP, CLS, TBT thay cho INP) và ghi rõ 'số đo mô phỏng'. API lỗi/timeout → hiển thị 'Không đo được' và không tính điểm mục này.",
+      "why": "Chỉ số Web cốt lõi là một phần của trải nghiệm trang mà hệ thống xếp hạng của Google sử dụng. Trang nhanh và ổn định giữ chân người đọc tốt hơn.",
+      "how": [
+        "Mục tiêu (ở 75% lượt tải trang): **LCP ≤ 2,5 giây** (tải nội dung chính) · **INP ≤ 200 ms** (phản hồi khi tương tác) · **CLS ≤ 0,1** (độ ổn định bố cục).",
+        "Cải thiện nhanh: tối ưu ảnh đầu bài, bật cache/CDN, giảm plugin và script bên thứ ba, cố định kích thước khung quảng cáo/video nhúng."
+      ],
+      "examples": [],
+      "tools": "PageSpeed Insights (pagespeed.web.dev), Search Console → Chỉ số Web cốt lõi"
+    },
+    {
+      "id": 29,
+      "group": "F",
+      "title": "Dữ liệu có cấu trúc (schema) phù hợp",
+      "short": "Có schema Article/Breadcrumb/Product phù hợp, khớp nội dung hiển thị",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "url",
+      "auto_rule": "Parse mọi JSON-LD. Có Article/BlogPosting/NewsArticle hoặc Product (với trang sản phẩm) có headline/name = Đạt · chỉ có schema khác (Organization, WebPage…) = Cần cải thiện · không có = Chưa đạt · JSON-LD lỗi cú pháp = Chưa đạt. Nếu có FAQPage/HowTo → ghi chú: Google đã ngừng hiển thị kết quả đặc biệt cho loại này. Liệt kê các @type tìm thấy.",
+      "why": "Schema hợp lệ giúp trang đủ điều kiện hiển thị kết quả nhiều định dạng (rich results) như breadcrumb, đánh giá sao, giá sản phẩm.",
+      "how": [
+        "Bài blog: Article/BlogPosting (kèm tác giả, ngày). Toàn website: BreadcrumbList, Organization. Trang bán hàng: Product (giá, tình trạng hàng, đánh giá).",
+        "Dữ liệu trong schema phải khớp với nội dung hiển thị trên trang.",
+        "Lưu ý: Google đã ngừng hiển thị kết quả FAQ từ 7/5/2026 (HowTo từ 2023). Phần Hỏi – Đáp vẫn hữu ích cho người đọc, nhưng đừng kỳ vọng hiển thị đặc biệt."
+      ],
+      "examples": [],
+      "tools": "Rich Results Test (search.google.com/test/rich-results), Schema Markup Validator"
+    },
+    {
+      "id": 30,
+      "group": "F",
+      "title": "Sau khi đăng: gửi index & theo dõi",
+      "short": "Đã yêu cầu lập chỉ mục; hẹn lịch xem số liệu sau 2–4 tuần",
+      "priority": "Quan trọng",
+      "points": 2,
+      "check_type": "self",
+      "auto_rule": "Người dùng tự tick sau khi đăng. Gợi ý link mở Search Console.",
+      "why": "SEO on-page không kết thúc khi bấm “Đăng”. Số liệu thực tế cho bạn biết bài cần chỉnh gì.",
+      "how": [
+        "Gửi yêu cầu lập chỉ mục trong Search Console; chia sẻ bài lên mạng xã hội/email để có lượt truy cập đầu tiên.",
+        "Sau 2–4 tuần, xem số lần hiển thị, CTR và vị trí trung bình.",
+        "CTR thấp → viết lại title/meta. Vị trí 8–20 → bổ sung nội dung, thêm liên kết nội bộ."
+      ],
+      "examples": [],
+      "tools": "Search Console → Hiệu suất, Google Analytics 4"
+    }
+  ]
+}

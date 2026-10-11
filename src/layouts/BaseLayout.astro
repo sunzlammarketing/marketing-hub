@@ -11,12 +11,15 @@ import { SOCIALS } from '../data/social';
 interface Props {
   title: string;
   description?: string;
+  /** true: dùng nguyên title, không thêm " · Sunz Làm Marketing" */
+  exactTitle?: boolean;
 }
 const {
   title,
+  exactTitle = false,
   description = 'Sunz Làm Marketing - Chia sẻ kiến thức Marketing thực chiến cho người Việt: SEO, Content, Ads, Social Media, Email và Thương hiệu.',
 } = Astro.props;
-const fullTitle = title === 'Sunz Làm Marketing'
+const fullTitle = exactTitle || title === 'Sunz Làm Marketing'
   ? title
   : `${title} · Sunz Làm Marketing`;
 ---
@@ -44,6 +47,8 @@ const fullTitle = title === 'Sunz Làm Marketing'
         sameAs: SOCIALS.map((s) => s.url),
       })}
     />
+    <!-- Thẻ head riêng của từng trang (schema, ...) -->
+    <slot name="head" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -1,0 +1,1073 @@
+---
+// Công cụ kiểm tra SEO on-page 30 điểm: /cong-cu/kiem-tra-seo-on-page
+// - Logic chấm: src/lib/seo-checker/ (chạy trên trình duyệt). Nội dung 30 điểm: src/data/seo-checklist-30.json
+// - Bước A: chế độ "Dán nội dung". Bước B (sau): chế độ "Nhập URL" qua Worker /api/seo/fetch.
+// - Kết quả dựng bằng innerHTML → CSS kết quả để trong <style is:global> giới hạn bằng #seo-app.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const PAGE_TITLE = 'Công cụ kiểm tra SEO on-page miễn phí: chấm 30 điểm | Sunz Làm Marketing';
+const PAGE_DESC =
+  'Công cụ kiểm tra SEO on-page miễn phí: dán bài viết, chấm 30 điểm theo checklist, chỉ rõ mục chưa đạt và cách sửa title, meta, heading, link, ảnh.';
+const PUBLISHED = '2026-10-11';
+const UPDATED = '2026-10-11';
+const SITE = 'https://sunzlammarketing.com';
+const URL_PATH = '/cong-cu/kiem-tra-seo-on-page';
+const EBOOK = '/tai-lieu/checklist-seo-on-page';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Công cụ kiểm tra SEO on-page 30 điểm',
+    url: SITE + URL_PATH,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Mọi trình duyệt',
+    inLanguage: 'vi',
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'VND' },
+    publisher: { '@type': 'Organization', name: 'Sunz Làm Marketing' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Kiểm tra SEO on-page cho bài viết',
+    description: PAGE_DESC,
+    author: { '@type': 'Organization', name: 'Sunz Làm Marketing', url: SITE + '/gioi-thieu' },
+    publisher: { '@type': 'Organization', name: 'Sunz Làm Marketing' },
+    datePublished: PUBLISHED,
+    dateModified: UPDATED,
+    mainEntityOfPage: SITE + URL_PATH,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: SITE + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Công cụ', item: SITE + '/cong-cu' },
+      { '@type': 'ListItem', position: 3, name: 'Kiểm tra SEO on-page', item: SITE + URL_PATH },
+    ],
+  },
+];
+const fmtDate = (d: string) => d.split('-').reverse().join('/');
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} exactTitle>
+  <Fragment slot="head">
+    <meta name="author" content="Sunz Làm Marketing" />
+    <meta property="article:published_time" content={PUBLISHED} />
+    <meta property="article:modified_time" content={UPDATED} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <article id="seo-app">
+    <section class="page-head">
+      <div class="container">
+        <h1>Kiểm tra <span class="hl">SEO on-page</span> cho bài viết</h1>
+        <p>Dán bài viết, công cụ chấm theo 30 điểm của <a href={EBOOK}>Checklist 30 điểm tối ưu SEO on-page</a> và chỉ rõ cần sửa gì trước khi đăng.</p>
+        <p class="sc-byline">
+          Tác giả <a href="/gioi-thieu" rel="author" class="author">Sunz Làm Marketing</a> ·
+          Đăng <time datetime={PUBLISHED}>{fmtDate(PUBLISHED)}</time> ·
+          Cập nhật <time datetime={UPDATED}>{fmtDate(UPDATED)}</time>
+        </p>
+      </div>
+    </section>
+
+    <section class="container sc-wrap">
+      <!-- ===== FORM ===== -->
+      <form class="panel sc-form" id="sc-form" novalidate>
+        <div class="sc-modes" role="tablist" aria-label="Chế độ kiểm tra">
+          <button type="button" class="sc-mode active" role="tab" aria-selected="true" data-mode="paste">✍️ Dán nội dung</button>
+          <button type="button" class="sc-mode" role="tab" aria-selected="false" data-mode="url" disabled title="Sắp có">
+            🔗 Nhập URL <small>sắp có</small>
+          </button>
+        </div>
+
+        <div class="sc-grid">
+          <label class="sc-field sc-wide">
+            <span>Từ khoá chính <b class="req">*</b></span>
+            <input name="keyword" required placeholder="vd: kem chống nắng cho da dầu" autocomplete="off" />
+          </label>
+          <label class="sc-field sc-wide">
+            <span>Title SEO <em class="sc-count" data-count="title"></em></span>
+            <input name="title" placeholder="vd: Kem chống nắng cho da dầu: 7 tiêu chí chọn đúng | Thương hiệu" autocomplete="off" />
+          </label>
+          <label class="sc-field sc-wide">
+            <span>Meta description <em class="sc-count" data-count="metaDescription"></em></span>
+            <textarea name="metaDescription" rows="2" placeholder="Tóm tắt lợi ích của bài + từ khoá + lời kêu gọi, khoảng 140–160 ký tự"></textarea>
+          </label>
+          <label class="sc-field">
+            <span>URL hoặc slug</span>
+            <input name="url" placeholder="vd: tenmien.vn/kem-chong-nang-cho-da-dau" autocomplete="off" />
+          </label>
+          <label class="sc-field">
+            <span>Tên miền website</span>
+            <input name="domain" placeholder="vd: tenmien.vn (để nhận link nội bộ)" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="sc-content">
+          <div class="sc-content-head">
+            <span class="sc-label">Nội dung bài <b class="req">*</b></span>
+            <div class="sc-subtabs" role="tablist">
+              <button type="button" class="active" data-sub="rich">Dán từ Docs/Word</button>
+              <button type="button" data-sub="html">Dán HTML</button>
+            </div>
+          </div>
+          <div
+            id="sc-editor"
+            class="sc-editor prose"
+            contenteditable="true"
+            role="textbox"
+            aria-multiline="true"
+            aria-label="Nội dung bài viết"
+            data-placeholder="Copy bài từ Google Docs hoặc Word rồi dán vào đây: giữ nguyên H1/H2/H3, danh sách, link và ảnh."
+          ></div>
+          <textarea id="sc-html" class="sc-html" rows="12" hidden placeholder="<h1>Tiêu đề bài</h1>&#10;<p>Đoạn mở bài...</p>"></textarea>
+          <p class="sc-hint">Nội dung chỉ được chấm ngay trên trình duyệt của bạn, không gửi đi đâu và không lưu lại.</p>
+        </div>
+
+        <p class="sc-err" id="sc-err" hidden></p>
+        <div class="sc-actions">
+          <button type="submit" class="btn btn-primary sc-run">Chấm điểm 30 mục →</button>
+          <button type="button" class="btn btn-ghost" id="sc-clear">Xoá nội dung</button>
+        </div>
+      </form>
+
+      <!-- ===== KẾT QUẢ (dựng bằng script) ===== -->
+      <div id="sc-result" class="sc-result" hidden aria-live="polite"></div>
+
+      <!-- ===== CTA ===== -->
+      <aside class="sc-cta">
+        <div>
+          <b>Muốn hiểu sâu từng điểm, kèm ví dụ đúng/sai và template chấm điểm?</b>
+          <p>Ebook Checklist 30 điểm tối ưu SEO on-page giải thích vì sao, cách làm và ví dụ cụ thể cho từng mục.</p>
+        </div>
+        <a href={EBOOK} class="btn sc-cta-btn">Xem ebook Checklist 30 điểm →</a>
+      </aside>
+
+      <!-- ===== HƯỚNG DẪN + FAQ (nội dung cho người đọc và SEO của chính trang) ===== -->
+      <section class="panel sc-guide prose">
+        <h2>Cách dùng công cụ kiểm tra SEO on-page</h2>
+        <p>
+          Công cụ chấm bài viết theo đúng 30 điểm trong checklist SEO on-page của Sunz, chia 6 nhóm: từ khoá và ý định tìm kiếm,
+          tiêu đề – meta – URL, cấu trúc trình bày, chất lượng nội dung, liên kết – hình ảnh và kỹ thuật. Mỗi mục có số điểm theo mức
+          ưu tiên: Bắt buộc 3 điểm, Quan trọng 2 điểm, Nên có 1 điểm.
+        </p>
+        <ol>
+          <li><strong>Nhập từ khoá chính</strong> mà bài muốn lên top, cùng title SEO, meta description và URL dự kiến.</li>
+          <li><strong>Dán nội dung</strong> từ Google Docs hoặc Word vào ô soạn thảo. Công cụ giữ nguyên heading, danh sách, link và ảnh, đồng thời bỏ định dạng thừa.</li>
+          <li><strong>Bấm “Chấm điểm”</strong> để xem điểm tổng, xếp loại và danh sách mục cần ưu tiên sửa.</li>
+          <li><strong>Tự kiểm tra các mục còn lại</strong>: những việc cần mắt người (ý định tìm kiếm, nội dung gốc…) hiện dạng ô tick kèm hướng dẫn. Điểm cập nhật ngay khi bạn tick.</li>
+        </ol>
+        <p>
+          Điểm từ 90% trở lên là bài đã sẵn sàng đăng. Nếu còn bất kỳ mục <strong>Bắt buộc</strong> nào chưa đạt, công cụ vẫn xếp
+          “Chưa nên đăng” dù tỷ lệ điểm cao, vì đó là những lỗi khiến bài khó lên top nhất. Bấm vào từng mục để xem vì sao mục đó quan
+          trọng và cách sửa cụ thể, rồi chấm lại sau khi chỉnh. Bạn có thể sao chép báo cáo để gửi cho người viết, hoặc in ra PDF để lưu.
+        </p>
+
+        <h2>Câu hỏi thường gặp</h2>
+        <details>
+          <summary>Công cụ có lưu bài viết của tôi không?</summary>
+          <p>Không. Ở chế độ dán nội dung, toàn bộ việc chấm diễn ra ngay trên trình duyệt của bạn; bài viết không được gửi lên máy chủ hay lưu lại.</p>
+        </details>
+        <details>
+          <summary>Vì sao có mục phải tự tick?</summary>
+          <p>Một số tiêu chí cần hiểu nội dung như người đọc (đúng ý định tìm kiếm, có giá trị riêng) hoặc cần dữ liệu ngoài bài (Search Console, bài cũ đã link về). Công cụ hiển thị hướng dẫn để bạn tự kiểm tra nhanh rồi tick.</p>
+        </details>
+        <details>
+          <summary>Đạt 100% có chắc chắn lên top Google không?</summary>
+          <p>Không có công cụ nào bảo đảm thứ hạng. Checklist giúp bài không mắc lỗi on-page và đáp ứng đúng khuyến nghị của Google; thứ hạng còn phụ thuộc mức cạnh tranh, độ uy tín của website và liên kết từ bên ngoài.</p>
+        </details>
+        <details>
+          <summary>Dán từ Google Docs có giữ được heading không?</summary>
+          <p>Có. Hãy dùng kiểu Tiêu đề 1, 2, 3 (Heading 1, 2, 3) trong Google Docs; khi dán, công cụ nhận đúng H1/H2/H3, danh sách, link và ảnh.</p>
+        </details>
+      </section>
+    </section>
+  </article>
+</BaseLayout>
+
+<script>
+  import { analyze, score, sanitizeHtml, textToHtml, CHECKLIST, type CheckResult, type PageMeta } from '../../lib/seo-checker';
+  import { T } from '../../lib/seo-checker/strings';
+  import { charLength } from '../../lib/seo-checker/text';
+
+  const form = document.getElementById('sc-form') as HTMLFormElement;
+  const editor = document.getElementById('sc-editor') as HTMLDivElement;
+  const htmlBox = document.getElementById('sc-html') as HTMLTextAreaElement;
+  const out = document.getElementById('sc-result') as HTMLDivElement;
+  const err = document.getElementById('sc-err') as HTMLParagraphElement;
+  const EBOOK = '/tai-lieu/checklist-seo-on-page';
+  let sub: 'rich' | 'html' = 'rich';
+  let last: { results: CheckResult[]; meta: PageMeta } | null = null;
+  const ticked = new Set<number>();
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  // Markdown tối giản trong JSON: **đậm**, `mã`
+  const md = (s: string) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]*)`/g, (_, c) => (c ? `<code>${c}</code>` : ''));
+
+  // ---------- Dán từ Docs/Word: giữ cấu trúc, bỏ định dạng thừa ----------
+  editor.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const dt = e.clipboardData;
+    if (!dt) return;
+    const html = dt.getData('text/html');
+    const clean = html ? sanitizeHtml(html) : textToHtml(dt.getData('text/plain'));
+    document.execCommand('insertHTML', false, clean);
+  });
+
+  // ---------- Tab phụ: soạn thảo / dán HTML ----------
+  document.querySelectorAll<HTMLButtonElement>('[data-sub]').forEach((b) =>
+    b.addEventListener('click', () => {
+      sub = b.dataset.sub as 'rich' | 'html';
+      document.querySelectorAll('[data-sub]').forEach((x) => x.classList.toggle('active', x === b));
+      editor.hidden = sub !== 'rich';
+      htmlBox.hidden = sub !== 'html';
+    }),
+  );
+
+  // ---------- Đếm ký tự title/meta ----------
+  const counters: [string, number, number][] = [
+    ['title', 30, 60],
+    ['metaDescription', 120, 160],
+  ];
+  for (const [name, min, max] of counters) {
+    const input = form.elements.namedItem(name) as HTMLInputElement;
+    const badge = form.querySelector<HTMLElement>(`[data-count="${name}"]`)!;
+    const upd = () => {
+      const n = charLength(input.value.trim());
+      badge.textContent = n ? `${n} ký tự` : '';
+      badge.className = 'sc-count ' + (!n ? '' : n >= min && n <= max ? 'ok' : 'bad');
+    };
+    input.addEventListener('input', upd);
+  }
+
+  document.getElementById('sc-clear')!.addEventListener('click', () => {
+    editor.innerHTML = '';
+    htmlBox.value = '';
+    out.hidden = true;
+  });
+
+  // ---------- Chấm ----------
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const meta: PageMeta = {
+      keyword: String(fd.get('keyword') || '').trim(),
+      title: String(fd.get('title') || '').trim(),
+      metaDescription: String(fd.get('metaDescription') || '').trim(),
+      url: String(fd.get('url') || '').trim(),
+      domain: String(fd.get('domain') || '').trim(),
+    };
+    const html = sub === 'html' ? sanitizeHtml(htmlBox.value) : editor.innerHTML;
+    const problem = !meta.keyword ? T.needKeyword : !html.replace(/<[^>]*>/g, '').trim() && !/<img/i.test(html) ? T.needContent : '';
+    err.hidden = !problem;
+    err.textContent = problem;
+    if (problem) return;
+
+    const doc = new DOMParser().parseFromString(`<!doctype html><html><body>${html}</body></html>`, 'text/html');
+    const results = analyze({ doc, meta, mode: 'paste' }, CHECKLIST);
+    last = { results, meta };
+    render();
+    out.hidden = false;
+    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // ---------- Hiển thị ----------
+  const ICON: Record<string, string> = { pass: '✓', warn: '!', fail: '✕', manual: '☐', na: '–' };
+  const prioClass = (p: string) => (p === 'Bắt buộc' ? 'p3' : p === 'Quan trọng' ? 'p2' : 'p1');
+
+  function summaryHtml() {
+    const s = score(last!.results, CHECKLIST, ticked);
+    const pct = Math.round(s.ratio * 100);
+    const tone = s.blockedByMandatory || s.ratio < 0.6 ? 'fail' : s.ratio < 0.9 ? 'warn' : 'pass';
+    const C = 2 * Math.PI * 52;
+    const byId = new Map(CHECKLIST.items.map((i) => [i.id, i]));
+    const urgent = s.urgent
+      .map((id) => `<li><a href="#sc-item-${id}">#${id} ${esc(byId.get(id)!.title)}</a> <span>${esc(last!.results.find((r) => r.id === id)!.measured)}</span></li>`)
+      .join('');
+    return `
+      <div class="sc-ring sc-${tone}">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg"
+          stroke-dasharray="${(C * s.ratio).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 60 60)"/></svg>
+        <div><b>${pct}%</b><span>${s.earned.toLocaleString('vi-VN')}/${s.max} ${T.points}</span></div>
+      </div>
+      <div class="sc-sum-main">
+        <p class="sc-rating sc-${tone}">${esc(s.rating)}</p>
+        ${s.blockedByMandatory ? `<p class="sc-note">${T.blocked}</p>` : ''}
+        <div class="sc-counts">
+          <span class="c-pass">${ICON.pass} ${T.statusLabel.pass} <b>${s.counts.pass}</b></span>
+          <span class="c-warn">${ICON.warn} ${T.statusLabel.warn} <b>${s.counts.warn}</b></span>
+          <span class="c-fail">${ICON.fail} ${T.statusLabel.fail} <b>${s.counts.fail}</b></span>
+          <span class="c-manual">${ICON.manual} ${T.statusLabel.manual} <b>${s.counts.manual}</b></span>
+        </div>
+        <div class="sc-urgent">
+          <b>🔥 ${T.urgentTitle}</b>
+          ${urgent ? `<ol>${urgent}</ol>` : `<p>${T.urgentEmpty}</p>`}
+        </div>
+      </div>`;
+  }
+
+  function previewHtml() {
+    const m = last!.meta;
+    const cut = (s: string, n: number) => (charLength(s) > n ? [...s].slice(0, n - 1).join('').trimEnd() + '…' : s);
+    let host = m.domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '') || 'tenmien.vn';
+    let path = '';
+    try {
+      const u = new URL(/^https?:\/\//.test(m.url) ? m.url : `https://${host}/${m.url.replace(/^\/+/, '')}`);
+      if (/^https?:\/\//.test(m.url) || m.url.includes('.')) host = u.hostname;
+      path = u.pathname.split('/').filter(Boolean).join(' › ');
+    } catch {}
+    return `
+      <p class="sc-sec-title">${T.previewTitle}</p>
+      <div class="sc-serp">
+        <div class="u"><span class="fav"></span><div><b>${esc(host)}</b><small>https://${esc(host)}${path ? ' › ' + esc(path) : ''}</small></div></div>
+        <div class="t">${esc(m.title ? cut(m.title, 60) : T.previewEmptyTitle)}</div>
+        <div class="d">${esc(m.metaDescription ? cut(m.metaDescription, 160) : T.previewEmptyMeta)}</div>
+      </div>`;
+  }
+
+  function itemHtml(r: CheckResult) {
+    const it = CHECKLIST.items.find((i) => i.id === r.id)!;
+    const done = r.status === 'manual' && ticked.has(r.id);
+    const open = r.status === 'fail' || r.status === 'warn';
+    const details = r.details.length ? `<ul class="sc-det">${r.details.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : '';
+    const manual =
+      r.status === 'manual'
+        ? `<div class="sc-manual">
+            <label><input type="checkbox" data-tick="${r.id}" ${done ? 'checked' : ''}> ${T.manualChecked}</label>
+            ${r.aiSoon ? `<span class="sc-ai">${T.aiSoon}</span>` : ''}
+            ${r.manualReason ? `<p>${esc(r.manualReason)}</p>` : ''}
+            ${(r.links || []).map((l) => `<a href="${esc(l.href)}" target="_blank" rel="noopener" class="sc-link">${esc(l.label)} ↗</a>`).join('')}
+          </div>`
+        : '';
+    const ex = it.examples.length
+      ? `<ul class="sc-ex">${it.examples.map((e) => `<li class="ex-${e.kind}"><span>${T.examples[e.kind]}</span>${md(e.text).replace(/\n/g, '<br>')}</li>`).join('')}</ul>`
+      : '';
+    const st = done ? 'done' : r.status;
+    return `
+      <div class="sc-item sc-st-${st}" id="sc-item-${r.id}">
+        <button type="button" class="sc-item-head" aria-expanded="${open}">
+          <i class="sc-ico">${done ? '✓' : ICON[r.status]}</i>
+          <span class="sc-item-t"><b>${r.id}. ${esc(it.title)}</b>
+            <small>${esc(r.measured || it.short)}</small></span>
+          <span class="sc-prio ${prioClass(it.priority)}">${esc(it.priority)}</span>
+          <span class="sc-stlabel">${done ? T.manualDone : T.statusLabel[r.status]}</span>
+        </button>
+        <div class="sc-item-body" ${open ? '' : 'hidden'}>
+          ${details}${manual}
+          <p class="sc-sub">${T.why}</p><p>${md(it.why)}</p>
+          <p class="sc-sub">${T.how}</p><ul>${it.how.map((h) => `<li>${md(h)}</li>`).join('')}</ul>
+          ${ex}
+          ${it.tools ? `<p class="sc-tools"><b>${T.tools}:</b> ${md(it.tools)}</p>` : ''}
+        </div>
+      </div>`;
+  }
+
+  function render() {
+    if (!last) return;
+    const groups = CHECKLIST.groups
+      .map((g) => {
+        const items = last!.results.filter((r) => CHECKLIST.items.find((i) => i.id === r.id)!.group === g.key);
+        return `<section class="sc-group">
+          <h3><span>${g.key}</span>${esc(g.name)}</h3>
+          <p class="sc-gintro">${esc(g.intro)}</p>
+          ${items.map(itemHtml).join('')}
+        </section>`;
+      })
+      .join('');
+    out.innerHTML = `
+      <div class="panel sc-summary" id="sc-summary">${summaryHtml()}</div>
+      <div class="panel sc-preview">${previewHtml()}
+        <div class="sc-tools-row">
+          <button type="button" class="btn btn-ghost" id="sc-copy">${T.copy}</button>
+          <button type="button" class="btn btn-ghost" id="sc-print">${T.print}</button>
+        </div>
+      </div>
+      <div class="panel sc-list">${groups}</div>`;
+  }
+
+  // Mở/đóng mục, tick tự kiểm tra, sao chép, in — gắn 1 lần (event delegation)
+  out.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const head = t.closest<HTMLButtonElement>('.sc-item-head');
+    if (head) {
+      const body = head.nextElementSibling as HTMLElement;
+      body.hidden = !body.hidden;
+      head.setAttribute('aria-expanded', String(!body.hidden));
+    }
+    if (t.id === 'sc-print') window.print();
+    if (t.id === 'sc-copy') {
+      navigator.clipboard.writeText(reportText()).then(() => {
+        t.textContent = T.copied;
+        setTimeout(() => (t.textContent = T.copy), 2000);
+      });
+    }
+  });
+  out.addEventListener('change', (e) => {
+    const box = (e.target as HTMLElement).closest<HTMLInputElement>('[data-tick]');
+    if (!box) return;
+    const id = Number(box.dataset.tick);
+    box.checked ? ticked.add(id) : ticked.delete(id);
+    // Cập nhật điểm ngay + trạng thái mục
+    document.getElementById('sc-summary')!.innerHTML = summaryHtml();
+    const item = document.getElementById(`sc-item-${id}`)!;
+    item.className = `sc-item sc-st-${box.checked ? 'done' : 'manual'}`;
+    item.querySelector('.sc-ico')!.textContent = box.checked ? '✓' : ICON.manual;
+    item.querySelector('.sc-stlabel')!.textContent = box.checked ? T.manualDone : T.statusLabel.manual;
+  });
+
+  function reportText() {
+    const s = score(last!.results, CHECKLIST, ticked);
+    const lines = [
+      T.reportTitle,
+      `Từ khoá: ${last!.meta.keyword}`,
+      `Điểm: ${Math.round(s.ratio * 100)}% (${s.earned}/${s.max}) · ${s.rating}`,
+      `Đạt ${s.counts.pass} · Cần cải thiện ${s.counts.warn} · Chưa đạt ${s.counts.fail} · Tự kiểm tra ${s.counts.manual}`,
+      '',
+    ];
+    for (const g of CHECKLIST.groups) {
+      lines.push(`${g.key}. ${g.name.toUpperCase()}`);
+      for (const r of last!.results) {
+        const it = CHECKLIST.items.find((i) => i.id === r.id)!;
+        if (it.group !== g.key) continue;
+        const st = r.status === 'manual' && ticked.has(r.id) ? T.manualDone : T.statusLabel[r.status];
+        lines.push(`[${st}] ${r.id}. ${it.title} (${it.priority})${r.measured ? ': ' + r.measured : ''}`);
+        if (r.status === 'fail' || r.status === 'warn') r.details.forEach((d) => lines.push(`    - ${d}`));
+      }
+      lines.push('');
+    }
+    lines.push(`Xem giải thích chi tiết từng điểm: ${location.origin}${EBOOK}`);
+    return lines.join('\n');
+  }
+</script>
+
+<style>
+  .sc-wrap {
+    max-width: 980px;
+    padding-bottom: var(--space-section);
+    display: grid;
+    gap: 22px;
+  }
+  .page-head p a {
+    color: var(--brand);
+    font-weight: 600;
+  }
+  .sc-byline {
+    margin-top: 10px !important;
+    font-size: 0.85rem !important;
+    color: var(--ink-faint) !important;
+  }
+  .sc-form {
+    display: grid;
+    gap: 18px;
+  }
+  .sc-modes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sc-mode {
+    font: inherit;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .sc-mode.active {
+    color: #fff;
+    background: linear-gradient(135deg, #403bd3, #7b76f5);
+    border-color: transparent;
+  }
+  .sc-mode:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .sc-mode small {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .sc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .sc-wide {
+    grid-column: 1 / -1;
+  }
+  .sc-field {
+    display: grid;
+    gap: 6px;
+  }
+  .sc-field > span,
+  .sc-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .req {
+    color: #ff6b57;
+  }
+  .sc-field input,
+  .sc-field textarea,
+  .sc-html {
+    font: inherit;
+    font-size: 0.95rem;
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink);
+    resize: vertical;
+  }
+  .sc-field input:focus,
+  .sc-field textarea:focus,
+  .sc-html:focus,
+  .sc-editor:focus {
+    outline: 2px solid rgba(64, 59, 211, 0.35);
+    outline-offset: 1px;
+  }
+  .sc-count {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.78rem;
+    margin-left: 6px;
+  }
+  .sc-count.ok {
+    color: #1f9d6b;
+  }
+  .sc-count.bad {
+    color: #b7791f;
+  }
+  .sc-content {
+    display: grid;
+    gap: 8px;
+  }
+  .sc-content-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .sc-subtabs {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+  .sc-subtabs button {
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .sc-subtabs button.active {
+    background: var(--bg-card);
+    color: var(--ink);
+    box-shadow: var(--card-shadow);
+  }
+  .sc-editor {
+    min-height: 280px;
+    max-height: 560px;
+    overflow: auto;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    font-size: 0.95rem;
+  }
+  .sc-editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--ink-faint);
+  }
+  .sc-editor :global(img) {
+    max-width: 240px;
+  }
+  .sc-html {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.85rem;
+  }
+  .sc-hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+  .sc-err {
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(255, 107, 87, 0.1);
+    color: #d4422e;
+    font-weight: 600;
+  }
+  .sc-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .sc-run {
+    font-size: 1rem;
+    padding: 14px 26px;
+  }
+  .sc-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 26px 28px;
+    border-radius: 28px;
+    color: #fff;
+    background:
+      radial-gradient(400px 220px at 0% 0%, rgba(255, 119, 89, 0.45), transparent 60%),
+      linear-gradient(135deg, #272173, #3b34a6);
+    box-shadow: 0 24px 50px -28px rgba(39, 33, 115, 0.8);
+  }
+  .sc-cta b {
+    font-size: 1.15rem;
+  }
+  .sc-cta p {
+    margin: 6px 0 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+  .sc-cta-btn {
+    background: #ff6b57;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .sc-cta-btn:hover {
+    text-decoration: none;
+    filter: brightness(1.05);
+  }
+  .sc-guide details {
+    border-top: 1px solid var(--border);
+    padding: 12px 0;
+  }
+  .sc-guide summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sc-guide h2:first-child {
+    margin-top: 0;
+  }
+  @media (max-width: 640px) {
+    .sc-grid {
+      grid-template-columns: 1fr;
+    }
+    .sc-run {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<!-- Kết quả dựng bằng innerHTML → style global, giới hạn trong #seo-app -->
+<style is:global>
+  #seo-app .sc-result {
+    display: grid;
+    gap: 18px;
+    scroll-margin-top: 80px;
+  }
+  #seo-app .sc-summary {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 26px;
+    align-items: center;
+  }
+  #seo-app .sc-ring {
+    position: relative;
+    width: 170px;
+    height: 170px;
+  }
+  #seo-app .sc-ring svg {
+    width: 100%;
+    height: 100%;
+  }
+  #seo-app .sc-ring circle {
+    fill: none;
+    stroke-width: 12;
+  }
+  #seo-app .sc-ring .bg {
+    stroke: var(--bg-soft);
+  }
+  #seo-app .sc-ring .fg {
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease;
+  }
+  #seo-app .sc-ring.sc-pass .fg { stroke: #1f9d6b; }
+  #seo-app .sc-ring.sc-warn .fg { stroke: #b7791f; }
+  #seo-app .sc-ring.sc-fail .fg { stroke: #ff6b57; }
+  #seo-app .sc-ring > div {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }
+  #seo-app .sc-ring b {
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--ink);
+  }
+  #seo-app .sc-ring span {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 4px;
+  }
+  #seo-app .sc-rating {
+    margin: 0 0 6px;
+    font-size: 1.45rem;
+    font-weight: 900;
+  }
+  #seo-app .sc-rating.sc-pass { color: #1f9d6b; }
+  #seo-app .sc-rating.sc-warn { color: #b7791f; }
+  #seo-app .sc-rating.sc-fail { color: #e5523d; }
+  #seo-app .sc-note {
+    margin: 0 0 10px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  #seo-app .sc-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  #seo-app .sc-counts span {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    color: var(--ink-soft);
+  }
+  #seo-app .sc-counts .c-pass { color: #1f9d6b; background: rgba(31, 157, 107, 0.1); }
+  #seo-app .sc-counts .c-warn { color: #b7791f; background: rgba(183, 121, 31, 0.12); }
+  #seo-app .sc-counts .c-fail { color: #e5523d; background: rgba(255, 107, 87, 0.12); }
+  #seo-app .sc-urgent {
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(255, 107, 87, 0.08);
+    border: 1px solid rgba(255, 107, 87, 0.3);
+  }
+  #seo-app .sc-urgent ol {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 4px;
+  }
+  #seo-app .sc-urgent li a {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  #seo-app .sc-urgent li span {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+  #seo-app .sc-urgent p {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  #seo-app .sc-sec-title {
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  #seo-app .sc-serp {
+    max-width: 640px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    font-family: Arial, sans-serif;
+  }
+  #seo-app .sc-serp .u {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  #seo-app .sc-serp .fav {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #f1f3f4;
+    border: 1px solid #e5e7eb;
+  }
+  #seo-app .sc-serp .u b {
+    display: block;
+    font-size: 14px;
+    color: #202124;
+    font-weight: 400;
+  }
+  #seo-app .sc-serp .u small {
+    font-size: 12px;
+    color: #4d5156;
+  }
+  #seo-app .sc-serp .t {
+    margin-top: 8px;
+    font-size: 20px;
+    line-height: 1.3;
+    color: #1a0dab;
+  }
+  #seo-app .sc-serp .d {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.58;
+    color: #4d5156;
+  }
+  #seo-app .sc-tools-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  #seo-app .sc-group + .sc-group {
+    margin-top: 26px;
+  }
+  #seo-app .sc-group h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 4px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  #seo-app .sc-group h3 span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    color: #fff;
+    background: linear-gradient(135deg, #272173, #3b34a6);
+    font-size: 0.95rem;
+  }
+  #seo-app .sc-gintro {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+  }
+  #seo-app .sc-item {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--st, var(--border));
+    border-radius: 14px;
+    background: var(--bg-card);
+    margin-bottom: 8px;
+    scroll-margin-top: 90px;
+  }
+  #seo-app .sc-st-pass, #seo-app .sc-st-done { --st: #1f9d6b; }
+  #seo-app .sc-st-warn { --st: #b7791f; }
+  #seo-app .sc-st-fail { --st: #ff6b57; }
+  #seo-app .sc-st-manual { --st: #a5b4fc; }
+  #seo-app .sc-st-na { --st: var(--border); opacity: 0.75; }
+  #seo-app .sc-item-head {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30px 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 14px;
+    border: 0;
+    background: none;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  #seo-app .sc-ico {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 0.85rem;
+    color: #fff;
+    background: var(--st);
+  }
+  #seo-app .sc-st-manual .sc-ico {
+    color: #3b34a6;
+    background: rgba(99, 102, 241, 0.14);
+  }
+  #seo-app .sc-item-t b {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  #seo-app .sc-item-t small {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  #seo-app .sc-prio {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  #seo-app .sc-prio.p3 { color: #e5523d; background: rgba(255, 107, 87, 0.12); }
+  #seo-app .sc-prio.p2 { color: #3b34a6; background: rgba(59, 52, 166, 0.1); }
+  #seo-app .sc-prio.p1 { color: var(--ink-soft); background: var(--bg-soft); }
+  #seo-app .sc-stlabel {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--st);
+    white-space: nowrap;
+    min-width: 92px;
+    text-align: right;
+  }
+  #seo-app .sc-st-manual .sc-stlabel { color: #3b34a6; }
+  #seo-app .sc-item-body {
+    padding: 0 16px 14px 54px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  #seo-app .sc-item-body p {
+    margin: 4px 0 8px;
+  }
+  #seo-app .sc-item-body ul {
+    margin: 4px 0 8px;
+    padding-left: 18px;
+  }
+  #seo-app .sc-det {
+    list-style: none;
+    padding: 10px 12px !important;
+    border-radius: 10px;
+    background: var(--bg-soft);
+    white-space: pre-wrap;
+    color: var(--ink);
+  }
+  #seo-app .sc-sub {
+    margin: 12px 0 2px !important;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  #seo-app .sc-manual {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(99, 102, 241, 0.07);
+  }
+  #seo-app .sc-manual label {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  #seo-app .sc-manual input {
+    width: 18px;
+    height: 18px;
+    accent-color: #3b34a6;
+  }
+  #seo-app .sc-manual p {
+    flex-basis: 100%;
+    margin: 0 !important;
+    font-size: 0.85rem;
+  }
+  #seo-app .sc-ai {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 999px;
+    color: #fff;
+    background: linear-gradient(135deg, #3b34a6, #ff6b57);
+  }
+  #seo-app .sc-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  #seo-app .sc-ex {
+    list-style: none;
+    padding: 0 !important;
+    display: grid;
+    gap: 6px;
+  }
+  #seo-app .sc-ex li {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: var(--bg-soft);
+  }
+  #seo-app .sc-ex li span {
+    font-size: 0.7rem;
+    font-weight: 800;
+    margin-right: 8px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    color: #fff;
+    background: #64748b;
+  }
+  #seo-app .sc-ex .ex-good span { background: #1f9d6b; }
+  #seo-app .sc-ex .ex-bad span { background: #ff6b57; }
+  #seo-app .sc-tools {
+    font-size: 0.85rem;
+  }
+  #seo-app .sc-item-body code {
+    font-size: 0.85em;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--bg-soft);
+  }
+  @media (max-width: 640px) {
+    #seo-app .sc-summary {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+    #seo-app .sc-counts {
+      justify-content: center;
+    }
+    #seo-app .sc-urgent {
+      text-align: left;
+      width: 100%;
+    }
+    #seo-app .sc-item-head {
+      grid-template-columns: 28px 1fr auto;
+    }
+    #seo-app .sc-stlabel {
+      display: none;
+    }
+    #seo-app .sc-item-body {
+      padding-left: 16px;
+    }
+  }
+  /* In / Lưu PDF: chỉ in kết quả, mở hết các mục */
+  @media print {
+    .site-header, .site-footer, #seo-app .sc-form, #seo-app .sc-guide, #seo-app .sc-cta, #seo-app .sc-tools-row,
+    #seo-app .page-head p, [class*='fab'], [class*='chat'] {
+      display: none !important;
+    }
+    #seo-app .sc-result { display: grid !important; }
+    #seo-app .sc-item-body { display: block !important; }
+    #seo-app .panel { box-shadow: none; backdrop-filter: none; }
+    body::before { display: none; }
+    body { background: #fff; }
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+// Trang danh sách công cụ miễn phí: /cong-cu. Thêm công cụ mới vào mảng TOOLS.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const TOOLS = [
+  {
+    href: '/cong-cu/kiem-tra-seo-on-page',
+    icon: '🔍',
+    color: '#3b34a6',
+    tag: 'Mới',
+    name: { vi: 'Kiểm tra SEO on-page', en: 'On-page SEO checker' },
+    desc: {
+      vi: 'Dán bài viết, chấm 30 điểm SEO on-page: title, meta, URL, heading, link, ảnh. Chỉ rõ mục chưa đạt và cách sửa.',
+      en: 'Paste your article and score it on 30 on-page SEO points, with clear fixes for what is missing.',
+    },
+  },
+  {
+    href: '/cong-cu/kiem-tra-content-quang-cao',
+    icon: '🛡️',
+    color: '#ff7759',
+    tag: '',
+    name: { vi: 'Kiểm tra content quảng cáo', en: 'Ad content checker' },
+    desc: {
+      vi: 'Rà soát từ ngữ dễ vi phạm chính sách Facebook & Luật Quảng cáo Việt Nam, kèm gợi ý sửa.',
+      en: 'Flags wording that risks breaking Facebook ad policies and Vietnamese advertising law, with suggested fixes.',
+    },
+  },
+];
+---
+
+<BaseLayout title="Công cụ Marketing miễn phí" description="Công cụ miễn phí của Sunz Làm Marketing: kiểm tra SEO on-page 30 điểm, kiểm tra content quảng cáo theo chính sách Facebook và Luật Quảng cáo.">
+  <section class="page-head">
+    <div class="container">
+      <h1><span data-i18n-vi="Công cụ" data-i18n-en="Free">Công cụ</span> <span class="hl" data-i18n-vi="miễn phí" data-i18n-en="marketing tools">miễn phí</span></h1>
+      <p data-i18n-vi="Dùng ngay trên trình duyệt, không cần đăng ký." data-i18n-en="Use right in your browser, no sign-up needed.">Dùng ngay trên trình duyệt, không cần đăng ký.</p>
+    </div>
+  </section>
+
+  <section class="container tools-grid">
+    {TOOLS.map((t) => (
+      <a href={t.href} class="tool" style={`--c:${t.color}`}>
+        <span class="tool-ico">{t.icon}</span>
+        {t.tag && <span class="tool-tag">{t.tag}</span>}
+        <b data-i18n-vi={t.name.vi} data-i18n-en={t.name.en}>{t.name.vi}</b>
+        <p data-i18n-vi={t.desc.vi} data-i18n-en={t.desc.en}>{t.desc.vi}</p>
+        <span class="tool-go" data-i18n-vi="Dùng ngay →" data-i18n-en="Open tool →">Dùng ngay →</span>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    padding-bottom: var(--space-section);
+  }
+  .tool {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 26px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--c);
+    background: var(--bg-card);
+    box-shadow: var(--card-shadow);
+    color: var(--ink);
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .tool:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+  .tool-ico {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    font-size: 1.6rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+  }
+  .tool-tag {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #fff;
+    background: #ff6b57;
+  }
+  .tool b {
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+  .tool p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    flex: 1;
+  }
+  .tool-go {
+    font-weight: 700;
+    color: var(--brand);
+  }
+  @media (max-width: 640px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
