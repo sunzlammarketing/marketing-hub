@@ -39,7 +39,9 @@
       set('h', Math.floor((s % 86400) / 3600));
       set('m', Math.floor((s % 3600) / 60));
       set('s', s % 60);
-      const pct = Math.min(100, Math.max(0, ((now - from) / (until - from)) * 100));
+      // Thanh bắt đầu ở 65% và chạy tới 100% lúc hết hạn → tạo cảm giác suất ưu đãi sắp hết
+      const elapsed = Math.min(1, Math.max(0, (now - from) / (until - from)));
+      const pct = 65 + 35 * elapsed;
       const fill = bar.querySelector<HTMLElement>('[data-promo-fill]');
       if (fill) fill.style.width = pct.toFixed(1) + '%';
       bar.querySelector('[role="progressbar"]')?.setAttribute('aria-valuenow', pct.toFixed(0));

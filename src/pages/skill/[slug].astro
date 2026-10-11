@@ -74,6 +74,13 @@ const jsonLd = {
               )}
               {ep.promo && <span class="sk-plabel" data-pold data-i18n-vi="Giá mở bán" data-i18n-en="Launch price">Giá mở bán</span>}
               <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
+              {ep.promo && s.price != null && s.price > ep.price && (
+                <span class="sk-reg" data-pold>
+                  <span data-i18n-vi="Giá chính thức" data-i18n-en="Regular price">Giá chính thức</span>
+                  <s>{formatVnd(s.price)}</s>
+                  <b data-i18n-vi={`Tiết kiệm ${formatVnd(s.price - ep.price)}`} data-i18n-en={`Save ${formatVnd(s.price - ep.price)}`}>Tiết kiệm {formatVnd(s.price - ep.price)}</b>
+                </span>
+              )}
             </span>
           ) : (
             <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
@@ -273,6 +280,13 @@ const jsonLd = {
                 )}
                 {ep.promo && <span class="sk-plabel" data-pold data-i18n-vi="Giá mở bán" data-i18n-en="Launch price">Giá mở bán</span>}
               <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
+              {ep.promo && s.price != null && s.price > ep.price && (
+                <span class="sk-reg" data-pold>
+                  <span data-i18n-vi="Giá chính thức" data-i18n-en="Regular price">Giá chính thức</span>
+                  <s>{formatVnd(s.price)}</s>
+                  <b data-i18n-vi={`Tiết kiệm ${formatVnd(s.price - ep.price)}`} data-i18n-en={`Save ${formatVnd(s.price - ep.price)}`}>Tiết kiệm {formatVnd(s.price - ep.price)}</b>
+                </span>
+              )}
               </span>
             ) : (
               <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
@@ -432,7 +446,8 @@ const jsonLd = {
   }
   .sk-hero h1 {
     margin: 16px auto 12px;
-    max-width: 860px;
+    max-width: 1040px;
+    text-wrap: balance;
     font-size: clamp(1.9rem, 4.8vw, 3rem);
     font-weight: 900;
     line-height: 1.15;
@@ -527,6 +542,32 @@ const jsonLd = {
     font-weight: 900;
     letter-spacing: -0.02em;
     color: var(--h);
+  }
+  /* Giá chính thức gạch ngang + số tiền tiết kiệm (ẩn khi hết ưu đãi nhờ data-pold) */
+  .sk-reg {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted-d);
+  }
+  .sk-reg s {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--body);
+    text-decoration-color: #ef4444;
+    text-decoration-thickness: 2px;
+  }
+  .sk-reg b {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #fff;
+    background: #ef4444;
+    padding: 3px 8px;
+    border-radius: 999px;
   }
   .sk-plabel {
     font-size: 0.74rem;
