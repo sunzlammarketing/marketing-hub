@@ -7,6 +7,8 @@ export function getStaticPaths() {
   return POLICIES.map((p) => ({ params: { slug: p.slug }, props: { policy: p } }));
 }
 const { policy: p } = Astro.props as { policy: Policy };
+// Mục lục: id + nhãn ngắn (bỏ số thứ tự "1. ") cho từng phần
+const toc = p.sections.map((s, i) => ({ id: `muc-${i + 1}`, label: s.h.replace(/^\d+\.\s*/, '') }));
 const ownerRows = [
   ['Chủ sở hữu website', OWNER.name],
   ['Thương hiệu', OWNER.brand],
@@ -32,17 +34,29 @@ const ownerRows = [
       ))}
     </nav>
 
+    <div class="pol-grid">
+      <!-- Mục lục bên trái: dính theo khi cuộn, tô mục đang đọc (giống noti.vn) -->
+      <aside class="pol-toc" aria-label="Mục lục">
+        <b class="pol-toc-title">📋 Mục lục</b>
+        <ol>
+          {toc.map((t, i) => (
+            <li><a href={`#${t.id}`} data-toc={t.id} class={i === 0 ? 'active' : ''}>{t.label}</a></li>
+          ))}
+          <li><a href="#chu-so-huu" data-toc="chu-so-huu">Thông tin chủ sở hữu</a></li>
+        </ol>
+      </aside>
+
     <article class="panel pol-body">
       <div class="prose">
-        {p.sections.map((s) => (
+        {p.sections.map((s, i) => (
           <>
-            <h2>{s.h}</h2>
+            <h2 id={toc[i].id}>{s.h}</h2>
             <Fragment set:html={s.html} />
           </>
         ))}
       </div>
 
-      <div class="pol-owner">
+      <div class="pol-owner" id="chu-so-huu">
         <b>Thông tin chủ sở hữu</b>
         <dl>
           {ownerRows.map(([k, v]) => (
@@ -51,13 +65,37 @@ const ownerRows = [
         </dl>
         <p class="pol-updated">Cập nhật lần cuối: {POLICY_UPDATED}</p>
       </div>
-    </article>
+      </article>
+    </div>
   </section>
 </BaseLayout>
 
+<script>
+  // Tô mục đang đọc trong mục lục theo vị trí cuộn
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+  const targets = links.map((a) => document.getElementById(a.dataset.toc!)).filter(Boolean) as HTMLElement[];
+  const setActive = () => {
+    let cur = targets[0];
+    for (const t of targets) if (t.getBoundingClientRect().top <= 160) cur = t;
+    // cuộn chạm đáy trang → chọn mục cuối
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = targets[targets.length - 1];
+    links.forEach((a) => {
+      const on = a.dataset.toc === cur?.id;
+      if (on && !a.classList.contains('active')) {
+        // màn hình hẹp (mục lục cuộn ngang): đưa chip đang chọn vào tầm nhìn
+        const ol = a.closest('ol')!;
+        if (ol.scrollWidth > ol.clientWidth) ol.scrollTo({ left: a.offsetLeft - 12, behavior: 'smooth' });
+      }
+      a.classList.toggle('active', on);
+    });
+  };
+  addEventListener('scroll', setActive, { passive: true });
+  setActive();
+</script>
+
 <style>
   .pol-wrap {
-    max-width: 900px;
+    max-width: 1120px;
     padding-bottom: var(--space-section);
   }
   .pol-nav {
@@ -86,8 +124,66 @@ const ownerRows = [
     background: var(--brand-soft);
     border-color: rgba(99, 102, 241, 0.35);
   }
+  .pol-grid {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  /* cho phép cột co lại: không để dải chip nowrap đẩy rộng trang trên điện thoại */
+  .pol-grid > * {
+    min-width: 0;
+  }
+  .pol-toc {
+    position: sticky;
+    top: 90px;
+    padding: 24px 18px;
+    border-radius: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--panel-shadow);
+  }
+  .pol-toc-title {
+    display: block;
+    padding: 0 10px 12px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .pol-toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+  .pol-toc a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .pol-toc a:hover {
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--bg-soft);
+  }
+  .pol-toc a.active {
+    color: #fff;
+    background: linear-gradient(135deg, #403bd3, #7b76f5);
+    box-shadow: 0 10px 22px -12px rgba(64, 59, 211, 0.8);
+  }
+  .pol-body h2,
+  .pol-owner {
+    scroll-margin-top: 90px;
+  }
   .pol-body {
     padding: 36px 44px;
+    min-width: 0;
   }
   .pol-body .prose h2:first-child {
     margin-top: 0;
@@ -126,6 +222,34 @@ const ownerRows = [
     margin: 16px 0 0;
     font-size: 0.85rem;
     color: var(--ink-faint);
+  }
+  /* Màn hình hẹp: mục lục thành dải chip cuộn ngang, dính dưới header */
+  @media (max-width: 900px) {
+    .pol-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pol-toc {
+      top: 66px;
+      z-index: 5;
+      padding: 10px;
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+      backdrop-filter: blur(10px);
+    }
+    .pol-toc-title {
+      display: none;
+    }
+    .pol-toc ol {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .pol-toc a {
+      white-space: nowrap;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
   }
   @media (max-width: 640px) {
     .pol-body {
