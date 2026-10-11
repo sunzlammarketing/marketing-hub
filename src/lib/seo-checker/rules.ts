@@ -2,6 +2,7 @@
 // Mỗi hàm nhận dữ liệu đã trích (Ctx) và trả CheckResult. Chỗ quy tắc chưa rõ có ghi chú "Chọn:".
 import type { AnalyzeInput, CheckResult, Checklist, ChecklistItem, Status } from './types';
 import { extract, fileName, hostOf, linkKind, type Extracted } from './extract';
+import { URL_RULES, absUrl } from './rules-url';
 import {
   charLength,
   containsKeyword,
@@ -291,12 +292,12 @@ function r23(c: Ctx): CheckResult {
   const domain = c.meta.domain || (c.extras ? hostOf(c.extras.finalUrl) : '');
   const ext = c.x.links.filter((l) => linkKind(l.href, domain) === 'external');
   const details = ext.slice(0, 20).map((l) => {
-    const code = c.extras?.linkStatus?.[l.href];
+    const code = c.extras?.linkStatus?.[absUrl(l.href, c.extras.finalUrl)];
     const st = code === undefined ? '' : code >= 400 || code === 0 ? ` · ❌ lỗi ${code || 'không kết nối'}` : ` · ${code}`;
     return `${l.href}${l.rel ? ` (rel="${l.rel}")` : ''}${st}`;
   });
   const broken = ext.filter((l) => {
-    const code = c.extras?.linkStatus?.[l.href];
+    const code = c.extras?.linkStatus?.[absUrl(l.href, c.extras.finalUrl)];
     return code !== undefined && (code >= 400 || code === 0);
   });
   let status: Status;
@@ -362,8 +363,8 @@ export const PASTE_RULES: Record<number, (c: Ctx) => CheckResult> = {
   24: r24,
 };
 
-/** Các mục chỉ chấm ở chế độ URL (check_type = "url") — Bước B bổ sung */
-export const URL_RULES: Record<number, (c: Ctx) => CheckResult> = {};
+/** Các mục chỉ chấm ở chế độ URL (check_type = "url"): xem rules-url.ts */
+export { URL_RULES };
 
 // ---------- Mục tự tick: lý do + thông tin tham khảo + nút hỗ trợ ----------
 function manual(item: ChecklistItem, c: Ctx): CheckResult {

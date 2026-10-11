@@ -4,13 +4,14 @@
 // - Bước A: chế độ "Dán nội dung". Bước B (sau): chế độ "Nhập URL" qua Worker /api/seo/fetch.
 // - Kết quả dựng bằng innerHTML → CSS kết quả để trong <style is:global> giới hạn bằng #seo-app.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_URL as SITE } from '../../data/site';
 
-const PAGE_TITLE = 'Công cụ kiểm tra SEO on-page miễn phí: chấm 30 điểm | Sunz Làm Marketing';
+// Brief đề xuất title 72 ký tự → chính công cụ chấm mục 6 'Chưa đạt' (>70). Rút gọn còn 50 ký tự.
+const PAGE_TITLE = 'Kiểm tra SEO on-page miễn phí, chấm 30 điểm | Sunz';
 const PAGE_DESC =
   'Công cụ kiểm tra SEO on-page miễn phí: dán bài viết, chấm 30 điểm theo checklist, chỉ rõ mục chưa đạt và cách sửa title, meta, heading, link, ảnh.';
 const PUBLISHED = '2026-10-11';
 const UPDATED = '2026-10-11';
-const SITE = 'https://sunzlammarketing.com';
 const URL_PATH = '/cong-cu/kiem-tra-seo-on-page';
 const EBOOK = '/tai-lieu/checklist-seo-on-page';
 
@@ -62,7 +63,7 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
     <section class="page-head">
       <div class="container">
         <h1>Kiểm tra <span class="hl">SEO on-page</span> cho bài viết</h1>
-        <p>Dán bài viết, công cụ chấm theo 30 điểm của <a href={EBOOK}>Checklist 30 điểm tối ưu SEO on-page</a> và chỉ rõ cần sửa gì trước khi đăng.</p>
+        <p>Công cụ kiểm tra SEO on-page miễn phí: dán bài viết hoặc nhập URL, công cụ chấm theo 30 điểm của <a href={EBOOK}>Checklist 30 điểm tối ưu SEO on-page</a> và chỉ rõ cần sửa gì trước khi đăng.</p>
         <p class="sc-byline">
           Tác giả <a href="/gioi-thieu" rel="author" class="author">Sunz Làm Marketing</a> ·
           Đăng <time datetime={PUBLISHED}>{fmtDate(PUBLISHED)}</time> ·
@@ -76,35 +77,41 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
       <form class="panel sc-form" id="sc-form" novalidate>
         <div class="sc-modes" role="tablist" aria-label="Chế độ kiểm tra">
           <button type="button" class="sc-mode active" role="tab" aria-selected="true" data-mode="paste">✍️ Dán nội dung</button>
-          <button type="button" class="sc-mode" role="tab" aria-selected="false" data-mode="url" disabled title="Sắp có">
-            🔗 Nhập URL <small>sắp có</small>
-          </button>
+          <button type="button" class="sc-mode" role="tab" aria-selected="false" data-mode="url">🔗 Nhập URL</button>
         </div>
 
         <div class="sc-grid">
+          <label class="sc-field sc-wide" data-only="url" hidden>
+            <span>URL bài viết <b class="req">*</b></span>
+            <input name="pageUrl" type="url" inputmode="url" placeholder="https://tenmien.vn/bai-viet-can-kiem-tra" autocomplete="off" />
+          </label>
           <label class="sc-field sc-wide">
             <span>Từ khoá chính <b class="req">*</b></span>
             <input name="keyword" required placeholder="vd: kem chống nắng cho da dầu" autocomplete="off" />
           </label>
-          <label class="sc-field sc-wide">
+          <label class="sc-field sc-wide" data-only="paste">
             <span>Title SEO <em class="sc-count" data-count="title"></em></span>
             <input name="title" placeholder="vd: Kem chống nắng cho da dầu: 7 tiêu chí chọn đúng | Thương hiệu" autocomplete="off" />
           </label>
-          <label class="sc-field sc-wide">
+          <label class="sc-field sc-wide" data-only="paste">
             <span>Meta description <em class="sc-count" data-count="metaDescription"></em></span>
             <textarea name="metaDescription" rows="2" placeholder="Tóm tắt lợi ích của bài + từ khoá + lời kêu gọi, khoảng 140–160 ký tự"></textarea>
           </label>
-          <label class="sc-field">
+          <label class="sc-field" data-only="paste">
             <span>URL hoặc slug</span>
             <input name="url" placeholder="vd: tenmien.vn/kem-chong-nang-cho-da-dau" autocomplete="off" />
           </label>
-          <label class="sc-field">
+          <label class="sc-field" data-only="paste">
             <span>Tên miền website</span>
             <input name="domain" placeholder="vd: tenmien.vn (để nhận link nội bộ)" autocomplete="off" />
           </label>
         </div>
 
-        <div class="sc-content">
+        <p class="sc-url-note" data-only="url" hidden>
+          Công cụ tải trang, tự đọc title, meta, heading, link, ảnh và chấm thêm 9 mục kỹ thuật (canonical, Open Graph, tác giả, ngày đăng,
+          lập chỉ mục, tốc độ PageSpeed, schema…). Mỗi IP được kiểm tra <b>10 URL mỗi giờ</b>; công cụ không lưu URL bạn nhập.
+        </p>
+        <div class="sc-content" data-only="paste">
           <div class="sc-content-head">
             <span class="sc-label">Nội dung bài <b class="req">*</b></span>
             <div class="sc-subtabs" role="tablist">
@@ -150,9 +157,11 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
         <p>
           Công cụ chấm bài viết theo đúng 30 điểm trong checklist SEO on-page của Sunz, chia 6 nhóm: từ khoá và ý định tìm kiếm,
           tiêu đề – meta – URL, cấu trúc trình bày, chất lượng nội dung, liên kết – hình ảnh và kỹ thuật. Mỗi mục có số điểm theo mức
-          ưu tiên: Bắt buộc 3 điểm, Quan trọng 2 điểm, Nên có 1 điểm.
+          ưu tiên: Bắt buộc 3 điểm, Quan trọng 2 điểm, Nên có 1 điểm. Các tiêu chí dựa trên
+          <a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=vi" target="_blank" rel="noopener">hướng dẫn SEO cơ bản của Google Search Central</a>.
         </p>
         <ol>
+          <li><strong>Chọn chế độ</strong>: “Dán nội dung” cho bài chưa đăng, hoặc “Nhập URL” cho bài đã lên web (chấm thêm canonical, tốc độ, schema…).</li>
           <li><strong>Nhập từ khoá chính</strong> mà bài muốn lên top, cùng title SEO, meta description và URL dự kiến.</li>
           <li><strong>Dán nội dung</strong> từ Google Docs hoặc Word vào ô soạn thảo. Công cụ giữ nguyên heading, danh sách, link và ảnh, đồng thời bỏ định dạng thừa.</li>
           <li><strong>Bấm “Chấm điểm”</strong> để xem điểm tổng, xếp loại và danh sách mục cần ưu tiên sửa.</li>
@@ -167,7 +176,7 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
         <h2>Câu hỏi thường gặp</h2>
         <details>
           <summary>Công cụ có lưu bài viết của tôi không?</summary>
-          <p>Không. Ở chế độ dán nội dung, toàn bộ việc chấm diễn ra ngay trên trình duyệt của bạn; bài viết không được gửi lên máy chủ hay lưu lại.</p>
+          <p>Không. Ở chế độ dán nội dung, toàn bộ việc chấm diễn ra ngay trên trình duyệt của bạn. Ở chế độ URL, máy chủ chỉ tải trang giúp bạn rồi trả kết quả, không lưu URL hay nội dung.</p>
         </details>
         <details>
           <summary>Vì sao có mục phải tự tick?</summary>
@@ -187,7 +196,9 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
 </BaseLayout>
 
 <script>
-  import { analyze, score, sanitizeHtml, textToHtml, CHECKLIST, type CheckResult, type PageMeta } from '../../lib/seo-checker';
+  import { analyze, score, sanitizeHtml, textToHtml, CHECKLIST, type CheckResult, type PageMeta, type UrlExtras } from '../../lib/seo-checker';
+  import { absUrl } from '../../lib/seo-checker/rules-url';
+  import { contentRoot, linkKind, hostOf } from '../../lib/seo-checker/extract';
   import { T } from '../../lib/seo-checker/strings';
   import { charLength } from '../../lib/seo-checker/text';
 
@@ -198,8 +209,25 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
   const err = document.getElementById('sc-err') as HTMLParagraphElement;
   const EBOOK = '/tai-lieu/checklist-seo-on-page';
   let sub: 'rich' | 'html' = 'rich';
-  let last: { results: CheckResult[]; meta: PageMeta } | null = null;
+  let mode: 'paste' | 'url' = 'paste';
+  let last: { results: CheckResult[]; meta: PageMeta; doc: Document; extras?: UrlExtras; loading?: string[] } | null = null;
   const ticked = new Set<number>();
+  /** Trạng thái mở/đóng do người dùng chọn (giữ nguyên khi kết quả cập nhật thêm PageSpeed, link…) */
+  const openState = new Map<number, boolean>();
+  let run = 0; // chặn kết quả cũ ghi đè khi người dùng chấm lại
+
+  // ---------- Chuyển chế độ Dán nội dung / Nhập URL ----------
+  document.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) =>
+    b.addEventListener('click', () => {
+      mode = b.dataset.mode as 'paste' | 'url';
+      document.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((x) => {
+        x.classList.toggle('active', x === b);
+        x.setAttribute('aria-selected', String(x === b));
+      });
+      document.querySelectorAll<HTMLElement>('[data-only]').forEach((el) => (el.hidden = el.dataset.only !== mode));
+      err.hidden = true;
+    }),
+  );
 
   const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
   // Markdown tối giản trong JSON: **đậm**, `mã`
@@ -248,8 +276,16 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
   });
 
   // ---------- Chấm ----------
+  const showErr = (msg: string) => {
+    err.hidden = !msg;
+    err.textContent = msg;
+  };
+  const runBtn = form.querySelector<HTMLButtonElement>('.sc-run')!;
+  const RUN_LABEL = runBtn.textContent!;
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    if (mode === 'url') return void checkUrl();
     const fd = new FormData(form);
     const meta: PageMeta = {
       keyword: String(fd.get('keyword') || '').trim(),
@@ -265,12 +301,112 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
     if (problem) return;
 
     const doc = new DOMParser().parseFromString(`<!doctype html><html><body>${html}</body></html>`, 'text/html');
+    run++;
+    openState.clear();
     const results = analyze({ doc, meta, mode: 'paste' }, CHECKLIST);
-    last = { results, meta };
+    last = { results, meta, doc };
     render();
     out.hidden = false;
     out.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  // ---------- Chế độ URL: Worker tải trang → chấm trên trình duyệt → bổ sung PageSpeed, link, ảnh ----------
+  async function api<T>(path: string, body: unknown): Promise<T> {
+    let res: Response;
+    try {
+      res = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    } catch {
+      throw new Error('Mất kết nối mạng, bạn thử lại nhé.');
+    }
+    const data = await res.json().catch(() => null);
+    if (!data) throw new Error('Chế độ Nhập URL chưa chạy trên phiên bản web này. Hãy dùng chế độ “Dán nội dung”.');
+    if (!res.ok) throw new Error(data.error || 'Không kiểm tra được URL này.');
+    return data as T;
+  }
+
+  async function checkUrl() {
+    const fd = new FormData(form);
+    let pageUrl = String(fd.get('pageUrl') || '').trim();
+    const keyword = String(fd.get('keyword') || '').trim();
+    if (pageUrl && !/^https?:\/\//i.test(pageUrl)) pageUrl = 'https://' + pageUrl;
+    if (!pageUrl) return showErr('Nhập URL bài viết cần kiểm tra.');
+    if (!keyword) return showErr(T.needKeyword);
+    showErr('');
+    const my = ++run;
+    runBtn.disabled = true;
+    runBtn.textContent = 'Đang tải trang…';
+    let page: { finalUrl: string; status: number; headers: Record<string, string>; html: string; truncated: boolean; robotsTxt: string | null; sitemapHasUrl: boolean };
+    try {
+      page = await api('/api/seo/fetch', { url: pageUrl });
+    } catch (e) {
+      runBtn.disabled = false;
+      runBtn.textContent = RUN_LABEL;
+      return showErr((e as Error).message);
+    }
+    runBtn.disabled = false;
+    runBtn.textContent = RUN_LABEL;
+    if (my !== run) return;
+
+    const doc = new DOMParser().parseFromString(page.html, 'text/html');
+    const meta: PageMeta = {
+      keyword,
+      title: (doc.querySelector('title')?.textContent || '').replace(/\s+/g, ' ').trim(),
+      metaDescription: (doc.querySelector('meta[name="description"]')?.getAttribute('content') || '').trim(),
+      url: page.finalUrl,
+      domain: hostOf(page.finalUrl),
+    };
+    const extras: UrlExtras = {
+      finalUrl: page.finalUrl,
+      status: page.status,
+      headers: page.headers,
+      robotsTxt: page.robotsTxt,
+      sitemapHasUrl: page.sitemapHasUrl,
+    };
+    openState.clear();
+    last = { results: [], meta, doc, extras, loading: ['Đang đo tốc độ trang bằng PageSpeed (khoảng 10–30 giây)…', 'Đang kiểm tra link ngoài và dung lượng ảnh…'] };
+    if (page.truncated) last.loading!.push('Trang lớn hơn 3 MB: công cụ chỉ đọc 3 MB đầu.');
+    rescore();
+    render();
+    out.hidden = false;
+    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Link ngoài (≤20), ảnh trong nội dung (≤20), og:image
+    const root = contentRoot(doc, 'url');
+    const links = [...new Set(Array.from(root.querySelectorAll('a[href]')).map((a) => a.getAttribute('href') || ''))]
+      .filter((h) => linkKind(h, meta.domain) === 'external')
+      .map((h) => absUrl(h, page.finalUrl))
+      .filter((h) => /^https?:/.test(h))
+      .slice(0, 20);
+    const images = [...new Set(Array.from(root.querySelectorAll('img')).map((i) => i.getAttribute('src') || i.getAttribute('data-src') || ''))]
+      .filter((s) => s && !s.startsWith('data:'))
+      .map((s) => absUrl(s, page.finalUrl))
+      .slice(0, 20);
+    const og = doc.querySelector('meta[property="og:image"]')?.getAttribute('content');
+    const done = (msg: string) => {
+      if (my !== run || !last) return;
+      last.loading = (last.loading || []).filter((m) => !m.startsWith(msg));
+      rescore();
+      render();
+    };
+    api<{ pagespeed: UrlExtras['pagespeed']; pagespeedError?: string }>('/api/seo/psi', { url: page.finalUrl })
+      .then((r) => Object.assign(extras, { pagespeed: r.pagespeed, pagespeedError: r.pagespeedError ?? null }))
+      .catch((e) => Object.assign(extras, { pagespeed: null, pagespeedError: (e as Error).message }))
+      .finally(() => done('Đang đo tốc độ'));
+    api<{ linkStatus: Record<string, number>; imageBytes: Record<string, number>; ogImageSize: UrlExtras['ogImageSize'] }>('/api/seo/links', {
+      links,
+      images,
+      ogImage: og ? absUrl(og, page.finalUrl) : null,
+    })
+      .then((r) => Object.assign(extras, r))
+      .catch(() => {})
+      .finally(() => done('Đang kiểm tra link'));
+  }
+
+  /** Chấm lại toàn bộ với dữ liệu hiện có (rất nhanh, dùng khi có thêm PageSpeed/link) */
+  function rescore() {
+    if (!last) return;
+    last.results = analyze({ doc: last.doc, meta: last.meta, mode: last.extras ? 'url' : 'paste', extras: last.extras }, CHECKLIST);
+  }
 
   // ---------- Hiển thị ----------
   const ICON: Record<string, string> = { pass: '✓', warn: '!', fail: '✕', manual: '☐', na: '–' };
@@ -300,6 +436,7 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
           <span class="c-fail">${ICON.fail} ${T.statusLabel.fail} <b>${s.counts.fail}</b></span>
           <span class="c-manual">${ICON.manual} ${T.statusLabel.manual} <b>${s.counts.manual}</b></span>
         </div>
+        ${(last!.loading || []).map((m) => `<p class="sc-loading"><i></i>${esc(m)}</p>`).join('')}
         <div class="sc-urgent">
           <b>🔥 ${T.urgentTitle}</b>
           ${urgent ? `<ol>${urgent}</ol>` : `<p>${T.urgentEmpty}</p>`}
@@ -329,7 +466,7 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
   function itemHtml(r: CheckResult) {
     const it = CHECKLIST.items.find((i) => i.id === r.id)!;
     const done = r.status === 'manual' && ticked.has(r.id);
-    const open = r.status === 'fail' || r.status === 'warn';
+    const open = openState.get(r.id) ?? (r.status === 'fail' || r.status === 'warn');
     const details = r.details.length ? `<ul class="sc-det">${r.details.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : '';
     const manual =
       r.status === 'manual'
@@ -394,6 +531,7 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
       const body = head.nextElementSibling as HTMLElement;
       body.hidden = !body.hidden;
       head.setAttribute('aria-expanded', String(!body.hidden));
+      openState.set(Number(head.parentElement!.id.replace('sc-item-', '')), !body.hidden);
     }
     if (t.id === 'sc-print') window.print();
     if (t.id === 'sc-copy') {
@@ -421,6 +559,7 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
     const lines = [
       T.reportTitle,
       `Từ khoá: ${last!.meta.keyword}`,
+      ...(last!.extras ? [`URL: ${last!.extras.finalUrl}`] : []),
       `Điểm: ${Math.round(s.ratio * 100)}% (${s.earned}/${s.max}) · ${s.rating}`,
       `Đạt ${s.counts.pass} · Cần cải thiện ${s.counts.warn} · Chưa đạt ${s.counts.fail} · Tự kiểm tra ${s.counts.manual}`,
       '',
@@ -546,6 +685,18 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
   .sc-content {
     display: grid;
     gap: 8px;
+  }
+  .sc-url-note {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(99, 102, 241, 0.07);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .sc-run:disabled {
+    opacity: 0.7;
+    cursor: progress;
   }
   .sc-content-head {
     display: flex;
@@ -758,6 +909,25 @@ const fmtDate = (d: string) => d.split('-').reverse().join('/');
   #seo-app .sc-counts .c-pass { color: #1f9d6b; background: rgba(31, 157, 107, 0.1); }
   #seo-app .sc-counts .c-warn { color: #b7791f; background: rgba(183, 121, 31, 0.12); }
   #seo-app .sc-counts .c-fail { color: #e5523d; background: rgba(255, 107, 87, 0.12); }
+  #seo-app .sc-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  #seo-app .sc-loading i {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(59, 52, 166, 0.25);
+    border-top-color: #3b34a6;
+    animation: sc-spin 0.8s linear infinite;
+  }
+  @keyframes sc-spin {
+    to { transform: rotate(360deg); }
+  }
   #seo-app .sc-urgent {
     padding: 14px 16px;
     border-radius: 16px;

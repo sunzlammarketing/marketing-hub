@@ -7,16 +7,20 @@ import SocialFabs from '../components/SocialFabs.astro';
 import PromoClock from '../components/PromoClock.astro';
 import { ui } from '../i18n/ui';
 import { SOCIALS } from '../data/social';
+import { absolute } from '../data/site';
 
 interface Props {
   title: string;
   description?: string;
+  /** Ảnh chia sẻ mạng xã hội (đường dẫn trong web, vd /products/x/cover.jpg). Mặc định: logo */
+  image?: string;
   /** true: dùng nguyên title, không thêm " · Sunz Làm Marketing" */
   exactTitle?: boolean;
 }
 const {
   title,
   exactTitle = false,
+  image = '/logo-full.png',
   description = 'Sunz Làm Marketing - Chia sẻ kiến thức Marketing thực chiến cho người Việt: SEO, Content, Ads, Social Media, Email và Thương hiệu.',
 } = Astro.props;
 const fullTitle = exactTitle || title === 'Sunz Làm Marketing'
@@ -36,6 +40,11 @@ const fullTitle = exactTitle || title === 'Sunz Làm Marketing'
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <link rel="canonical" href={absolute(Astro.url.pathname)} />
+    <meta property="og:url" content={absolute(Astro.url.pathname)} />
+    <meta property="og:image" content={absolute(image)} />
+    <meta property="og:site_name" content="Sunz Làm Marketing" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="generator" content={Astro.generator} />
     <script
       type="application/ld+json"

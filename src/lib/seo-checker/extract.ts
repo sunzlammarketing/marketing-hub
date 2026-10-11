@@ -98,7 +98,11 @@ export function extract(doc: Document, mode: Mode): Extracted {
   const headings: Heading[] = all('h1,h2,h3,h4,h5,h6')
     .map((h) => ({ level: Number(h.tagName[1]), text: blockText(h), id: h.getAttribute('id') || '' }))
     .filter((h) => h.text);
-  const h1s = headings.filter((h) => h.level === 1).map((h) => h.text);
+  // Chế độ URL: đếm H1 trên TOÀN trang (theme hay tự gắn H1 cho logo/tên web ngoài vùng bài viết)
+  const h1s =
+    mode === 'url'
+      ? Array.from(doc.querySelectorAll('h1')).map((h) => blockText(h)).filter(Boolean)
+      : headings.filter((h) => h.level === 1).map((h) => h.text);
 
   // Đoạn văn: <p> có chữ. Không có <p> nào (vd dán chữ thuần) → coi mỗi khối chữ là 1 đoạn.
   let paragraphs = all('p').map((p) => blockText(p)).filter(Boolean);

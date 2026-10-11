@@ -173,3 +173,80 @@ describe('làm sạch HTML dán từ Google Docs', () => {
     expect(out).not.toContain('script');
   });
 });
+
+// ================= Chế độ URL (Bước B) =================
+import { robotsBlocks, normUrl } from './rules-url';
+import type { UrlExtras } from './types';
+
+const FINAL = 'https://myphamabc.vn/kem-chong-nang-cho-da-dau';
+const GOOD_HEAD = `
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="${FINAL}">
+<meta property="og:title" content="t"><meta property="og:description" content="d"><meta property="og:image" content="https://myphamabc.vn/og.jpg">
+<meta name="author" content="Mây">
+<meta property="article:published_time" content="2026-10-01"><meta property="article:modified_time" content="2026-10-10">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kem chống nắng","author":{"@type":"Person","name":"Mây","url":"https://myphamabc.vn/tac-gia/may"}}</script>`;
+const GOOD_ARTICLE = `<article>${GOOD_BODY.replace('<img src="/images/kem-chong-nang-dang-gel-cho-da-dau.webp"', '<img src="/images/kem-chong-nang-dang-gel-cho-da-dau.webp" fetchpriority="high"')}</article>`;
+const GOOD_EXTRAS: UrlExtras = {
+  finalUrl: FINAL,
+  status: 200,
+  headers: {},
+  robotsTxt: 'User-agent: *\nDisallow: /wp-admin/',
+  sitemapHasUrl: true,
+  pagespeed: { source: 'field', lcpMs: 2100, inpMs: 150, cls: 0.05 },
+};
+
+function runUrl(head: string, body: string, extras: Partial<UrlExtras> = {}): Record<number, CheckResult> {
+  const doc = new LinkedomParser().parseFromString(`<!doctype html><html><head>${head}</head><body><header><a href="/">Logo</a></header>${body}<footer>f</footer></body></html>`, 'text/html') as unknown as Document;
+  const meta: PageMeta = { keyword: KW, title: GOOD_TITLE, metaDescription: GOOD_META, url: FINAL, domain: '' };
+  const results = analyze({ doc, meta, mode: 'url', extras: { ...GOOD_EXTRAS, ...extras } }, CHECKLIST);
+  return Object.fromEntries(results.map((r) => [r.id, r]));
+}
+
+describe('chế độ URL: trang đạt chuẩn', () => {
+  const r = runUrl(GOOD_HEAD, GOOD_ARTICLE);
+  for (const id of [9, 10, 18, 19, 25, 26, 27, 28, 29, 4, 11, 21]) {
+    it(`mục ${id} = pass`, () => expect(r[id].status, r[id].measured + ' | ' + r[id].details.join(' | ')).toBe('pass'));
+  }
+  it('mục self/ai vẫn là tự tick', () => expect(r[1].status).toBe('manual'));
+});
+
+describe('chế độ URL: ca Chưa đạt', () => {
+  it('mục 9: không có canonical', () => expect(runUrl('', GOOD_ARTICLE)[9].status).toBe('fail'));
+  it('mục 9: canonical trỏ URL khác = cần cải thiện', () =>
+    expect(runUrl('<link rel="canonical" href="https://myphamabc.vn/khac">', GOOD_ARTICLE)[9].status).toBe('warn'));
+  it('mục 9: so canonical bỏ utm và dấu / cuối', () => expect(normUrl(FINAL + '/?utm_source=fb')).toBe(normUrl(FINAL)));
+  it('mục 10: thiếu 2 thẻ OG', () => expect(runUrl('<meta property="og:title" content="t">', GOOD_ARTICLE)[10].status).toBe('fail'));
+  it('mục 18: không có tác giả', () => expect(runUrl('', GOOD_ARTICLE)[18].status).toBe('fail'));
+  it('mục 18: chỉ có tên = cần cải thiện', () => expect(runUrl('<meta name="author" content="Mây">', GOOD_ARTICLE)[18].status).toBe('warn'));
+  it('mục 18: dòng byline chỉ có ngày đăng không tính là tác giả', () =>
+    expect(runUrl('', `<div class="byline"><span>July 21, 2026 · 7 min read</span></div>${GOOD_ARTICLE}`)[18].status).toBe('fail'));
+  it('mục 18: byline có link tên tác giả = đạt', () =>
+    expect(runUrl('', `<p class="byline">Bởi <a href="/tac-gia/may">Mây Nguyễn</a> · 12/10/2026</p>${GOOD_ARTICLE}`)[18].status).toBe('pass'));
+  it('mục 19: không có ngày', () => expect(runUrl('', GOOD_ARTICLE)[19].status).toBe('fail'));
+  it('mục 25: ảnh đầu bài lazy + nặng', () => {
+    const body = `<article><p>a</p><img src="/a.jpg" loading="lazy"></article>`;
+    expect(runUrl(GOOD_HEAD, body, { imageBytes: { 'https://myphamabc.vn/a.jpg': 900 * 1024 } })[25].status).toBe('fail');
+  });
+  it('mục 26: noindex', () => expect(runUrl(GOOD_HEAD + '<meta name="robots" content="noindex">', GOOD_ARTICLE)[26].status).toBe('fail'));
+  it('mục 26: status 404', () => expect(runUrl(GOOD_HEAD, GOOD_ARTICLE, { status: 404 })[26].status).toBe('fail'));
+  it('mục 26: robots.txt chặn', () =>
+    expect(runUrl(GOOD_HEAD, GOOD_ARTICLE, { robotsTxt: 'User-agent: *\nDisallow: /kem' })[26].status).toBe('fail'));
+  it('robots.txt: Allow dài hơn thắng Disallow', () => {
+    expect(robotsBlocks('User-agent: *\nDisallow: /blog\nAllow: /blog/kem', '/blog/kem-a')).toBe(false);
+    expect(robotsBlocks('User-agent: *\nDisallow: /', '/a')).toBe(true);
+    expect(robotsBlocks('User-agent: Googlebot\nAllow: /\n\nUser-agent: *\nDisallow: /', '/a')).toBe(false);
+  });
+  it('mục 27: thiếu viewport', () => expect(runUrl('', GOOD_ARTICLE)[27].status).toBe('fail'));
+  it('mục 28: 2 chỉ số kém', () =>
+    expect(runUrl(GOOD_HEAD, GOOD_ARTICLE, { pagespeed: { source: 'lab', lcpMs: 4000, tbtMs: 600, cls: 0.02 } })[28].status).toBe('fail'));
+  it('mục 28: PageSpeed lỗi → không tính điểm', () =>
+    expect(runUrl(GOOD_HEAD, GOOD_ARTICLE, { pagespeed: null, pagespeedError: 'Hết thời gian' })[28].status).toBe('na'));
+  it('mục 29: chỉ có Organization = cần cải thiện', () =>
+    expect(runUrl('<script type="application/ld+json">{"@type":"Organization","name":"A"}</script>', GOOD_ARTICLE)[29].status).toBe('warn'));
+  it('mục 29: JSON-LD lỗi cú pháp', () => expect(runUrl('<script type="application/ld+json">{oops</script>', GOOD_ARTICLE)[29].status).toBe('fail'));
+  it('mục 11: H1 ở header theme + H1 bài = 2 H1', () =>
+    expect(runUrl(GOOD_HEAD, `<header><h1>Logo</h1></header>${GOOD_ARTICLE}`)[11].status).toBe('fail'));
+  it('mục 23: link ngoài lỗi 404', () =>
+    expect(runUrl(GOOD_HEAD, GOOD_ARTICLE, { linkStatus: { 'https://www.who.int/uv': 404 } })[23].status).toBe('fail'));
+});
