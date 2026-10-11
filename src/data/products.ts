@@ -120,7 +120,7 @@ export const PRODUCTS: Product[] = [
       en: 'Find your situation, open the matching formula. 50 formulas in 10 sales-situation groups, each with a fill-in template, a real example and tips, plus a Vietnamese ad-law check.',
     },
     price: 49000,
-    originalPrice: 99000,
+    originalPrice: 89000,
     intro: {
       vi: 'Phần lớn caption không bán được vì viết sai tình huống: khách hỏi giá rồi im mà vẫn đăng bài giới thiệu, cần doanh số gấp mà lại kể chuyện thương hiệu. Ebook này bắt đầu từ vấn đề bạn đang gặp. Tra bảng "Chọn mẫu theo tình huống", lấy 3 công thức gợi ý, điền bảng biến (sản phẩm, khách hàng, nỗi đau, lợi ích, bằng chứng, ưu đãi) một lần rồi dùng lại cho cả 50 mẫu. Mỗi công thức gồm các bước của khung, "Dùng khi", khung mẫu có [biến] tô màu, ví dụ minh họa hoàn chỉnh cho nhiều ngành (F&B, mỹ phẩm, thời trang, gia dụng, khóa học) và mẹo tránh rủi ro pháp lý, rủi ro uy tín. Cuối sách có checklist 8 điểm trước khi bấm đăng và tóm tắt quy định quảng cáo mới nhất (Luật Quảng cáo sửa đổi 2026, Thông tư 39/2025/TT-BCT).',
       en: 'Most captions fail because they fit the wrong situation: posting a brand intro when customers ask the price and go silent, or telling a brand story when you need sales this week. This ebook starts from your problem. Look up the "Pick by situation" table, take the 3 suggested formulas, fill in your variables once (product, customer, pain, benefit, proof, offer) and reuse them across all 50. Each formula has its steps, "Use when", a fill-in template with highlighted [variables], a complete example across industries (F&B, cosmetics, fashion, home goods, courses) and tips to avoid legal and reputation risks. It ends with an 8-point pre-publish checklist and a summary of the latest Vietnamese ad rules.',
