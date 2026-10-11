@@ -23,7 +23,7 @@
   --brand-soft: #eef2ff;
   --accent: #06b6d4;
   /* Cụm chữ gradient trong tiêu đề, khối panel, thẻ */
-  --hl: linear-gradient(90deg, #0061ff, #2563eb 45%, #7c3aed);
+  --hl: linear-gradient(90deg, #403bd3, #ff7759); /* xanh tím → cam san hô thương hiệu */
   --panel: rgba(255, 255, 255, 0.72);
   --panel-shadow: 0 24px 50px -30px rgba(15, 23, 42, 0.25);
   --card-shadow: 0 10px 30px -22px rgba(15, 23, 42, 0.35);
@@ -61,7 +61,7 @@
   --brand-dark: #a5b4fc;
   --brand-soft: rgba(129, 140, 248, 0.14);
   --accent: #22d3ee;
-  --hl: linear-gradient(90deg, #60a5fa, #38bdf8 45%, #a78bfa);
+  --hl: linear-gradient(90deg, #8f8bff, #ff8a70);
   --panel: linear-gradient(180deg, rgba(30, 41, 82, 0.55), rgba(15, 23, 42, 0.62));
   --panel-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --card-shadow: 0 16px 36px -24px rgba(0, 0, 0, 0.7);
@@ -95,7 +95,7 @@
     --brand-dark: #a5b4fc;
     --brand-soft: rgba(129, 140, 248, 0.14);
     --accent: #22d3ee;
-    --hl: linear-gradient(90deg, #60a5fa, #38bdf8 45%, #a78bfa);
+    --hl: linear-gradient(90deg, #8f8bff, #ff8a70);
     --panel: linear-gradient(180deg, rgba(30, 41, 82, 0.55), rgba(15, 23, 42, 0.62));
     --panel-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     --card-shadow: 0 16px 36px -24px rgba(0, 0, 0, 0.7);
