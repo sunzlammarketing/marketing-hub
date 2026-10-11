@@ -23,10 +23,13 @@ export async function handleSeoApi(request, env, url) {
   } catch {
     return json({ error: 'Dữ liệu gửi lên không hợp lệ.' }, 400);
   }
+  // Cloudflare không cho Worker gọi vào chính địa chỉ của nó (lỗi 1042) → trang của chính web Sunz đọc thẳng
+  // từ file đã build (env.ASSETS); website khác tải qua mạng như bình thường.
+  const net = (u, init) => (new URL(u).host === url.host && env.ASSETS ? env.ASSETS.fetch(new Request(u, init)) : fetch(u, init));
   try {
-    if (url.pathname === '/api/seo/fetch') return await apiFetch(request, env, body);
+    if (url.pathname === '/api/seo/fetch') return await apiFetch(request, env, body, net);
     if (url.pathname === '/api/seo/psi') return await apiPsi(env, body);
-    if (url.pathname === '/api/seo/links') return await apiLinks(body);
+    if (url.pathname === '/api/seo/links') return await apiLinks(body, net);
   } catch (e) {
     return json({ error: 'Máy chủ gặp lỗi khi kiểm tra, bạn thử lại sau ít phút nhé.' }, 500);
   }
@@ -34,7 +37,7 @@ export async function handleSeoApi(request, env, url) {
 }
 
 // ---------------- /api/seo/fetch ----------------
-async function apiFetch(request, env, body) {
+async function apiFetch(request, env, body, net) {
   const target = checkUrl(body?.url);
   if (target.error) return json({ error: target.error }, 400);
 
@@ -43,7 +46,7 @@ async function apiFetch(request, env, body) {
 
   let page;
   try {
-    page = await fetchFollow(target.url, PAGE_TIMEOUT, MAX_HTML);
+    page = await fetchFollow(target.url, PAGE_TIMEOUT, MAX_HTML, net);
   } catch (e) {
     return json({ error: friendly(e) }, 502);
   }
@@ -60,7 +63,7 @@ async function apiFetch(request, env, body) {
   }
 
   const origin = new URL(page.finalUrl).origin;
-  const [robotsTxt, sitemapHasUrl] = await Promise.all([fetchText(`${origin}/robots.txt`, 5000, 512 * 1024), sitemapHas(origin, page.finalUrl)]);
+  const [robotsTxt, sitemapHasUrl] = await Promise.all([fetchText(`${origin}/robots.txt`, 5000, 512 * 1024, net), sitemapHas(origin, page.finalUrl, net)]);
 
   return json({
     finalUrl: page.finalUrl,
@@ -121,7 +124,7 @@ async function apiPsi(env, body) {
 }
 
 // ---------------- /api/seo/links ----------------
-async function apiLinks(body) {
+async function apiLinks(body, net) {
   const links = (Array.isArray(body?.links) ? body.links : []).slice(0, 20);
   const images = (Array.isArray(body?.images) ? body.images : []).slice(0, 20);
   const linkStatus = {};
@@ -129,16 +132,16 @@ async function apiLinks(body) {
   await Promise.all([
     ...links.map(async (u) => {
       if (checkUrl(u).error) return;
-      linkStatus[u] = await probe(u);
+      linkStatus[u] = await probe(u, net);
     }),
     ...images.map(async (u) => {
       if (checkUrl(u).error) return;
-      const n = await contentLength(u);
+      const n = await contentLength(u, net);
       if (n) imageBytes[u] = n;
     }),
   ]);
   let ogImageSize = null;
-  if (body?.ogImage && !checkUrl(body.ogImage).error) ogImageSize = await imageSize(body.ogImage);
+  if (body?.ogImage && !checkUrl(body.ogImage).error) ogImageSize = await imageSize(body.ogImage, net);
   return json({ linkStatus, imageBytes, ogImageSize });
 }
 
@@ -172,10 +175,10 @@ function isPrivateHost(host) {
 }
 
 // ---------------- Tải trang: tự theo redirect (tối đa 3), kiểm từng điểm đến ----------------
-async function fetchFollow(start, timeout, maxBytes) {
+async function fetchFollow(start, timeout, maxBytes, net) {
   let current = start;
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
-    const res = await fetchTimeout(current, { redirect: 'manual', headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml' } }, timeout);
+    const res = await fetchTimeout(current, { redirect: 'manual', headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml' } }, timeout, net);
     if (res.status >= 300 && res.status < 400 && res.headers.get('location')) {
       if (hop === MAX_REDIRECTS) throw new Error('TOO_MANY_REDIRECTS');
       const next = new URL(res.headers.get('location'), current).href;
@@ -195,11 +198,11 @@ async function fetchFollow(start, timeout, maxBytes) {
   throw new Error('TOO_MANY_REDIRECTS');
 }
 
-async function fetchTimeout(url, init, ms) {
+async function fetchTimeout(url, init, ms, net = fetch) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort('TIMEOUT'), ms);
   try {
-    return await fetch(url, { ...init, signal: ctrl.signal });
+    return await net(url, { ...init, signal: ctrl.signal });
   } catch (e) {
     throw new Error(ctrl.signal.aborted ? 'TIMEOUT' : 'NETWORK');
   } finally {
@@ -231,9 +234,9 @@ async function readLimited(res, maxBytes) {
   return { text: new TextDecoder().decode(all), truncated };
 }
 
-async function fetchText(url, ms, maxBytes) {
+async function fetchText(url, ms, maxBytes, net) {
   try {
-    const res = await fetchTimeout(url, { headers: { 'User-Agent': UA } }, ms);
+    const res = await fetchTimeout(url, { headers: { 'User-Agent': UA } }, ms, net);
     if (!res.ok) return null;
     return (await readLimited(res, maxBytes)).text;
   } catch {
@@ -242,7 +245,7 @@ async function fetchText(url, ms, maxBytes) {
 }
 
 /** URL có trong sitemap không: thử /sitemap.xml, /sitemap_index.xml, /sitemap-index.xml (mở tối đa 3 sitemap con) */
-async function sitemapHas(origin, finalUrl) {
+async function sitemapHas(origin, finalUrl, net) {
   const variants = new Set();
   const u = new URL(finalUrl);
   const path = u.pathname.replace(/\/+$/, '');
@@ -251,14 +254,14 @@ async function sitemapHas(origin, finalUrl) {
   const has = (xml) => [...variants].some((v) => xml.includes(`<loc>${v}</loc>`) || xml.includes(`<loc><![CDATA[${v}]]></loc>`));
 
   for (const name of ['/sitemap.xml', '/sitemap_index.xml', '/sitemap-index.xml']) {
-    const xml = await fetchText(origin + name, 5000, 3 * 1024 * 1024);
+    const xml = await fetchText(origin + name, 5000, 3 * 1024 * 1024, net);
     if (!xml || !xml.includes('<loc>')) continue;
     if (has(xml)) return true;
     if (xml.includes('<sitemapindex')) {
       const children = [...xml.matchAll(/<loc>\s*(?:<!\[CDATA\[)?([^<\]]+)/g)].map((m) => m[1].trim()).slice(0, 3);
       for (const child of children) {
         if (checkUrl(child).error) continue;
-        const cx = await fetchText(child, 5000, 3 * 1024 * 1024);
+        const cx = await fetchText(child, 5000, 3 * 1024 * 1024, net);
         if (cx && has(cx)) return true;
       }
     }
@@ -268,12 +271,12 @@ async function sitemapHas(origin, finalUrl) {
 }
 
 // ---------------- Kiểm link / ảnh ----------------
-async function probe(url) {
+async function probe(url, net) {
   try {
-    let res = await fetchTimeout(url, { method: 'HEAD', redirect: 'follow', headers: { 'User-Agent': UA } }, 5000);
+    let res = await fetchTimeout(url, { method: 'HEAD', redirect: 'follow', headers: { 'User-Agent': UA } }, 5000, net);
     // Nhiều website không hỗ trợ HEAD → thử GET
     if (res.status === 405 || res.status === 403 || res.status === 501) {
-      res = await fetchTimeout(url, { method: 'GET', redirect: 'follow', headers: { 'User-Agent': UA } }, 5000);
+      res = await fetchTimeout(url, { method: 'GET', redirect: 'follow', headers: { 'User-Agent': UA } }, 5000, net);
       res.body?.cancel();
     }
     return res.status;
@@ -282,13 +285,13 @@ async function probe(url) {
   }
 }
 
-async function contentLength(url) {
+async function contentLength(url, net) {
   try {
-    const res = await fetchTimeout(url, { method: 'HEAD', redirect: 'follow', headers: { 'User-Agent': UA } }, 5000);
+    const res = await fetchTimeout(url, { method: 'HEAD', redirect: 'follow', headers: { 'User-Agent': UA } }, 5000, net);
     const n = Number(res.headers.get('content-length')) || 0;
     if (n) return n;
     // Không có content-length (vd gửi dạng chunked) → hỏi 1 byte đầu, đọc tổng dung lượng từ Content-Range
-    const r2 = await fetchTimeout(url, { redirect: 'follow', headers: { 'User-Agent': UA, Range: 'bytes=0-0' } }, 5000);
+    const r2 = await fetchTimeout(url, { redirect: 'follow', headers: { 'User-Agent': UA, Range: 'bytes=0-0' } }, 5000, net);
     r2.body?.cancel();
     const total = (r2.headers.get('content-range') || '').split('/')[1];
     return Number(total) || Number(r2.headers.get('content-length')) || 0;
@@ -298,9 +301,9 @@ async function contentLength(url) {
 }
 
 /** Đọc kích thước ảnh từ phần đầu file (PNG, JPEG, GIF, WebP) — chỉ tải tối đa 128 KB */
-async function imageSize(url) {
+async function imageSize(url, net) {
   try {
-    const res = await fetchTimeout(url, { headers: { 'User-Agent': UA, Range: 'bytes=0-131071' } }, 5000);
+    const res = await fetchTimeout(url, { headers: { 'User-Agent': UA, Range: 'bytes=0-131071' } }, 5000, net);
     if (!res.ok && res.status !== 206) return null;
     const buf = new Uint8Array(await readBytes(res, 131072));
     return parseSize(buf);
