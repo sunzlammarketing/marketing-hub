@@ -80,14 +80,9 @@ async function apiFetch(request, env, body, net) {
 async function apiPsi(env, body) {
   const target = checkUrl(body?.url);
   if (target.error) return json({ error: target.error }, 400);
-  // Chỉ lấy các trường cần dùng để phản hồi gọn (PageSpeed trả về rất lớn)
-  const fields = [
-    'loadingExperience/metrics',
-    'lighthouseResult/categories/performance/score',
-    'lighthouseResult/audits/largest-contentful-paint/numericValue',
-    'lighthouseResult/audits/cumulative-layout-shift/numericValue',
-    'lighthouseResult/audits/total-blocking-time/numericValue',
-  ].join(',');
+  // Chỉ lấy các nhóm cần dùng để phản hồi gọn hơn. Google không nhận đường dẫn tới từng audit
+  // (tên có dấu gạch ngang như largest-contentful-paint → lỗi 400) nên lấy cả nhóm audits.
+  const fields = 'loadingExperience/metrics,lighthouseResult/categories/performance/score,lighthouseResult/audits';
   const api = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
   api.searchParams.set('url', target.url);
   api.searchParams.set('strategy', 'mobile');
@@ -101,7 +96,11 @@ async function apiPsi(env, body) {
     data = await res.json();
     if (!res.ok) throw new Error(data?.error?.message || `PageSpeed lỗi ${res.status}`);
   } catch (e) {
-    return json({ pagespeed: null, pagespeedError: 'PageSpeed Insights không phản hồi kịp hoặc báo lỗi, các mục khác vẫn được chấm bình thường.' });
+    const why = String(e?.message || '') === 'TIMEOUT' ? 'quá 60 giây' : String(e?.message || '').slice(0, 120);
+    return json({
+      pagespeed: null,
+      pagespeedError: `PageSpeed Insights không đo được trang này${why ? ` (${why})` : ''}. Các mục khác vẫn được chấm bình thường.`,
+    });
   }
   const m = data.loadingExperience?.metrics || {};
   const field = m.LARGEST_CONTENTFUL_PAINT_MS && m.CUMULATIVE_LAYOUT_SHIFT_SCORE;
