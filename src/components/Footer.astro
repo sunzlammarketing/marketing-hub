@@ -1,5 +1,6 @@
 ---
 import { SOCIALS } from '../data/social';
+import { POLICIES, OWNER } from '../data/legal';
 ---
 
 <footer class="site-footer">
@@ -32,9 +33,44 @@ import { SOCIALS } from '../data/social';
       </div>
     </div>
   </div>
+  <!-- Dải cuối: chính sách + thông tin chủ sở hữu (dữ liệu ở src/data/legal.ts) -->
+  <div class="container footer-legal">
+    <nav class="fl-links" aria-label="Chính sách">
+      {POLICIES.map((p) => <a href={`/chinh-sach/${p.slug}`}>{p.title}</a>)}
+    </nav>
+    <p class="fl-owner">
+      © {new Date().getFullYear()} {OWNER.brand} · Chủ sở hữu: {OWNER.name}
+      {OWNER.taxCode && <> · MST: {OWNER.taxCode}</>}
+      {OWNER.address && <> · {OWNER.address}</>}
+      · <a href={`mailto:${OWNER.email}`}>{OWNER.email}</a>
+    </p>
+  </div>
 </footer>
 
 <style>
+  .footer-legal {
+    padding-block: 16px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px 24px;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+  .fl-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+  .fl-links a,
+  .fl-owner a {
+    color: var(--ink-soft);
+  }
+  .fl-owner {
+    margin: 0;
+  }
   .site-footer {
     border-top: 1px solid var(--border);
     background: var(--panel);

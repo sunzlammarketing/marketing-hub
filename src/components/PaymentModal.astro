@@ -40,6 +40,11 @@ import { MESSENGER } from '../data/products';
       <p class="pay-privacy" data-i18n-vi="🔒 Thông tin chỉ dùng để gửi tài liệu và hỗ trợ đơn hàng." data-i18n-en="🔒 Your details are only used to deliver the file and support your order.">
         🔒 Thông tin chỉ dùng để gửi tài liệu và hỗ trợ đơn hàng.
       </p>
+      <p class="pay-terms">
+        Bằng việc tiếp tục, bạn đồng ý với <a href="/chinh-sach/dieu-khoan-su-dung" target="_blank">Điều khoản sử dụng</a>,
+        <a href="/chinh-sach/chinh-sach-bao-mat" target="_blank">Chính sách bảo mật</a> và
+        <a href="/chinh-sach/chinh-sach-doi-tra-hoan-tien" target="_blank">Chính sách hoàn tiền</a>.
+      </p>
     </form>
 
     <!-- Bước 2: mã QR -->
@@ -193,6 +198,17 @@ import { MESSENGER } from '../data/products';
     color: #dc2626;
     font-size: 0.88rem;
     font-weight: 600;
+  }
+  .pay-terms {
+    margin: 6px 0 0;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+  .pay-terms a {
+    color: var(--ink-soft);
+    text-decoration: underline;
   }
   .pay-next {
     font: inherit;

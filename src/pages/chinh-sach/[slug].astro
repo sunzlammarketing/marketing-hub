@@ -1,0 +1,139 @@
+---
+// Các trang chính sách: /chinh-sach/<slug>. Nội dung + thông tin chủ sở hữu ở src/data/legal.ts
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { POLICIES, POLICY_UPDATED, OWNER, type Policy } from '../../data/legal';
+
+export function getStaticPaths() {
+  return POLICIES.map((p) => ({ params: { slug: p.slug }, props: { policy: p } }));
+}
+const { policy: p } = Astro.props as { policy: Policy };
+const ownerRows = [
+  ['Chủ sở hữu website', OWNER.name],
+  ['Thương hiệu', OWNER.brand],
+  ['Mã số thuế', OWNER.taxCode],
+  ['Địa chỉ', OWNER.address],
+  ['Điện thoại / Zalo', OWNER.phone],
+  ['Email', OWNER.email],
+].filter(([, v]) => v);
+---
+
+<BaseLayout title={p.title} description={p.lead}>
+  <section class="page-head">
+    <div class="container">
+      <h1>{p.title}</h1>
+      <p>{p.lead}</p>
+    </div>
+  </section>
+
+  <section class="container pol-wrap">
+    <nav class="pol-nav" aria-label="Các chính sách">
+      {POLICIES.map((x) => (
+        <a href={`/chinh-sach/${x.slug}`} class={x.slug === p.slug ? 'active' : ''} aria-current={x.slug === p.slug ? 'page' : undefined}>{x.title}</a>
+      ))}
+    </nav>
+
+    <article class="panel pol-body">
+      <div class="prose">
+        {p.sections.map((s) => (
+          <>
+            <h2>{s.h}</h2>
+            <Fragment set:html={s.html} />
+          </>
+        ))}
+      </div>
+
+      <div class="pol-owner">
+        <b>Thông tin chủ sở hữu</b>
+        <dl>
+          {ownerRows.map(([k, v]) => (
+            <div><dt>{k}</dt><dd>{k === 'Email' ? <a href={`mailto:${v}`}>{v}</a> : v}</dd></div>
+          ))}
+        </dl>
+        <p class="pol-updated">Cập nhật lần cuối: {POLICY_UPDATED}</p>
+      </div>
+    </article>
+  </section>
+</BaseLayout>
+
+<style>
+  .pol-wrap {
+    max-width: 900px;
+    padding-bottom: var(--space-section);
+  }
+  .pol-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .pol-nav a {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .pol-nav a:hover {
+    text-decoration: none;
+    color: var(--ink);
+    border-color: var(--card-hover);
+  }
+  .pol-nav a.active {
+    color: var(--brand-dark);
+    background: var(--brand-soft);
+    border-color: rgba(99, 102, 241, 0.35);
+  }
+  .pol-body {
+    padding: 36px 44px;
+  }
+  .pol-body .prose h2:first-child {
+    margin-top: 0;
+  }
+  .pol-body .prose h2 {
+    font-size: 1.25rem;
+    margin-top: 1.8em;
+  }
+  .pol-owner {
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  .pol-owner b {
+    color: var(--ink);
+  }
+  .pol-owner dl {
+    margin: 12px 0 0;
+    display: grid;
+    gap: 6px;
+  }
+  .pol-owner dl div {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 12px;
+    font-size: 0.95rem;
+  }
+  .pol-owner dt {
+    color: var(--ink-faint);
+  }
+  .pol-owner dd {
+    margin: 0;
+    color: var(--ink);
+  }
+  .pol-updated {
+    margin: 16px 0 0;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+  @media (max-width: 640px) {
+    .pol-body {
+      padding: 24px 20px;
+    }
+    .pol-owner dl div {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>
