@@ -29,10 +29,15 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={p.name.vi} description={p.desc.vi} image={p.image}>
+<BaseLayout
+  title={p.name.vi}
+  description={p.desc.vi}
+  image={p.image?.endsWith('/cover.webp') ? p.image.replace(/cover\.webp$/, 'og.jpg') : p.image}
+>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <section class="container pdx">
+  <!-- Nội dung chính của trang (article) — tách khỏi danh sách "Tài liệu khác" bên dưới -->
+  <article class="container pdx">
 
     <div class="pdx-grid">
       <div class="pdx-media-col">
@@ -41,9 +46,17 @@ const jsonLd = {
         </div>
         {p.gallery && p.gallery.length > 0 && (
           <div class="pdx-gallery">
-            {p.gallery.map((src) => (
+            {p.gallery.map((src, i) => (
               <a href={src} target="_blank" rel="noopener">
-                <img src={src} alt="" loading="lazy" />
+                {/* Ảnh nhỏ <tên>-thumb.webp (480×360) cho dải xem trước; bấm mở ảnh trang đầy đủ */}
+                <img
+                  src={src.endsWith('.webp') ? src.replace(/\.webp$/, '-thumb.webp') : src}
+                  alt={`${p.name.vi}: trang xem trước ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                  width="480"
+                  height="360"
+                />
               </a>
             ))}
           </div>
@@ -131,7 +144,7 @@ const jsonLd = {
         )}
       </div>
     )}
-  </section>
+  </article>
 
   {related.length > 0 && (
     <section class="container pdx-related">

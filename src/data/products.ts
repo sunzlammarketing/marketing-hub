@@ -1,6 +1,7 @@
 // Sản phẩm trang Tài liệu (/tai-lieu). Thêm/sửa sản phẩm tại đây.
 // - price: số tiền VND (vd 49000). Để null nếu chưa có giá → hiện "Liên hệ".
-// - image: ảnh xem trước (bỏ vào public/products/, vd '/products/ke-hoach.jpg', tỉ lệ 4:3).
+// - image: ảnh xem trước (bỏ vào public/products/<slug>/cover.webp, tỉ lệ 4:3, ~1200×900).
+//   Kèm og.jpg 1200×630 cùng thư mục (ảnh khi chia sẻ link) và trang-N.webp + trang-N-thumb.webp cho gallery.
 //   Để trống thì tự vẽ ảnh bìa theo màu + icon.
 // - buyUrl: link mua riêng (Zalo, Shopee...). Để trống → mở Messenger fanpage kèm tin nhắn soạn sẵn.
 export interface Product {
@@ -40,7 +41,7 @@ export const PRODUCTS: Product[] = [
     color: '#403bd3',
     type: { vi: 'PDF · 32 trang', en: 'PDF · 32 pages' },
     tag: EBOOK,
-    image: '/products/ebook-50-cong-thuc/cover.jpg',
+    image: '/products/ebook-50-cong-thuc/cover.webp',
     name: {
       vi: 'Ebook 50 công thức viết content theo tình huống bán hàng',
       en: 'Ebook: 50 content formulas for real sales situations',
@@ -92,10 +93,10 @@ export const PRODUCTS: Product[] = [
       ],
     },
     gallery: [
-      '/products/ebook-50-cong-thuc/trang-2.jpg',
-      '/products/ebook-50-cong-thuc/trang-3.jpg',
-      '/products/ebook-50-cong-thuc/trang-6.jpg',
-      '/products/ebook-50-cong-thuc/trang-31.jpg',
+      '/products/ebook-50-cong-thuc/trang-2.webp',
+      '/products/ebook-50-cong-thuc/trang-3.webp',
+      '/products/ebook-50-cong-thuc/trang-6.webp',
+      '/products/ebook-50-cong-thuc/trang-31.webp',
     ],
   },
   {
@@ -105,7 +106,7 @@ export const PRODUCTS: Product[] = [
     color: '#272173',
     type: { vi: 'PDF 17 trang + Template', en: '17-page PDF + Template' },
     tag: EBOOK,
-    image: '/products/checklist-seo-on-page/cover.jpg',
+    image: '/products/checklist-seo-on-page/cover.webp',
     name: { vi: 'Checklist 30 điểm tối ưu SEO on-page', en: '30-point on-page SEO checklist' },
     desc: {
       vi: 'Kiểm tra từng bài viết chuẩn SEO trước khi bấm “Xuất bản”: 30 điểm chia 6 nhóm, 3 mức ưu tiên, ví dụ đúng/sai, công cụ miễn phí và template chấm điểm Google Sheet.',
@@ -150,10 +151,10 @@ export const PRODUCTS: Product[] = [
       ],
     },
     gallery: [
-      '/products/checklist-seo-on-page/trang-2.jpg',
-      '/products/checklist-seo-on-page/trang-6.jpg',
-      '/products/checklist-seo-on-page/trang-14.jpg',
-      '/products/checklist-seo-on-page/trang-15.jpg',
+      '/products/checklist-seo-on-page/trang-2.webp',
+      '/products/checklist-seo-on-page/trang-6.webp',
+      '/products/checklist-seo-on-page/trang-14.webp',
+      '/products/checklist-seo-on-page/trang-15.webp',
     ],
   },
   {

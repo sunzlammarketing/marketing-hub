@@ -6,6 +6,8 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
+    // Ngày cập nhật nội dung (chỉ điền khi đã sửa nội dung thật, không đổi ngày cho “có vẻ mới”)
+    updatedDate: z.coerce.date().optional(),
     category: z.string(),
     tags: z.array(z.string()).default([]),
     readingTime: z.number().optional(),

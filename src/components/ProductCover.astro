@@ -9,7 +9,12 @@ const { product: p, size = 'card' } = Astro.props;
 ---
 
 {p.image ? (
-  <img class="pc-img" src={p.image} alt={p.name.vi} loading="lazy" width="800" height="600" />
+  // Trang chi tiết (size large): ảnh bìa là phần tử lớn nhất đầu trang (LCP) → tải ngay, ưu tiên cao
+  size === 'large' ? (
+    <img class="pc-img" src={p.image} alt={p.name.vi} width="1200" height="900" fetchpriority="high" decoding="async" />
+  ) : (
+    <img class="pc-img" src={p.image} alt={p.name.vi} loading="lazy" decoding="async" width="800" height="600" />
+  )
 ) : (
   <div class={`pc-cover pc-${size}`} style={`--c:${p.color}`} aria-hidden="true">
     <span class="pc-type" data-i18n-vi={p.type.vi} data-i18n-en={p.type.en}>{p.type.vi}</span>
