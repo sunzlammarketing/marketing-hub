@@ -15,21 +15,21 @@ import { MESSENGER } from '../data/products';
 
     <!-- Bước 1: thông tin liên hệ -->
     <form class="pay-form" data-pay-step="info" novalidate>
-      <p class="pay-form-lead" data-i18n-vi="Để lại thông tin để Sunz gửi tài liệu cho bạn sau khi thanh toán." data-i18n-en="Leave your contact so Sunz can send the file after payment.">
-        Để lại thông tin để Sunz gửi tài liệu cho bạn sau khi thanh toán.
+      <p class="pay-form-lead" data-i18n-vi="Tài liệu được gửi qua email sau khi Sunz xác nhận thanh toán." data-i18n-en="The file is sent to your email once Sunz confirms payment.">
+        Tài liệu được gửi qua email sau khi Sunz xác nhận thanh toán.
       </p>
       <label>
-        <span><span data-i18n-vi="Số điện thoại / Zalo" data-i18n-en="Phone / Zalo">Số điện thoại / Zalo</span> <b class="req">*</b></span>
-        <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxx" required />
+        <span><span data-i18n-vi="Email nhận tài liệu" data-i18n-en="Email to receive the file">Email nhận tài liệu</span> <b class="req">*</b></span>
+        <input name="email" type="email" autocomplete="email" placeholder="ban@email.com" required />
       </label>
       <div class="pay-form-row">
         <label>
-          <span data-i18n-vi="Họ tên" data-i18n-en="Name">Họ tên</span>
-          <input name="name" type="text" autocomplete="name" placeholder="Nguyễn Văn A" />
+          <span><span data-i18n-vi="Số điện thoại / Zalo" data-i18n-en="Phone / Zalo">Số điện thoại / Zalo</span> <b class="req">*</b></span>
+          <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxx" required />
         </label>
         <label>
-          <span data-i18n-vi="Email (nhận file)" data-i18n-en="Email (to receive the file)">Email (nhận file)</span>
-          <input name="email" type="email" autocomplete="email" placeholder="ban@email.com" />
+          <span data-i18n-vi="Họ tên" data-i18n-en="Name">Họ tên</span>
+          <input name="name" type="text" autocomplete="name" placeholder="Nguyễn Văn A" />
         </label>
       </div>
       <input class="pay-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -81,8 +81,8 @@ import { MESSENGER } from '../data/products';
       <li data-i18n-vi="Giữ nguyên số tiền và nội dung chuyển khoản, xác nhận thanh toán." data-i18n-en="Keep the amount and transfer note as filled in, then confirm.">
         Giữ nguyên số tiền và nội dung chuyển khoản, xác nhận thanh toán.
       </li>
-      <li data-i18n-vi="Bấm “Tôi đã chuyển khoản” để báo Sunz qua Messenger — Sunz gửi tài liệu cho bạn." data-i18n-en="Tap “I've paid” to notify Sunz on Messenger — Sunz will send you the file.">
-        Bấm “Tôi đã chuyển khoản” để báo Sunz qua Messenger — Sunz gửi tài liệu cho bạn.
+      <li data-i18n-vi="Bấm “Tôi đã chuyển khoản”. Sunz xác nhận và gửi link tải tài liệu vào email của bạn." data-i18n-en="Tap “I've paid”. Sunz confirms and emails you the download link.">
+        Bấm “Tôi đã chuyển khoản”. Sunz xác nhận và gửi link tải tài liệu vào email của bạn.
       </li>
     </ol>
 
@@ -423,7 +423,10 @@ import { MESSENGER } from '../data/products';
     document.querySelectorAll<HTMLElement>('[data-pay]').forEach((btn) =>
       btn.addEventListener('click', () => {
         product = {
-          amount: Number(btn.dataset.price),
+          // Ưu đãi hết hạn (trang chưa build lại) → tính giá thường
+          amount: Number(
+            btn.dataset.until && Date.now() > Date.parse(btn.dataset.until) ? btn.dataset.regular : btn.dataset.price
+          ),
           pcode: btn.dataset.code || '',
           name: (lang() === 'en' ? btn.dataset.nameEn : btn.dataset.nameVi) || '',
         };
@@ -450,15 +453,15 @@ import { MESSENGER } from '../data/products';
       // Chuẩn hoá SĐT VN: bỏ khoảng trắng/dấu, +84 → 0, phải đủ 10 số
       const phone = phoneEl.value.replace(/[\s.\-()]/g, '').replace(/^\+?84/, '0');
       const phoneOk = /^0\d{9}$/.test(phone);
-      const emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       phoneEl.setAttribute('aria-invalid', String(!phoneOk));
       emailEl.setAttribute('aria-invalid', String(!emailOk));
       if (!phoneOk || !emailOk) {
-        errBox.textContent = !phoneOk
-          ? lang() === 'en' ? 'Please enter a valid 10-digit phone number.' : 'Vui lòng nhập số điện thoại hợp lệ (10 số).'
-          : lang() === 'en' ? 'Email looks incorrect.' : 'Email chưa đúng định dạng.';
+        errBox.textContent = !emailOk
+          ? lang() === 'en' ? 'Please enter a valid email to receive the file.' : 'Vui lòng nhập email hợp lệ để nhận tài liệu.'
+          : lang() === 'en' ? 'Please enter a valid 10-digit phone number.' : 'Vui lòng nhập số điện thoại hợp lệ (10 số).';
         errBox.hidden = false;
-        (!phoneOk ? phoneEl : emailEl).focus();
+        (!emailOk ? emailEl : phoneEl).focus();
         return;
       }
       errBox.hidden = true;

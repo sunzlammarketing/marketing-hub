@@ -6,14 +6,15 @@ import ProductCover from '../../components/ProductCover.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import BuyButton from '../../components/BuyButton.astro';
 import PaymentModal from '../../components/PaymentModal.astro';
-import { PRODUCTS, formatVnd, discountPct, type Product } from '../../data/products';
+import { PRODUCTS, formatVnd, effectivePrice, type Product } from '../../data/products';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
 }
 
 const { product: p } = Astro.props as { product: Product };
-const off = discountPct(p);
+const ep = effectivePrice(p);
+const off = ep.off;
 const related = PRODUCTS.filter((x) => x.slug !== p.slug).slice(0, 3);
 
 const jsonLd = {
@@ -73,12 +74,12 @@ const jsonLd = {
         <div class="pdx-buy">
           <div>
             <span class="pdx-price-label" data-i18n-vi="Giá" data-i18n-en="Price">Giá</span>
-            {p.price != null ? (
-              <span class="pdx-price-row">
-                <span class="pdx-price">{formatVnd(p.price)}</span>
+            {ep.price != null ? (
+              <span class="pdx-price-row" data-price-box data-until={ep.promo?.until} data-regular={p.price != null ? formatVnd(p.price) : undefined}>
+                <span class="pdx-price" data-pnow>{formatVnd(ep.price)}</span>
                 {off && (
-                  <span class="pdx-old">
-                    <s>{formatVnd(p.originalPrice!)}</s> <b class="pdx-off">-{off}%</b>
+                  <span class="pdx-old" data-pold>
+                    <s>{formatVnd(ep.old!)}</s> <b class="pdx-off">-{off}%</b>
                   </span>
                 )}
               </span>
@@ -92,14 +93,14 @@ const jsonLd = {
         <div class="pdx-how">
           <b data-i18n-vi="Cách mua" data-i18n-en="How to buy">Cách mua</b>
           <ol>
-            <li data-i18n-vi="Bấm “Mua ngay” — Messenger mở sẵn tin nhắn kèm tên tài liệu." data-i18n-en="Tap “Buy now” — Messenger opens with the product name pre-filled.">
-              Bấm “Mua ngay” — Messenger mở sẵn tin nhắn kèm tên tài liệu.
+            <li data-i18n-vi="Bấm “Mua ngay”, nhập email và số điện thoại." data-i18n-en="Tap “Buy now”, enter your email and phone.">
+              Bấm “Mua ngay”, nhập email và số điện thoại.
             </li>
-            <li data-i18n-vi="Gửi tin nhắn, Sunz phản hồi và hướng dẫn thanh toán." data-i18n-en="Send it — Sunz replies with payment details.">
-              Gửi tin nhắn, Sunz phản hồi và hướng dẫn thanh toán.
+            <li data-i18n-vi="Quét mã QR chuyển khoản, số tiền và nội dung đã điền sẵn." data-i18n-en="Scan the QR to pay — amount and note are pre-filled.">
+              Quét mã QR chuyển khoản, số tiền và nội dung đã điền sẵn.
             </li>
-            <li data-i18n-vi="Nhận tài liệu sau khi thanh toán xong." data-i18n-en="Receive the file once payment is done.">
-              Nhận tài liệu sau khi thanh toán xong.
+            <li data-i18n-vi="Nhận link tải tài liệu qua email sau khi Sunz xác nhận." data-i18n-en="Get the download link by email once Sunz confirms.">
+              Nhận link tải tài liệu qua email sau khi Sunz xác nhận.
             </li>
           </ol>
         </div>

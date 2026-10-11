@@ -2,14 +2,15 @@
 // Thẻ sản phẩm: bấm ảnh/tên → trang chi tiết; nút Mua ngay → mua thẳng.
 import ProductCover from './ProductCover.astro';
 import BuyButton from './BuyButton.astro';
-import { productUrl, formatVnd, discountPct, type Product } from '../data/products';
+import { productUrl, formatVnd, effectivePrice, type Product } from '../data/products';
 interface Props {
   product: Product;
   href?: string; // trang chi tiết; mặc định /tai-lieu/<slug>
 }
 const { product: p, href } = Astro.props;
 const url = href ?? productUrl(p);
-const off = discountPct(p);
+const ep = effectivePrice(p);
+const off = ep.off;
 ---
 
 <article class="pd-card">
@@ -26,14 +27,19 @@ const off = discountPct(p);
       <span data-i18n-vi="Xem chi tiết" data-i18n-en="View details">Xem chi tiết</span> →
     </a>
     <div class="pd-foot">
-      {p.price != null ? (
-        <div class="pd-prices">
+      {ep.price != null ? (
+        <div class="pd-prices" data-price-box data-until={ep.promo?.until} data-regular={p.price != null ? formatVnd(p.price) : undefined}>
           {off && (
-            <span class="pd-old">
-              <s>{formatVnd(p.originalPrice!)}</s> <b class="pd-off">-{off}%</b>
+            <span class="pd-old" data-pold>
+              <s>{formatVnd(ep.old!)}</s> <b class="pd-off">-{off}%</b>
             </span>
           )}
-          <span class="pd-price">{formatVnd(p.price)}</span>
+          <span class="pd-price" data-pnow>{formatVnd(ep.price)}</span>
+          {ep.promo && (
+            <small class="pd-until" data-pold data-i18n-vi={`⏰ Ưu đãi đến ${new Date(ep.promo.until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })}`} data-i18n-en={`⏰ Offer ends ${new Date(ep.promo.until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })}`}>
+              ⏰ Ưu đãi đến {new Date(ep.promo.until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })}
+            </small>
+          )}
         </div>
       ) : (
         <span class="pd-price pd-price-ask" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
@@ -157,6 +163,12 @@ const off = discountPct(p);
     background: #ef4444;
     padding: 2px 6px;
     border-radius: 6px;
+  }
+  .pd-until {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #e2553b;
+    margin-top: 2px;
   }
   .pd-price-ask {
     font-size: 1.1rem;

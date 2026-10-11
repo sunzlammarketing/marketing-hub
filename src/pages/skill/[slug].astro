@@ -5,13 +5,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BuyButton from '../../components/BuyButton.astro';
 import PaymentModal from '../../components/PaymentModal.astro';
 import { SKILLS, type Skill } from '../../data/skills';
-import { formatVnd, discountPct } from '../../data/products';
+import PromoBar from '../../components/PromoBar.astro';
+import { formatVnd, effectivePrice } from '../../data/products';
 
 export function getStaticPaths() {
   return SKILLS.map((s) => ({ params: { slug: s.slug }, props: { skill: s } }));
 }
 const { skill: s } = Astro.props as { skill: Skill };
-const off = discountPct(s);
+const ep = effectivePrice(s);
+const off = ep.off;
 const total = s.groups.reduce((n, g) => n + g.items.length, 0);
 
 const jsonLd = {
@@ -56,13 +58,13 @@ const jsonLd = {
 
       <div class="sk-buy">
         <div class="sk-price">
-          {s.price != null ? (
-            <>
+          {ep.price != null ? (
+            <span class="sk-pbox" data-price-box data-until={ep.promo?.until} data-regular={s.price != null ? formatVnd(s.price) : undefined}>
               {off && (
-                <span class="sk-old"><s>{formatVnd(s.originalPrice!)}</s> <b>-{off}%</b></span>
+                <span class="sk-old" data-pold><s>{formatVnd(ep.old!)}</s> <b>-{off}%</b></span>
               )}
-              <span class="sk-now">{formatVnd(s.price)}</span>
-            </>
+              <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
+            </span>
           ) : (
             <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
           )}
@@ -70,6 +72,7 @@ const jsonLd = {
         <BuyButton product={s} size="lg" />
         <a href="#tinh-huong" class="sk-ghost" data-i18n-vi="Skill làm được gì? ↓" data-i18n-en="What does it do? ↓">Skill làm được gì? ↓</a>
       </div>
+      {ep.promo && <PromoBar product={s} tone="dark" />}
     </div>
   </section>
 
@@ -220,20 +223,21 @@ const jsonLd = {
         <div class="sk-final-buy">
           <b class="sk-final-name" data-i18n-vi={s.name.vi} data-i18n-en={s.name.en}>{s.name.vi}</b>
           <div class="sk-price">
-            {s.price != null ? (
-              <>
+            {ep.price != null ? (
+              <span class="sk-pbox" data-price-box data-until={ep.promo?.until} data-regular={s.price != null ? formatVnd(s.price) : undefined}>
                 {off && (
-                  <span class="sk-old"><s>{formatVnd(s.originalPrice!)}</s> <b>-{off}%</b></span>
+                  <span class="sk-old" data-pold><s>{formatVnd(ep.old!)}</s> <b>-{off}%</b></span>
                 )}
-                <span class="sk-now">{formatVnd(s.price)}</span>
-              </>
+                <span class="sk-now" data-pnow>{formatVnd(ep.price)}</span>
+              </span>
             ) : (
               <span class="sk-now" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
             )}
           </div>
+          {ep.promo && <PromoBar product={s} />}
           <BuyButton product={s} size="lg" />
-          <p class="sk-final-note" data-i18n-vi="Thanh toán chuyển khoản QR, nhận skill qua Zalo / email." data-i18n-en="Pay by QR bank transfer, receive the skill via Zalo / email.">
-            Thanh toán chuyển khoản QR, nhận skill qua Zalo / email.
+          <p class="sk-final-note" data-i18n-vi="Thanh toán chuyển khoản QR, nhận link tải skill qua email." data-i18n-en="Pay by QR bank transfer, get the download link by email.">
+            Thanh toán chuyển khoản QR, nhận link tải skill qua email.
           </p>
         </div>
       </div>
@@ -369,6 +373,9 @@ const jsonLd = {
   }
   .sk-hero .sk-price {
     color: #fff;
+  }
+  .sk-pbox {
+    display: grid;
   }
   .sk-price {
     display: grid;

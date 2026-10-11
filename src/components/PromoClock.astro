@@ -1,0 +1,60 @@
+<!--
+  Đồng hồ ưu đãi chạy trên trình duyệt (gắn 1 lần trong BaseLayout):
+  - Cập nhật đếm ngược + thanh tiến độ của [data-promo-bar].
+  - Khi hết hạn: ẩn thanh ưu đãi, đổi giá hiển thị về giá thường ([data-pnow] ← data-regular),
+    ẩn giá gạch ([data-pold]). Nút mua tự lấy giá thường ở PaymentModal.
+  Nhờ vậy dù trang chưa được build lại, khách vẫn thấy đúng giá sau hạn.
+-->
+<script>
+  const pad = (n: number) => String(Math.max(0, n)).padStart(2, '0');
+
+  function expire() {
+    document.querySelectorAll<HTMLElement>('[data-promo-bar]').forEach((b) => {
+      if (Date.now() > Date.parse(b.dataset.until!)) b.hidden = true;
+    });
+    document.querySelectorAll<HTMLElement>('[data-price-box][data-until]').forEach((box) => {
+      if (Date.now() <= Date.parse(box.dataset.until!)) return;
+      const now = box.querySelector<HTMLElement>('[data-pnow]');
+      if (now && box.dataset.regular) now.textContent = box.dataset.regular;
+      box.querySelectorAll<HTMLElement>('[data-pold]').forEach((o) => (o.hidden = true));
+    });
+  }
+
+  function tick() {
+    const bars = document.querySelectorAll<HTMLElement>('[data-promo-bar]');
+    let anyLive = false;
+    bars.forEach((bar) => {
+      const from = Date.parse(bar.dataset.from!);
+      const until = Date.parse(bar.dataset.until!);
+      const now = Date.now();
+      const left = until - now;
+      if (left <= 0) return;
+      anyLive = true;
+      const s = Math.floor(left / 1000);
+      const set = (k: string, v: number) => {
+        const el = bar.querySelector(`[data-cd="${k}"]`);
+        if (el) el.textContent = pad(v);
+      };
+      set('d', Math.floor(s / 86400));
+      set('h', Math.floor((s % 86400) / 3600));
+      set('m', Math.floor((s % 3600) / 60));
+      set('s', s % 60);
+      const pct = Math.min(100, Math.max(0, ((now - from) / (until - from)) * 100));
+      const fill = bar.querySelector<HTMLElement>('[data-promo-fill]');
+      if (fill) fill.style.width = pct.toFixed(1) + '%';
+      bar.querySelector('[role="progressbar"]')?.setAttribute('aria-valuenow', pct.toFixed(0));
+      const leftEl = bar.querySelector<HTMLElement>('[data-promo-left]');
+      if (leftEl) {
+        const days = Math.floor(s / 86400);
+        const en = document.documentElement.lang === 'en';
+        leftEl.textContent =
+          days >= 1
+            ? en ? `${days} day(s) left` : `Còn ${days} ngày`
+            : en ? 'Last day!' : 'Ngày cuối cùng!';
+      }
+    });
+    expire();
+    if (anyLive) setTimeout(tick, 1000);
+  }
+  tick();
+</script>

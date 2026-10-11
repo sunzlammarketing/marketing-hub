@@ -3,13 +3,14 @@
 // - Có giá (price) và không có buyUrl → mở cửa sổ QR thanh toán (PaymentModal phải có trên trang).
 // - Chưa có giá → mở Messenger fanpage kèm tin nhắn soạn sẵn tên sản phẩm (theo ngôn ngữ đang chọn).
 // - Có buyUrl → mở link đó.
-import { buyHref, productCode, type Product } from '../data/products';
+import { buyHref, productCode, effectivePrice, type Product } from '../data/products';
 interface Props {
   product: Product;
   size?: 'md' | 'lg';
 }
 const { product: p, size = 'md' } = Astro.props;
-const payQr = p.price != null && !p.buyUrl;
+const ep = effectivePrice(p);
+const payQr = ep.price != null && !p.buyUrl;
 ---
 
 {payQr ? (
@@ -17,7 +18,9 @@ const payQr = p.price != null && !p.buyUrl;
   type="button"
   class={`buy-btn buy-${size}`}
   data-pay
-  data-price={p.price}
+  data-price={ep.price}
+  data-regular={p.price}
+  data-until={ep.promo?.until}
   data-code={productCode(p)}
   data-name-vi={p.name.vi}
   data-name-en={p.name.en}

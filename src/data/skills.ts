@@ -36,7 +36,8 @@ export const SKILLS: Skill[] = [
       vi: 'Mô tả vấn đề bán hàng bạn đang gặp, AI tự chẩn đoán, chọn 2-3 mẫu phù hợp trong 50 mẫu swipe file, viết caption hoàn chỉnh và soát pháp lý quảng cáo VN trước khi giao. Dùng được trên Claude, Codex, ChatGPT và Gemini.',
       en: 'Describe your sales problem; the AI diagnoses it, picks 2-3 of 50 swipe-file templates, writes ready-to-post captions and checks Vietnamese ad law. Works on Claude, Codex, ChatGPT and Gemini.',
     },
-    price: null,
+    price: 399000,
+    promo: { price: 99000, from: '2026-10-11T00:00:00+07:00', until: '2026-10-20T23:59:59+07:00' },
     file: 'viet-content-theo-tinh-huong-ban-hang-by-sunzlammarketing.skill',
     stats: [
       { value: '50', label: { vi: 'mẫu caption', en: 'caption templates' } },

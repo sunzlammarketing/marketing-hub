@@ -13,6 +13,9 @@ export interface Product {
   desc: { vi: string; en: string };
   price: number | null;
   originalPrice?: number; // giá gốc (gạch ngang) — chỉ hiện khi lớn hơn price
+  // Giá ưu đãi có hạn: trong khoảng from → until bán giá promo.price, gạch giá thường (price);
+  // hết hạn web tự quay về price (cả hiển thị lẫn số tiền QR). Thời gian theo giờ VN (+07:00).
+  promo?: { price: number; from: string; until: string };
   image?: string;
   buyUrl?: string;
   code?: string; // mã ngắn trong nội dung chuyển khoản (không dấu). Bỏ trống → tự tạo từ slug
@@ -121,9 +124,12 @@ export const productCode = (p: Product) =>
 export const productUrl = (p: Product) => `/tai-lieu/${p.slug}`;
 export const buyHref = (p: Product) =>
   p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn mua sản phẩm: ${p.name.vi}`)}`;
-// % giảm so với giá gốc (null nếu không có giảm giá)
-export const discountPct = (p: Product) =>
-  p.price != null && p.originalPrice && p.originalPrice > p.price
-    ? Math.round((1 - p.price / p.originalPrice) * 100)
-    : null;
+// Giá đang áp dụng tại thời điểm `at` (mặc định lúc build)
+export const effectivePrice = (p: Product, at = Date.now()) => {
+  const promoOn = p.promo && at >= Date.parse(p.promo.from) && at <= Date.parse(p.promo.until);
+  const price = promoOn ? p.promo!.price : p.price;
+  const old = promoOn ? p.price : p.originalPrice;
+  const off = price != null && old && old > price ? Math.round((1 - price / old) * 100) : null;
+  return { price, old: off ? old! : null, off, promo: promoOn ? p.promo! : null };
+};
 export const formatVnd = (n: number) => n.toLocaleString('vi-VN') + ' ₫';
