@@ -423,7 +423,7 @@ img {
 }
 /* Bóng đen nhẹ dưới chữ tiêu đề: lệch ít, hơi nhoè, độ đậm thấp */
 .hx {
-  text-shadow: 0.025em 0.035em 0.06em rgba(15, 23, 42, 0.22);
+  text-shadow: 0.025em 0.035em 0.06em rgba(15, 23, 42, 0.1);
 }
 :root[data-theme='dark'] .hx {
   text-shadow: 0.025em 0.035em 0.06em rgba(0, 0, 0, 0.5);
