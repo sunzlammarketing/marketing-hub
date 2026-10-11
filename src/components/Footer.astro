@@ -85,7 +85,7 @@ import { SOCIALS } from '../data/social';
   }
   .logo {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
     color: var(--ink);
     font-weight: 800;
@@ -94,9 +94,12 @@ import { SOCIALS } from '../data/social';
   .logo:hover {
     text-decoration: none;
   }
+  /* Ô logo cao đúng bằng cụm chữ: đỉnh chữ SUNZ → chân dòng LÀM MARKETING (≈ 1.25em cỡ chữ SUNZ),
+     đáy ô thẳng chân chữ LÀM MARKETING (margin-bottom bù phần dư dưới chân chữ) */
   .logo-mark {
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 1px;
     border-radius: 8px;
     display: grid;
     place-items: center;
@@ -105,8 +108,8 @@ import { SOCIALS } from '../data/social';
     overflow: hidden;
   }
   .logo-mark img {
-    width: 82%;
-    height: 82%;
+    width: 94%;
+    height: 94%;
     object-fit: contain;
   }
   .logo b {

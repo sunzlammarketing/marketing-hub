@@ -111,7 +111,7 @@ const isActive = (href: string) =>
   }
   .logo {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
     color: var(--ink);
     font-weight: 800;
@@ -122,10 +122,13 @@ const isActive = (href: string) =>
   .logo:hover {
     text-decoration: none;
   }
+  /* Ô logo cao đúng bằng cụm chữ: đỉnh chữ SUNZ → chân dòng LÀM MARKETING (≈ 1.25em cỡ chữ SUNZ),
+     đáy ô thẳng chân chữ LÀM MARKETING (margin-bottom bù phần dư dưới chân chữ) */
   .logo-mark {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 1px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     background: #fff;
@@ -133,8 +136,8 @@ const isActive = (href: string) =>
     overflow: hidden;
   }
   .logo-mark img {
-    width: 82%;
-    height: 82%;
+    width: 94%;
+    height: 94%;
     object-fit: contain;
   }
   .nav {
@@ -341,10 +344,6 @@ const isActive = (href: string) =>
     .logo {
       font-size: 1rem;
       gap: 8px;
-    }
-    .logo-mark {
-      width: 30px;
-      height: 30px;
     }
     .lang-btn {
       padding-inline: 8px;
