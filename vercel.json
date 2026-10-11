@@ -1,6 +1,8 @@
 {
   "redirects": [
     { "source": "/tai-lieu-mien-phi", "destination": "/tai-lieu", "permanent": true },
-    { "source": "/tai-lieu-mien-phi/", "destination": "/tai-lieu", "permanent": true }
+    { "source": "/tai-lieu-mien-phi/", "destination": "/tai-lieu", "permanent": true },
+    { "source": "/tai-lieu/50-mau-caption-ban-hang", "destination": "/tai-lieu/ebook-50-cong-thuc-viet-content", "permanent": true },
+    { "source": "/tai-lieu/50-mau-caption-ban-hang/", "destination": "/tai-lieu/ebook-50-cong-thuc-viet-content", "permanent": true }
   ]
 }

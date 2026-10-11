@@ -1,3 +1,5 @@
 # Chuyển hướng cho Cloudflare Pages (Vercel dùng vercel.json)
 /tai-lieu-mien-phi   /tai-lieu   301
 /tai-lieu-mien-phi/  /tai-lieu   301
+/tai-lieu/50-mau-caption-ban-hang   /tai-lieu/ebook-50-cong-thuc-viet-content   301
+/tai-lieu/50-mau-caption-ban-hang/  /tai-lieu/ebook-50-cong-thuc-viet-content   301

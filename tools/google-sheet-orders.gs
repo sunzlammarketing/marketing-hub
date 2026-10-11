@@ -45,7 +45,7 @@ const PRODUCTS = {
   CSOP: { name: 'Checklist 30 điểm tối ưu SEO on-page', page: SITE + '/tai-lieu/checklist-seo-on-page', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
   NMM: { name: 'Ebook nhập môn Marketing cho người mới', page: SITE + '/tai-lieu/nhap-mon-marketing', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
   CNFA: { name: 'Ebook cẩm nang chạy Facebook Ads', page: SITE + '/tai-lieu/cam-nang-facebook-ads', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
-  '50MCBH': { name: 'Swipe file 50 mẫu caption bán hàng', page: SITE + '/tai-lieu/50-mau-caption-ban-hang', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  EB50CT: { name: 'Ebook 50 công thức viết content theo tình huống bán hàng', page: SITE + '/tai-lieu/ebook-50-cong-thuc-viet-content', files: [{ label: 'Ebook PDF', desc: 'Ebook 32 trang: 50 công thức, khung mẫu, ví dụ và checklist pháp lý.', button: 'Tải ebook (PDF)', fileId: '' }] },
 };
 
 // Cột trong sheet (1 = A)
