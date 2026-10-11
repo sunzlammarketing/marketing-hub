@@ -34,6 +34,71 @@ const CHECKLIST = { vi: 'Checklist - Tài liệu Marketing', en: 'Checklist - Ma
 
 export const PRODUCTS: Product[] = [
   {
+    slug: 'ebook-50-cong-thuc-viet-content',
+    code: 'EB50CT',
+    icon: '✍️',
+    color: '#403bd3',
+    type: { vi: 'PDF · 32 trang', en: 'PDF · 32 pages' },
+    tag: EBOOK,
+    image: '/products/ebook-50-cong-thuc/cover.jpg',
+    name: {
+      vi: 'Ebook 50 công thức viết content theo tình huống bán hàng',
+      en: 'Ebook: 50 content formulas for real sales situations',
+    },
+    desc: {
+      vi: 'Gặp tình huống nào, mở đúng công thức đó. 50 công thức chia theo 10 nhóm tình huống bán hàng, mỗi công thức có khung điền sẵn, ví dụ thực tế và mẹo dùng, kèm soát pháp lý quảng cáo.',
+      en: 'Find your situation, open the matching formula. 50 formulas in 10 sales-situation groups, each with a fill-in template, a real example and tips, plus a Vietnamese ad-law check.',
+    },
+    price: 49000,
+    originalPrice: 89000,
+    intro: {
+      vi: 'Phần lớn caption không bán được vì viết sai tình huống: khách hỏi giá rồi im mà vẫn đăng bài giới thiệu, cần doanh số gấp mà lại kể chuyện thương hiệu. Ebook này bắt đầu từ vấn đề bạn đang gặp. Tra bảng "Chọn mẫu theo tình huống", lấy 3 công thức gợi ý, điền bảng biến (sản phẩm, khách hàng, nỗi đau, lợi ích, bằng chứng, ưu đãi) một lần rồi dùng lại cho cả 50 mẫu. Mỗi công thức gồm các bước của khung, "Dùng khi", khung mẫu có [biến] tô màu, ví dụ minh họa hoàn chỉnh cho nhiều ngành (F&B, mỹ phẩm, thời trang, gia dụng, khóa học) và mẹo tránh rủi ro pháp lý, rủi ro uy tín. Cuối sách có checklist 8 điểm trước khi bấm đăng và tóm tắt quy định quảng cáo mới nhất (Luật Quảng cáo sửa đổi 2026, Thông tư 39/2025/TT-BCT).',
+      en: 'Most captions fail because they fit the wrong situation: posting a brand intro when customers ask the price and go silent, or telling a brand story when you need sales this week. This ebook starts from your problem. Look up the "Pick by situation" table, take the 3 suggested formulas, fill in your variables once (product, customer, pain, benefit, proof, offer) and reuse them across all 50. Each formula has its steps, "Use when", a fill-in template with highlighted [variables], a complete example across industries (F&B, cosmetics, fashion, home goods, courses) and tips to avoid legal and reputation risks. It ends with an 8-point pre-publish checklist and a summary of the latest Vietnamese ad rules.',
+    },
+    includes: {
+      vi: [
+        'Ebook PDF 32 trang, bản 10/2026',
+        '50 công thức chia 10 nhóm: kinh điển (AIDA, PAS, BAB, FAB, 4P), kể chuyện, bằng chứng xã hội, ưu đãi & khẩn cấp, ra mắt sản phẩm, giáo dục, tương tác, xử lý phản đối, chăm sóc khách cũ, caption theo nền tảng',
+        '50 khung mẫu có [biến] điền sẵn + 50 ví dụ minh họa hoàn chỉnh',
+        'Bảng tra "Chọn mẫu theo tình huống": 8 vấn đề bán hàng phổ biến, mỗi vấn đề 4 công thức nên thử',
+        'Bảng biến điền một lần, dùng lại cho cả 50 mẫu',
+        'Format riêng cho TikTok, Instagram, Shopee/Lazada/TikTok Shop, Zalo OA, thông báo livestream',
+        'Checklist 8 điểm trước khi đăng + lưu ý pháp lý quảng cáo VN',
+      ],
+      en: [
+        '32-page PDF ebook, October 2026 edition',
+        '50 formulas in 10 groups: classics (AIDA, PAS, BAB, FAB, 4P), storytelling, social proof, offers & urgency, launches, education, engagement, objection handling, repeat customers, platform-specific captions',
+        '50 fill-in templates with [variables] + 50 complete examples',
+        '"Pick by situation" table: 8 common sales problems, 4 formulas to try for each',
+        'A variables sheet you fill once and reuse for all 50 templates',
+        'Formats for TikTok, Instagram, Shopee/Lazada/TikTok Shop, Zalo OA and livestream announcements',
+        '8-point pre-publish checklist + Vietnamese ad-law notes',
+      ],
+    },
+    forWho: {
+      vi: [
+        'Chủ shop online, người bán hàng tự viết content mỗi ngày',
+        'Người làm content, marketer cần nhiều góc viết để A/B test',
+        'Khách hỏi nhiều mà ít chốt, cần câu trả lời cho "Sao đắt vậy?", "Có hiệu quả thật không?"',
+        'Sắp chạy sale, ra mắt sản phẩm, livestream hoặc muốn gọi khách cũ quay lại',
+        'Muốn AI viết luôn theo bộ công thức này: xem thêm Skill viết content theo tình huống bán hàng',
+      ],
+      en: [
+        'Online shop owners who write their own content every day',
+        'Content creators and marketers who need many angles to A/B test',
+        'Sellers who get lots of questions but few orders, and need answers to "Why so expensive?" or "Does it really work?"',
+        'Anyone planning a sale, a launch, a livestream or a win-back campaign',
+        'Want AI to write with these formulas for you? See the Sales-situation content writing skill',
+      ],
+    },
+    gallery: [
+      '/products/ebook-50-cong-thuc/trang-2.jpg',
+      '/products/ebook-50-cong-thuc/trang-3.jpg',
+      '/products/ebook-50-cong-thuc/trang-6.jpg',
+      '/products/ebook-50-cong-thuc/trang-31.jpg',
+    ],
+  },
+  {
     slug: 'ke-hoach-content-30-ngay',
     icon: '🗓️',
     color: '#4f46e5',
@@ -102,71 +167,6 @@ export const PRODUCTS: Product[] = [
     },
     price: 49000,
     originalPrice: 99000,
-  },
-  {
-    slug: 'ebook-50-cong-thuc-viet-content',
-    code: 'EB50CT',
-    icon: '✍️',
-    color: '#403bd3',
-    type: { vi: 'PDF · 32 trang', en: 'PDF · 32 pages' },
-    tag: EBOOK,
-    image: '/products/ebook-50-cong-thuc/cover.jpg',
-    name: {
-      vi: 'Ebook 50 công thức viết content theo tình huống bán hàng',
-      en: 'Ebook: 50 content formulas for real sales situations',
-    },
-    desc: {
-      vi: 'Gặp tình huống nào, mở đúng công thức đó. 50 công thức chia theo 10 nhóm tình huống bán hàng, mỗi công thức có khung điền sẵn, ví dụ thực tế và mẹo dùng, kèm soát pháp lý quảng cáo.',
-      en: 'Find your situation, open the matching formula. 50 formulas in 10 sales-situation groups, each with a fill-in template, a real example and tips, plus a Vietnamese ad-law check.',
-    },
-    price: 49000,
-    originalPrice: 89000,
-    intro: {
-      vi: 'Phần lớn caption không bán được vì viết sai tình huống: khách hỏi giá rồi im mà vẫn đăng bài giới thiệu, cần doanh số gấp mà lại kể chuyện thương hiệu. Ebook này bắt đầu từ vấn đề bạn đang gặp. Tra bảng "Chọn mẫu theo tình huống", lấy 3 công thức gợi ý, điền bảng biến (sản phẩm, khách hàng, nỗi đau, lợi ích, bằng chứng, ưu đãi) một lần rồi dùng lại cho cả 50 mẫu. Mỗi công thức gồm các bước của khung, "Dùng khi", khung mẫu có [biến] tô màu, ví dụ minh họa hoàn chỉnh cho nhiều ngành (F&B, mỹ phẩm, thời trang, gia dụng, khóa học) và mẹo tránh rủi ro pháp lý, rủi ro uy tín. Cuối sách có checklist 8 điểm trước khi bấm đăng và tóm tắt quy định quảng cáo mới nhất (Luật Quảng cáo sửa đổi 2026, Thông tư 39/2025/TT-BCT).',
-      en: 'Most captions fail because they fit the wrong situation: posting a brand intro when customers ask the price and go silent, or telling a brand story when you need sales this week. This ebook starts from your problem. Look up the "Pick by situation" table, take the 3 suggested formulas, fill in your variables once (product, customer, pain, benefit, proof, offer) and reuse them across all 50. Each formula has its steps, "Use when", a fill-in template with highlighted [variables], a complete example across industries (F&B, cosmetics, fashion, home goods, courses) and tips to avoid legal and reputation risks. It ends with an 8-point pre-publish checklist and a summary of the latest Vietnamese ad rules.',
-    },
-    includes: {
-      vi: [
-        'Ebook PDF 32 trang, bản 10/2026',
-        '50 công thức chia 10 nhóm: kinh điển (AIDA, PAS, BAB, FAB, 4P), kể chuyện, bằng chứng xã hội, ưu đãi & khẩn cấp, ra mắt sản phẩm, giáo dục, tương tác, xử lý phản đối, chăm sóc khách cũ, caption theo nền tảng',
-        '50 khung mẫu có [biến] điền sẵn + 50 ví dụ minh họa hoàn chỉnh',
-        'Bảng tra "Chọn mẫu theo tình huống": 8 vấn đề bán hàng phổ biến, mỗi vấn đề 4 công thức nên thử',
-        'Bảng biến điền một lần, dùng lại cho cả 50 mẫu',
-        'Format riêng cho TikTok, Instagram, Shopee/Lazada/TikTok Shop, Zalo OA, thông báo livestream',
-        'Checklist 8 điểm trước khi đăng + lưu ý pháp lý quảng cáo VN',
-      ],
-      en: [
-        '32-page PDF ebook, October 2026 edition',
-        '50 formulas in 10 groups: classics (AIDA, PAS, BAB, FAB, 4P), storytelling, social proof, offers & urgency, launches, education, engagement, objection handling, repeat customers, platform-specific captions',
-        '50 fill-in templates with [variables] + 50 complete examples',
-        '"Pick by situation" table: 8 common sales problems, 4 formulas to try for each',
-        'A variables sheet you fill once and reuse for all 50 templates',
-        'Formats for TikTok, Instagram, Shopee/Lazada/TikTok Shop, Zalo OA and livestream announcements',
-        '8-point pre-publish checklist + Vietnamese ad-law notes',
-      ],
-    },
-    forWho: {
-      vi: [
-        'Chủ shop online, người bán hàng tự viết content mỗi ngày',
-        'Người làm content, marketer cần nhiều góc viết để A/B test',
-        'Khách hỏi nhiều mà ít chốt, cần câu trả lời cho "Sao đắt vậy?", "Có hiệu quả thật không?"',
-        'Sắp chạy sale, ra mắt sản phẩm, livestream hoặc muốn gọi khách cũ quay lại',
-        'Muốn AI viết luôn theo bộ công thức này: xem thêm Skill viết content theo tình huống bán hàng',
-      ],
-      en: [
-        'Online shop owners who write their own content every day',
-        'Content creators and marketers who need many angles to A/B test',
-        'Sellers who get lots of questions but few orders, and need answers to "Why so expensive?" or "Does it really work?"',
-        'Anyone planning a sale, a launch, a livestream or a win-back campaign',
-        'Want AI to write with these formulas for you? See the Sales-situation content writing skill',
-      ],
-    },
-    gallery: [
-      '/products/ebook-50-cong-thuc/trang-2.jpg',
-      '/products/ebook-50-cong-thuc/trang-3.jpg',
-      '/products/ebook-50-cong-thuc/trang-6.jpg',
-      '/products/ebook-50-cong-thuc/trang-31.jpg',
-    ],
   },
 ];
 
