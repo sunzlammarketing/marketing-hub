@@ -1,28 +1,27 @@
 /**
- * Đơn hàng web Sunz Làm Marketing: lưu đơn vào Google Sheet + gửi email giao hàng.
+ * Đơn hàng web Sunz Làm Marketing: lưu đơn vào Google Sheet + gửi email giao hàng
+ * + phục vụ link tải có bảo vệ (hết hạn, giới hạn lượt tải, file Drive để riêng tư).
  *
- * ── CÀI ĐẶT LẦN ĐẦU ─────────────────────────────────────────────────────────────
+ * ── CÀI ĐẶT ─────────────────────────────────────────────────────────────────────
  * 1. Google Sheet → Tiện ích mở rộng → Apps Script → dán toàn bộ file này → Lưu.
- * 2. Triển khai → Tùy chọn triển khai mới → Ứng dụng web
- *      Thực thi dưới dạng: Tôi · Người có quyền truy cập: Bất kỳ ai → Triển khai.
- *    Copy URL /exec dán vào ORDER_SHEET_URL (src/data/payment.ts).
+ * 2. Điền fileId (ID trong link Drive) cho từng file ở PRODUCTS bên dưới.
+ *    File hoặc THƯ MỤC đều được (thư mục sẽ tự nén .zip khi tải).
+ * 3. Chọn hàm  authorize  → Chạy → cấp quyền (đọc Drive). Nhật ký liệt kê tên file là đúng.
+ * 4. Chọn hàm  setup  → Chạy (tạo trình kích hoạt, menu "Sunz", cột Lượt tải, khoá ký link).
+ * 5. Triển khai → Quản lý các bản triển khai → ✏️ → Phiên bản mới → Triển khai (giữ nguyên URL).
+ * 6. Sau khi thử tải OK: đổi chia sẻ các file/thư mục trên Drive về "Bị hạn chế".
  *
- * ── BẬT GỬI EMAIL (làm 1 lần sau khi dán bản code này) ─────────────────────────
- * 3. Điền link tải vào PRODUCTS bên dưới (link Google Drive đã chia sẻ "Bất kỳ ai có đường liên kết").
- * 4. Trên thanh công cụ Apps Script chọn hàm  setup  → bấm Chạy → cấp quyền.
- *    (Tạo trình kích hoạt + danh sách trạng thái + menu "Sunz".)
- *    Không cần triển khai lại web app: phần lưu đơn vẫn dùng URL cũ.
- *
- * ── CÁCH DÙNG HẰNG NGÀY ─────────────────────────────────────────────────────────
- * Đối chiếu sao kê → ở cột "Trạng thái" chọn "Đã thanh toán"
- * → email giao hàng tự gửi cho khách, trạng thái đổi thành "Đã gửi email" + ghi giờ gửi.
- * Gửi lại: chọn dòng → menu Sunz → "Gửi lại email giao hàng cho dòng đang chọn".
+ * ── HẰNG NGÀY ───────────────────────────────────────────────────────────────────
+ * Đối chiếu sao kê → cột "Trạng thái" chọn "Đã thanh toán" → email giao hàng tự gửi.
+ * Menu Sunz › "Gửi lại email…" = gửi link mới cho dòng đang chọn (đặt lại lượt tải).
  */
 
 // ===== CẤU HÌNH =====
 const SHEET_NAME = 'Đơn hàng';
 const SITE = 'https://sunzlammarketing.sunzlammarketing.workers.dev';
 const BRAND = 'Sunz Làm Marketing';
+const LINK_DAYS = 30; // link tải dùng được bao nhiêu ngày
+const MAX_DOWNLOADS = 15; // tổng lượt tải tối đa cho mỗi đơn (mọi file cộng lại)
 const SUPPORT = {
   messenger: 'https://m.me/sunzlammarketing',
   tiktok: 'https://www.tiktok.com/@sunz.lam.marketing',
@@ -30,29 +29,29 @@ const SUPPORT = {
 };
 
 // Mã sản phẩm = chữ thứ 2 trong nội dung CK ("SUNZ <MÃ> <SĐT>").
-// files: link tải (Drive). guide: link hướng dẫn. page: trang sản phẩm trên web.
+// files[].fileId: ID file/thư mục Drive (phần giữa /d/ … /view hoặc sau /folders/).
 const PRODUCTS = {
   SKILL50: {
     name: 'Skill viết content theo tình huống bán hàng',
     page: SITE + '/skill/viet-content-theo-tinh-huong-ban-hang',
     files: [
-      { title: 'Bản cho Claude & Codex (.zip)', desc: 'Upload vào Claude: Customize › Skills › Upload a skill. Giữ nguyên tên file, không giải nén.', url: '' },
-      { title: 'Bản cho ChatGPT & Gemini', desc: 'File .md + file Instructions dán sẵn, dùng qua ChatGPT Project hoặc Gemini Gem.', url: '' },
-      { title: 'Hướng dẫn cài đặt (PDF)', desc: 'Các bước cài trên Claude, Codex, ChatGPT, Gemini.', url: '' },
+      { label: 'Claude & Codex', desc: 'File .zip để upload vào Claude (Customize › Skills › Upload a skill) hoặc chép vào Codex. Giữ nguyên tên file, không giải nén.', button: 'Tải bản Claude & Codex', fileId: '' },
+      { label: 'ChatGPT & Gemini', desc: 'File .md + file Instructions dán sẵn, dùng qua ChatGPT Project hoặc Gemini Gem.', button: 'Tải bản ChatGPT & Gemini', fileId: '' },
+      { label: 'Hướng dẫn cài đặt', desc: 'PDF các bước cài trên Claude, Codex, ChatGPT, Gemini.', button: 'Tải hướng dẫn (PDF)', fileId: '' },
     ],
   },
-  KHC30N: { name: 'Template kế hoạch content 30 ngày', page: SITE + '/tai-lieu/ke-hoach-content-30-ngay', files: [{ title: 'Tải tài liệu', desc: '', url: '' }] },
-  PMA: { name: 'Template phễu Marketing AARRR', page: SITE + '/tai-lieu/pheu-marketing-aarrr', files: [{ title: 'Tải tài liệu', desc: '', url: '' }] },
-  CSOP: { name: 'Checklist 30 điểm tối ưu SEO on-page', page: SITE + '/tai-lieu/checklist-seo-on-page', files: [{ title: 'Tải tài liệu', desc: '', url: '' }] },
-  NMM: { name: 'Ebook nhập môn Marketing cho người mới', page: SITE + '/tai-lieu/nhap-mon-marketing', files: [{ title: 'Tải tài liệu', desc: '', url: '' }] },
-  CNFA: { name: 'Ebook cẩm nang chạy Facebook Ads', page: SITE + '/tai-lieu/cam-nang-facebook-ads', files: [{ title: 'Tải tài liệu', desc: '', url: '' }] },
-  '50MCBH': { name: 'Swipe file 50 mẫu caption bán hàng', page: SITE + '/tai-lieu/50-mau-caption-ban-hang', files: [{ title: 'Tải tài liệu', desc: '', url: '' }] },
+  KHC30N: { name: 'Template kế hoạch content 30 ngày', page: SITE + '/tai-lieu/ke-hoach-content-30-ngay', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  PMA: { name: 'Template phễu Marketing AARRR', page: SITE + '/tai-lieu/pheu-marketing-aarrr', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  CSOP: { name: 'Checklist 30 điểm tối ưu SEO on-page', page: SITE + '/tai-lieu/checklist-seo-on-page', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  NMM: { name: 'Ebook nhập môn Marketing cho người mới', page: SITE + '/tai-lieu/nhap-mon-marketing', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  CNFA: { name: 'Ebook cẩm nang chạy Facebook Ads', page: SITE + '/tai-lieu/cam-nang-facebook-ads', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  '50MCBH': { name: 'Swipe file 50 mẫu caption bán hàng', page: SITE + '/tai-lieu/50-mau-caption-ban-hang', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
 };
 
 // Cột trong sheet (1 = A)
-const COL = { time: 1, code: 2, product: 3, amount: 4, name: 5, phone: 6, email: 7, status: 8, page: 9, sentAt: 10 };
-const HEADERS = ['Thời gian', 'Mã đơn (nội dung CK)', 'Sản phẩm', 'Số tiền', 'Họ tên', 'SĐT / Zalo', 'Email', 'Trạng thái', 'Trang', 'Đã gửi email lúc'];
-const STATUS = { pending: 'Chờ thanh toán', claimed: 'Khách báo đã CK', paid: 'Đã thanh toán', sent: 'Đã gửi email', missing: 'Thiếu link tải', cancel: 'Huỷ' };
+const COL = { time: 1, code: 2, product: 3, amount: 4, name: 5, phone: 6, email: 7, status: 8, page: 9, sentAt: 10, downloads: 11 };
+const HEADERS = ['Thời gian', 'Mã đơn (nội dung CK)', 'Sản phẩm', 'Số tiền', 'Họ tên', 'SĐT / Zalo', 'Email', 'Trạng thái', 'Trang', 'Đã gửi email lúc', 'Lượt tải'];
+const STATUS = { pending: 'Chờ thanh toán', claimed: 'Khách báo đã CK', paid: 'Đã thanh toán', sent: 'Đã gửi email', missing: 'Thiếu file tải', cancel: 'Huỷ' };
 
 // ===== LƯU ĐƠN TỪ WEB =====
 function getSheet_() {
@@ -77,14 +76,10 @@ function doPost(e) {
     const code = String(d.code || '').slice(0, 60);
 
     if (d.action === 'claim') {
-      // Khách bấm "Tôi đã chuyển khoản" → cập nhật đơn mới nhất cùng mã (nếu chưa xử lý)
-      const codes = sh.getRange(2, COL.code, Math.max(sh.getLastRow() - 1, 1), 1).getValues();
-      for (let i = codes.length - 1; i >= 0; i--) {
-        if (codes[i][0] === code) {
-          const cell = sh.getRange(i + 2, COL.status);
-          if (cell.getValue() === STATUS.pending) cell.setValue(STATUS.claimed);
-          break;
-        }
+      const row = findRow_(code);
+      if (row) {
+        const cell = sh.getRange(row, COL.status);
+        if (cell.getValue() === STATUS.pending) cell.setValue(STATUS.claimed);
       }
       return out_({ ok: true });
     }
@@ -100,6 +95,7 @@ function doPost(e) {
       STATUS.pending,
       String(d.page || '').slice(0, 200),
       '',
+      0,
     ]);
     return out_({ ok: true });
   } catch (err) {
@@ -113,24 +109,112 @@ function out_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
+// Dòng mới nhất có mã đơn này (0 nếu không có)
+function findRow_(code) {
+  const sh = getSheet_();
+  const n = sh.getLastRow() - 1;
+  if (n < 1) return 0;
+  const codes = sh.getRange(2, COL.code, n, 1).getValues();
+  for (let i = codes.length - 1; i >= 0; i--) if (codes[i][0] === code) return i + 2;
+  return 0;
+}
+
+// ===== LINK TẢI CÓ BẢO VỆ =====
+// Token = base64(payload) + "." + HMAC-SHA256(payload, khoá bí mật lưu trong Script Properties)
+function secret_() {
+  const props = PropertiesService.getScriptProperties();
+  let s = props.getProperty('DL_SECRET');
+  if (!s) {
+    s = Utilities.getUuid() + Utilities.getUuid();
+    props.setProperty('DL_SECRET', s);
+  }
+  return s;
+}
+function sign_(p64) {
+  return Utilities.base64EncodeWebSafe(Utilities.computeHmacSha256Signature(p64, secret_())).replace(/=+$/, '');
+}
+function makeToken_(code, pcode, index) {
+  const payload = JSON.stringify({ o: code, k: pcode, i: index, e: Date.now() + LINK_DAYS * 864e5 });
+  const p64 = Utilities.base64EncodeWebSafe(payload).replace(/=+$/, '');
+  return p64 + '.' + sign_(p64);
+}
+function downloadUrl_(code, pcode, index) {
+  return SITE + '/dl?t=' + makeToken_(code, pcode, index);
+}
+
+// Cloudflare Worker gọi: ?dl=<token> → trả file (base64) nếu token hợp lệ
+function doGet(e) {
+  const t = (e && e.parameter && e.parameter.dl) || '';
+  if (!t) return out_({ ok: false, error: 'Thiếu mã tải.' });
+  try {
+    const parts = t.split('.');
+    if (parts.length !== 2 || parts[1] !== sign_(parts[0])) return out_({ ok: false, error: 'Link tải không hợp lệ.' });
+    const pad = parts[0] + '==='.slice((parts[0].length + 3) % 4);
+    const d = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(pad)).getDataAsString());
+    if (Date.now() > d.e) return out_({ ok: false, error: 'Link tải đã hết hạn. Nhắn Sunz để được gửi link mới nhé.' });
+    const product = PRODUCTS[d.k];
+    const f = product && product.files[d.i];
+    if (!f || !f.fileId) return out_({ ok: false, error: 'Không tìm thấy tài liệu.' });
+
+    // Đếm lượt tải theo đơn
+    const lock = LockService.getScriptLock();
+    lock.waitLock(10000);
+    try {
+      const row = findRow_(d.o);
+      if (row) {
+        const cell = getSheet_().getRange(row, COL.downloads);
+        const used = Number(cell.getValue()) || 0;
+        if (used >= MAX_DOWNLOADS) return out_({ ok: false, error: 'Đơn hàng đã dùng hết lượt tải. Nhắn Sunz để được hỗ trợ nhé.' });
+        cell.setValue(used + 1);
+      }
+    } finally {
+      lock.releaseLock();
+    }
+
+    const blob = fileBlob_(f.fileId);
+    return out_({ ok: true, name: blob.getName(), mime: blob.getContentType(), b64: Utilities.base64Encode(blob.getBytes()) });
+  } catch (err) {
+    return out_({ ok: false, error: 'Không đọc được tài liệu, vui lòng nhắn Sunz.' });
+  }
+}
+
+// File → nội dung file; thư mục → nén .zip các file bên trong
+function fileBlob_(id) {
+  try {
+    return DriveApp.getFileById(id).getBlob();
+  } catch (e) {
+    const folder = DriveApp.getFolderById(id);
+    const blobs = [];
+    const it = folder.getFiles();
+    while (it.hasNext()) blobs.push(it.next().getBlob());
+    return Utilities.zip(blobs, folder.getName() + '.zip');
+  }
+}
+
+// Chạy 1 lần để cấp quyền Drive + kiểm tra fileId đúng chưa
+function authorize() {
+  Object.keys(PRODUCTS).forEach((k) =>
+    PRODUCTS[k].files.forEach((f) => {
+      if (!f.fileId) return;
+      const b = fileBlob_(f.fileId);
+      Logger.log(k + ' › ' + f.label + ' → ' + b.getName() + ' (' + Math.round(b.getBytes().length / 1024) + ' KB)');
+    })
+  );
+}
+
 // ===== CÀI ĐẶT 1 LẦN =====
 function setup() {
   const sh = getSheet_();
-  // Tiêu đề cột mới (nếu sheet cũ chưa có)
   sh.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight('bold').setBackground('#e0e7ff');
-  // Danh sách trạng thái chọn nhanh
-  const rule = SpreadsheetApp.newDataValidation()
-    .requireValueInList(Object.values(STATUS), true)
-    .setAllowInvalid(true)
-    .build();
+  const rule = SpreadsheetApp.newDataValidation().requireValueInList(Object.values(STATUS), true).setAllowInvalid(true).build();
   sh.getRange(2, COL.status, sh.getMaxRows() - 1, 1).setDataValidation(rule);
-  // Trình kích hoạt khi sửa ô (cần quyền gửi email nên phải là installable trigger)
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   ScriptApp.getProjectTriggers()
     .filter((t) => t.getHandlerFunction() === 'onStatusEdit')
     .forEach((t) => ScriptApp.deleteTrigger(t));
   ScriptApp.newTrigger('onStatusEdit').forSpreadsheet(ss).onEdit().create();
-  SpreadsheetApp.getUi().alert('Đã bật gửi email giao hàng. Chọn "Đã thanh toán" ở cột Trạng thái để gửi.');
+  secret_();
+  SpreadsheetApp.getUi().alert('Đã bật gửi email giao hàng + link tải có bảo vệ. Chọn "Đã thanh toán" ở cột Trạng thái để gửi.');
 }
 
 function onOpen() {
@@ -150,8 +234,7 @@ function onStatusEdit(e) {
 }
 
 function resendSelected() {
-  const sh = getSheet_();
-  const row = sh.getActiveRange().getRow();
+  const row = getSheet_().getActiveRange().getRow();
   if (row < 2) return SpreadsheetApp.getUi().alert('Chọn một dòng đơn hàng trước.');
   deliver_(row);
 }
@@ -161,7 +244,6 @@ function deliver_(row) {
   const v = sh.getRange(row, 1, 1, HEADERS.length).getValues()[0];
   const order = {
     code: String(v[COL.code - 1]),
-    productName: String(v[COL.product - 1]),
     amount: Number(v[COL.amount - 1]) || 0,
     name: String(v[COL.name - 1] || '').trim(),
     phone: String(v[COL.phone - 1]).replace(/^'/, ''),
@@ -171,25 +253,26 @@ function deliver_(row) {
   const pcode = order.code.split(/\s+/)[1] || '';
   const product = PRODUCTS[pcode];
 
-  if (!order.email) return note_(statusCell, STATUS.paid, 'Đơn chưa có email khách.');
-  if (!product || product.files.some((f) => !f.url)) {
+  if (!order.email) return note_(statusCell, 'Đơn chưa có email khách.');
+  if (!product || product.files.some((f) => !f.fileId)) {
     statusCell.setValue(STATUS.missing);
-    return note_(statusCell, STATUS.missing, 'Chưa điền link tải cho mã "' + pcode + '" trong PRODUCTS (Apps Script).');
+    return note_(statusCell, 'Chưa điền fileId cho mã "' + pcode + '" trong PRODUCTS (Apps Script).');
   }
-
+  const links = product.files.map((f, i) => downloadUrl_(order.code, pcode, i));
   MailApp.sendEmail({
     to: order.email,
     subject: 'Thanh toán thành công · ' + product.name,
     name: BRAND,
     replyTo: SUPPORT.email,
-    htmlBody: buildEmail_(order, product),
-    body: plainText_(order, product),
+    htmlBody: buildEmail_(order, product, links),
+    body: plainText_(order, product, links),
   });
   statusCell.setValue(STATUS.sent).setNote('');
   sh.getRange(row, COL.sentAt).setValue(new Date());
+  sh.getRange(row, COL.downloads).setValue(0); // link mới → đặt lại lượt tải
 }
 
-function note_(cell, status, msg) {
+function note_(cell, msg) {
   cell.setNote(msg);
   SpreadsheetApp.getActive().toast(msg, 'Chưa gửi được email', 8);
 }
@@ -197,78 +280,99 @@ function note_(cell, status, msg) {
 function sendTestToMe() {
   const me = Session.getActiveUser().getEmail() || SUPPORT.email;
   const product = PRODUCTS.SKILL50;
-  const order = { code: 'SUNZ SKILL50 0900000000', productName: product.name, amount: 99000, name: 'Khách hàng mẫu', phone: '0900000000', email: me };
-  MailApp.sendEmail({ to: me, subject: '[MẪU] Thanh toán thành công · ' + product.name, name: BRAND, htmlBody: buildEmail_(order, product), body: plainText_(order, product) });
+  const order = { code: 'SUNZ SKILL50 0900000000', amount: 99000, name: 'Khách hàng mẫu', phone: '0900000000', email: me };
+  const links = product.files.map((f, i) => downloadUrl_(order.code, 'SKILL50', i));
+  MailApp.sendEmail({ to: me, subject: '[MẪU] Thanh toán thành công · ' + product.name, name: BRAND, htmlBody: buildEmail_(order, product, links), body: plainText_(order, product, links) });
   SpreadsheetApp.getActive().toast('Đã gửi email mẫu tới ' + me, 'Sunz', 5);
 }
 
-// ===== NỘI DUNG EMAIL (theo bố cục email giao hàng của Noti) =====
+// ===== NỘI DUNG EMAIL (phong cách email giao hàng Noti) =====
 const esc_ = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const vnd_ = (n) => Number(n).toLocaleString('vi-VN') + ' ₫';
+// Màu cho từng khối tải (xoay vòng): nền nhạt · màu nhãn · nút gradient + màu dự phòng
+const THEMES = [
+  { bg: '#f5f3ff', label: '#6d28d9', from: '#a78bfa', to: '#6d28d9' },
+  { bg: '#fff5f2', label: '#e2553b', from: '#fb8a63', to: '#e2553b' },
+  { bg: '#f0fdf4', label: '#15803d', from: '#4ade80', to: '#15803d' },
+  { bg: '#eff6ff', label: '#1d4ed8', from: '#60a5fa', to: '#1d4ed8' },
+];
+const pill_ = (text, color, bg) =>
+  '<span style="display:inline-block;padding:6px 14px;border-radius:999px;background:' + bg + ';color:' + color + ';font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase">' + text + '</span>';
 
-function buildEmail_(o, p) {
-  const row = (k, v) =>
-    '<tr><td style="padding:8px 0;color:#64748b;width:42%">' + k + '</td><td style="padding:8px 0;font-weight:700;color:#0f172a">' + v + '</td></tr>';
+function buildEmail_(o, p, links) {
+  const F = 'font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif';
+  const row = (k, v, last) =>
+    '<tr><td style="padding:14px 0;color:#64748b;font-size:14px;' + (last ? '' : 'border-bottom:1px solid #e2e8f0') + '">' + k + '</td>' +
+    '<td style="padding:14px 0;text-align:right;font-weight:700;color:#0f172a;font-size:14px;' + (last ? '' : 'border-bottom:1px solid #e2e8f0') + '">' + v + '</td></tr>';
   const files = p.files
-    .map(
-      (f) =>
-        '<div style="border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin:0 0 12px">' +
-        '<div style="font-weight:800;color:#0f172a;font-size:15px">' + esc_(f.title) + '</div>' +
-        (f.desc ? '<div style="color:#64748b;font-size:13px;margin:4px 0 12px">' + esc_(f.desc) + '</div>' : '<div style="height:10px"></div>') +
-        '<a href="' + esc_(f.url) + '" style="display:inline-block;background:#4f46e5;color:#fff;text-decoration:none;font-weight:800;padding:10px 18px;border-radius:10px">Tải xuống →</a>' +
+    .map((f, i) => {
+      const t = THEMES[i % THEMES.length];
+      return (
+        '<div style="background:' + t.bg + ';border-radius:18px;padding:26px 22px;margin:0 0 14px;text-align:center">' +
+        '<div style="color:' + t.label + ';font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase">' + esc_(f.label) + '</div>' +
+        (f.desc ? '<div style="color:#475569;font-size:14px;line-height:1.6;margin:8px 0 0">' + esc_(f.desc) + '</div>' : '') +
+        '<a href="' + esc_(links[i]) + '" style="display:inline-block;margin-top:18px;padding:14px 30px;border-radius:999px;background:' + t.to + ';background-image:linear-gradient(135deg,' + t.from + ',' + t.to + ');color:#fff;text-decoration:none;font-weight:800;font-size:15px">' + esc_(f.button) + ' →</a>' +
         '</div>'
-    )
+      );
+    })
     .join('');
   return (
-    '<div style="background:#f1f5f9;padding:24px 12px;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif">' +
-    '<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;border:1px solid #e2e8f0">' +
-    // Header
-    '<div style="background:linear-gradient(135deg,#312e81,#4f46e5);padding:28px 28px 24px;color:#fff">' +
-    '<img src="' + SITE + '/logo-mark.png" width="40" height="40" alt="Sunz" style="background:#fff;border-radius:10px;padding:4px;display:block;margin-bottom:14px">' +
-    '<div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8">Thanh toán thành công</div>' +
-    '<div style="font-size:22px;font-weight:900;margin-top:6px;line-height:1.3">' + esc_(p.name) + '</div>' +
+    '<div style="background:#eef2ff;padding:24px 10px;' + F + '">' +
+    '<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 20px 40px -24px rgba(15,23,42,.35)">' +
+    // Header gradient
+    '<div style="background:#3b82f6;background-image:linear-gradient(135deg,#4f46e5,#3b82f6 55%,#38bdf8);padding:34px 24px 30px;text-align:center;color:#fff">' +
+    '<img src="' + SITE + '/logo-mark.png" width="44" height="44" alt="Sunz" style="background:#fff;border-radius:12px;padding:5px;margin:0 auto 14px;display:block">' +
+    '<div style="font-size:26px;font-weight:900;line-height:1.25">Thanh toán thành công</div>' +
+    '<div style="font-size:14px;opacity:.9;margin-top:6px">' + esc_(p.name) + '</div>' +
     '</div>' +
-    // Xác nhận
-    '<div style="padding:24px 28px 8px;text-align:center">' +
-    '<div style="display:inline-block;width:52px;height:52px;line-height:52px;border-radius:50%;background:#d1fae5;color:#059669;font-size:28px;font-weight:900">✓</div>' +
-    '<div style="font-size:18px;font-weight:900;color:#0f172a;margin-top:10px">Thanh toán đã được xác nhận!</div>' +
-    '<div style="color:#64748b;margin-top:4px">Cảm ơn bạn đã tin tưởng ' + BRAND + '.</div>' +
+    '<div style="padding:26px 26px 8px">' +
+    // Hộp xác nhận
+    '<div style="background:#f0fdf4;border-radius:18px;padding:26px 20px;text-align:center">' +
+    '<div style="width:60px;height:60px;line-height:60px;margin:0 auto;border-radius:50%;background:#22c55e;background-image:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;font-size:30px;font-weight:900">✓</div>' +
+    '<div style="color:#15803d;font-size:20px;font-weight:900;margin-top:14px">Thanh toán đã được xác nhận!</div>' +
+    '<div style="color:#64748b;font-size:14px;margin-top:4px">Cảm ơn bạn đã tin tưởng ' + BRAND + '.</div>' +
     '</div>' +
-    '<div style="padding:8px 28px 0;color:#334155;line-height:1.7">' +
-    '<p>Xin chào <b>' + esc_(o.name || 'bạn') + '</b>,</p>' +
-    '<p>Sunz đã nhận được thanh toán của bạn cho <b>' + esc_(p.name) + '</b>. Dưới đây là thông tin đơn hàng và link tải tài liệu.</p>' +
-    '</div>' +
-    // Thông tin đơn
-    '<div style="margin:8px 28px 0;padding:6px 18px;background:#f8fafc;border-radius:14px">' +
-    '<div style="font-weight:800;color:#0f172a;padding-top:12px">Thông tin đơn hàng</div>' +
-    '<table style="width:100%;border-collapse:collapse;font-size:14px">' +
+    // Lời chào
+    '<p style="font-size:17px;color:#0f172a;margin:24px 0 6px">Xin chào <b style="color:#2563eb">' + esc_(o.name || 'bạn') + '</b>,</p>' +
+    '<p style="font-size:15px;color:#334155;line-height:1.7;margin:0 0 20px">Sunz đã nhận được thanh toán của bạn cho <b>' + esc_(p.name) + '</b>. Dưới đây là thông tin đăng ký và link tải tài liệu.</p>' +
+    // Thông tin đăng ký
+    pill_('Thông tin đăng ký', '#2563eb', '#eff6ff') +
+    '<div style="background:#f8fafc;border-radius:18px;padding:6px 20px;margin:12px 0 0">' +
+    '<table style="width:100%;border-collapse:collapse">' +
     row('Họ và tên', esc_(o.name || '—')) +
-    row('Email', esc_(o.email)) +
+    row('Email', '<a href="mailto:' + esc_(o.email) + '" style="color:#2563eb">' + esc_(o.email) + '</a>') +
     row('Số điện thoại', esc_(o.phone)) +
     row('Mã đơn', esc_(o.code)) +
-    row('Số tiền', vnd_(o.amount)) +
-    row('Trạng thái', '<span style="color:#059669">Đã thanh toán</span>') +
+    row('Số tiền', '<span style="color:#2563eb">' + vnd_(o.amount) + '</span>') +
+    row('Trạng thái', '<span style="display:inline-block;padding:5px 12px;border-radius:999px;background:#dcfce7;color:#15803d">Đã thanh toán</span>', true) +
     '</table></div>' +
-    '<p style="margin:16px 28px 0;padding:12px 14px;background:#fff7ed;border-radius:12px;color:#9a3412;font-size:13px"><b>Lưu ý:</b> Vui lòng lưu email này và đánh dấu quan trọng để tải lại khi cần nhé.</p>' +
-    // Link tải
-    '<div style="padding:22px 28px 4px"><div style="font-weight:900;color:#0f172a;font-size:16px;margin-bottom:12px">Link tải tài liệu</div>' + files + '</div>' +
-    // Hướng dẫn & hỗ trợ
-    '<div style="padding:4px 28px 8px;font-size:14px;line-height:2">' +
-    '<div style="font-weight:900;color:#0f172a;font-size:16px">Tài liệu & hỗ trợ</div>' +
-    '<a href="' + p.page + '" style="color:#4f46e5">Trang sản phẩm & hướng dẫn sử dụng →</a><br>' +
-    '<a href="' + SUPPORT.messenger + '" style="color:#4f46e5">Cần hỗ trợ? Nhắn Sunz qua Messenger →</a><br>' +
-    '<a href="' + SUPPORT.tiktok + '" style="color:#4f46e5">Theo dõi Sunz trên TikTok →</a>' +
+    // Lưu ý
+    '<div style="background:#f0fdf4;border-radius:14px;padding:14px 16px;margin:16px 0 0;color:#166534;font-size:14px;line-height:1.6">' +
+    '<b>Lưu ý:</b> Vui lòng lưu email này và đánh dấu quan trọng để tải lại khi cần. Link tải dành riêng cho bạn, dùng trong ' + LINK_DAYS + ' ngày, vui lòng không chia sẻ.' +
     '</div>' +
-    '<p style="padding:0 28px;color:#334155">Chúc bạn ứng dụng thành công!</p>' +
+    // Link tải
+    '<div style="margin:26px 0 12px">' + pill_('Link tải tài liệu', '#6d28d9', '#f5f3ff') + '</div>' +
+    files +
+    '<p style="text-align:center;color:#64748b;font-size:13px;margin:4px 0 22px">Bấm nút là file tự tải về máy.</p>' +
+    // Hỗ trợ
+    pill_('Tài liệu & hỗ trợ', '#e2553b', '#fff5f2') +
+    '<div style="font-size:15px;line-height:2.1;margin:10px 0 18px">' +
+    '<a href="' + p.page + '" style="color:#2563eb;text-decoration:none">Trang sản phẩm & hướng dẫn sử dụng →</a><br>' +
+    '<a href="' + SUPPORT.messenger + '" style="color:#2563eb;text-decoration:none">Cần hỗ trợ? Nhắn Sunz qua Messenger →</a><br>' +
+    '<a href="' + SUPPORT.tiktok + '" style="color:#2563eb;text-decoration:none">Theo dõi Sunz trên TikTok →</a>' +
+    '</div>' +
+    '<p style="font-size:15px;color:#334155;margin:0 0 24px">Chúc bạn ứng dụng thành công! 💜</p>' +
+    '</div>' +
     // Footer
-    '<div style="margin-top:18px;padding:18px 28px;background:#f8fafc;border-top:1px solid #e2e8f0;color:#94a3b8;font-size:12px;line-height:1.6">' +
-    '<b style="color:#475569">' + BRAND + '</b> · <a href="' + SITE + '" style="color:#94a3b8">' + SITE.replace('https://', '') + '</a><br>' +
+    '<div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:20px 26px;text-align:center;color:#94a3b8;font-size:12px;line-height:1.7">' +
+    '<b style="color:#475569;font-size:14px">' + BRAND + '</b><br>' +
+    '<a href="' + SITE + '" style="color:#94a3b8">' + SITE.replace('https://', '') + '</a><br>' +
     '© 2026 ' + BRAND + '. Tài liệu dành riêng cho người mua. Nghiêm cấm sao chép, chia sẻ hoặc bán lại khi chưa được cho phép.' +
     '</div></div></div>'
   );
 }
 
-function plainText_(o, p) {
+function plainText_(o, p, links) {
   return [
     'Thanh toán thành công · ' + p.name,
     '',
@@ -278,8 +382,8 @@ function plainText_(o, p) {
     'Mã đơn: ' + o.code,
     'Số tiền: ' + vnd_(o.amount),
     '',
-    'Link tải:',
-    ...p.files.map((f) => '- ' + f.title + ': ' + f.url),
+    'Link tải (dành riêng cho bạn, dùng trong ' + LINK_DAYS + ' ngày):',
+    ...p.files.map((f, i) => '- ' + f.button + ': ' + links[i]),
     '',
     'Trang sản phẩm: ' + p.page,
     'Hỗ trợ: ' + SUPPORT.messenger,

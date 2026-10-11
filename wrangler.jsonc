@@ -1,9 +1,12 @@
-// Cấu hình Cloudflare Workers: phục vụ web tĩnh Astro đã build ở ./dist
+// Cấu hình Cloudflare Workers: web tĩnh Astro đã build ở ./dist + worker/index.js cho /dl
 // Chuyển hướng đọc từ public/_redirects (được copy vào dist khi build)
 {
   "name": "sunzlammarketing",
   "compatibility_date": "2026-10-01",
+  // Worker xử lý /dl (tải tài liệu có bảo vệ); các đường dẫn khác trả file tĩnh qua binding ASSETS
+  "main": "./worker/index.js",
   "assets": {
+    "binding": "ASSETS",
     "directory": "./dist",
     // Link trong web viết dạng /blog (không "/" cuối) → phục vụ thẳng, không chuyển hướng thêm
     "html_handling": "drop-trailing-slash",
