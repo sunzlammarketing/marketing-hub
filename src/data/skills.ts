@@ -38,15 +38,15 @@ export const SKILLS: Skill[] = [
       en: 'Sales-situation content writing skill',
     },
     desc: {
-      vi: 'Mô tả vấn đề bán hàng bạn đang gặp, AI tự chẩn đoán, chọn 2-3 mẫu phù hợp trong 50 mẫu swipe file, viết caption hoàn chỉnh và soát pháp lý quảng cáo VN trước khi giao. Dùng được trên Claude, Codex, ChatGPT và Gemini.',
-      en: 'Describe your sales problem; the AI diagnoses it, picks 2-3 of 50 swipe-file templates, writes ready-to-post captions and checks Vietnamese ad law. Works on Claude, Codex, ChatGPT and Gemini.',
+      vi: 'Mô tả vấn đề bán hàng bạn đang gặp, AI tự chẩn đoán, chọn 2-3 công thức phù hợp trong bộ 50 công thức viết content theo tình huống bán hàng, viết caption hoàn chỉnh và soát pháp lý quảng cáo VN trước khi giao. Dùng được trên Claude, Codex, ChatGPT và Gemini.',
+      en: 'Describe your sales problem; the AI diagnoses it, picks 2-3 of 50 situation-based sales content formulas, writes ready-to-post captions and checks Vietnamese ad law. Works on Claude, Codex, ChatGPT and Gemini.',
     },
     price: 399000,
     cta: { vi: 'Đăng ký ngay', en: 'Register now' },
     promo: { price: 99000, from: '2026-10-11T00:00:00+07:00', until: '2026-10-20T23:59:59+07:00' },
     file: 'viet-content-theo-tinh-huong-ban-hang-by-sunzlammarketing.skill',
     stats: [
-      { value: '50', label: { vi: 'mẫu caption', en: 'caption templates' } },
+      { value: '50', label: { vi: 'công thức viết content', en: 'content formulas' } },
       { value: '10', label: { vi: 'nhóm mục tiêu', en: 'goal groups' } },
       { value: '16', label: { vi: 'tình huống tra nhanh', en: 'quick-match situations' } },
       { value: '8', label: { vi: 'điểm soát pháp lý', en: 'legal checks' } },
@@ -66,8 +66,8 @@ export const SKILLS: Skill[] = [
     steps: [
       { title: 'Thu thập thông tin', text: 'Hỏi một lần, chỉ hỏi phần còn thiếu: sản phẩm, khách hàng, nỗi đau, lợi ích, bằng chứng, ưu đãi, kênh đăng, ngành.' },
       { title: 'Chẩn đoán tình huống', text: 'Đối chiếu vấn đề bạn mô tả với bảng tra 8 tình huống chính và 8 tình huống bổ sung.' },
-      { title: 'Chọn 2-3 mẫu', text: 'Chọn các mẫu có góc tiếp cận khác nhau để bạn có lựa chọn thật hoặc chạy A/B test, kèm lý do vì sao hợp.' },
-      { title: 'Viết caption hoàn chỉnh', text: 'Bám khung mẫu nhưng viết bằng giọng thương hiệu: ngôn ngữ của khách, một thông điệp, một CTA, hook mạnh, đúng format từng kênh.' },
+      { title: 'Chọn 2-3 công thức', text: 'Chọn các công thức có góc tiếp cận khác nhau để bạn có lựa chọn thật hoặc chạy A/B test, kèm lý do vì sao hợp.' },
+      { title: 'Viết caption hoàn chỉnh', text: 'Bám khung công thức nhưng viết bằng giọng thương hiệu: ngôn ngữ của khách, một thông điệp, một CTA, hook mạnh, đúng format từng kênh.' },
       { title: 'Soát pháp lý trước khi giao', text: 'Kiểm 8 điểm theo quy định quảng cáo VN mới nhất và checklist chất lượng, chỉ rõ chỗ cần sửa.' },
     ],
     groups: [
@@ -189,12 +189,12 @@ export const SKILLS: Skill[] = [
       with: {
         title: 'Dùng skill Sunz',
         ok: [
-          'Chẩn đoán tình huống trước, rồi mới chọn mẫu',
+          'Chẩn đoán tình huống trước, rồi mới chọn công thức',
           '2-3 phiên bản góc khác nhau, sẵn sàng A/B test',
           'Tự soát 8 điểm pháp lý trước khi giao',
           'Không bịa: thiếu bằng chứng thì để [biến] cho bạn điền',
         ],
-        star: ['50 mẫu chia 10 nhóm mục tiêu', 'Format riêng TikTok, Instagram, sàn TMĐT, Zalo OA'],
+        star: ['50 công thức chia 10 nhóm mục tiêu', 'Format riêng TikTok, Instagram, sàn TMĐT, Zalo OA'],
         fit: 'cần caption bán được ngay, đúng tình huống, an toàn pháp lý.',
       },
     },

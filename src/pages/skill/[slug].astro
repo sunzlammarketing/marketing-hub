@@ -127,7 +127,7 @@ const jsonLd = {
         <h2>
           <span data-i18n-vi="Bạn đang gặp " data-i18n-en="Which ">Bạn đang gặp </span><span class="hl" data-i18n-vi="tình huống nào?" data-i18n-en="situation are you in?">tình huống nào?</span>
         </h2>
-        <p class="sub">Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn mẫu phù hợp. 8 tình huống chính:</p>
+        <p class="sub">Chỉ cần mô tả vấn đề, skill tự tra bảng và chọn công thức phù hợp. 8 tình huống chính:</p>
         <div class="grid-4">
           {s.situations.map((x, i) => (
             <div class="card">
@@ -162,14 +162,14 @@ const jsonLd = {
       </div>
     </section>
 
-    <!-- THƯ VIỆN MẪU -->
+    <!-- THƯ VIỆN CÔNG THỨC -->
     <section class="container panel-wrap">
       <div class="panel">
-        <span class="pill pill-amber" data-i18n-vi="Thư viện mẫu" data-i18n-en="Template library">Thư viện mẫu</span>
+        <span class="pill pill-amber" data-i18n-vi="Thư viện công thức" data-i18n-en="Formula library">Thư viện công thức</span>
         <h2>
-          <span class="hl">{total} mẫu caption</span>, <span>{s.groups.length} nhóm mục tiêu</span>
+          <span class="hl">{total} công thức viết content</span>, <span>{s.groups.length} nhóm mục tiêu</span>
         </h2>
-        <p class="sub">Mỗi mẫu có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai.</p>
+        <p class="sub">Mỗi công thức có: khi nào dùng, khung viết chi tiết, kênh phù hợp và lưu ý để không viết sai.</p>
         <div class="grid-5">
           {s.groups.map((g, gi) => (
             <div class="card">
