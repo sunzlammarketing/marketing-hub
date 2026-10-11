@@ -378,6 +378,28 @@ img {
   }
 }
 
+/* Dòng dẫn trên tiêu đề trang chủ ("Sunz Làm Marketing giúp bạn").
+   Để global: tiêu đề được i18n chèn lại bằng innerHTML nên style scoped không áp vào. */
+.hero-kicker {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.5em;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+}
+.hero-kicker b {
+  color: #403bd3;
+}
+:root[data-theme='dark'] .hero-kicker b {
+  color: #8f8bff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .hero-kicker b {
+    color: #8f8bff;
+  }
+}
+
 /* Prose (bài viết) */
 .prose {
   font-size: 1.06rem;

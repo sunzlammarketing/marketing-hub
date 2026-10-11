@@ -23,8 +23,8 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     <div class="container hero-grid">
       <div class="hero-text">
         <h1 data-i18n-html="home.hero.title">
-          Hiểu Marketing <span class="grad">đúng</span>,<br />
-          làm Marketing <span class="grad">hiệu quả</span>.
+          <span class="hero-kicker"><b>Sunz Làm Marketing</b> giúp bạn</span>Hiểu Marketing <span class="hl">đúng</span>,<br />
+          làm Marketing <span class="hl">hiệu quả</span>.
         </h1>
         <p class="hero-sub" data-i18n="home.hero.sub">
           Kiến thức Marketing dễ hiểu, áp dụng được ngay.
@@ -114,7 +114,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
       <div class="me-text">
         <span class="me-label" data-i18n="home.me.label">Sunz Làm Marketing là ai?</span>
         <h2 class="me-title" data-i18n-html="home.me.title">
-          Chào bạn, mình làm Marketing và thích <span class="grad">chia sẻ lại</span>
+          Chào bạn, mình làm Marketing và thích <span class="hl">chia sẻ lại</span>
           những gì đã học.
         </h2>
         <p data-i18n="home.me.p1">
@@ -257,12 +257,6 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     line-height: 1.12;
     margin: 0;
     text-align: left;
-  }
-  .grad {
-    background: var(--hl);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
   .hero-sub {
     font-size: 1.12rem;

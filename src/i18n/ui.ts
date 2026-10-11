@@ -29,7 +29,7 @@ export const ui = {
     // Trang chủ - Hero
     'home.badge': '📚 Kiến thức Marketing thực chiến',
     'home.hero.title':
-      'Hiểu Marketing <span class="grad">đúng</span>,<br /> làm Marketing <span class="grad">hiệu quả</span>.',
+      '<span class="hero-kicker"><b>Sunz Làm Marketing</b> giúp bạn</span>Hiểu Marketing <span class="hl">đúng</span>,<br /> làm Marketing <span class="hl">hiệu quả</span>.',
     'home.hero.sub':
       'Kiến thức Marketing dễ hiểu, áp dụng được ngay.',
     'home.hero.cta1': 'Kho tài liệu Marketing miễn phí',
@@ -41,7 +41,7 @@ export const ui = {
     // Trang chủ - Mục "Sunz Làm Marketing là ai?"
     'home.me.label': 'Sunz Làm Marketing là ai?',
     'home.me.title':
-      'Chào bạn, mình làm Marketing và thích <span class="grad">chia sẻ lại</span> những gì đã học.',
+      'Chào bạn, mình làm Marketing và thích <span class="hl">chia sẻ lại</span> những gì đã học.',
     'home.me.p1':
       'Marketing có quá nhiều thứ để học. Nhưng phần lớn kiến thức ngoài kia hoặc quá hàn lâm, hoặc chỉ là những "mẹo" rời rạc thiếu nền tảng — khiến người mới không biết nên bắt đầu từ đâu.',
     'home.me.p2':
@@ -87,7 +87,7 @@ export const ui = {
     'about.posts.title': 'Bài viết mới nhất',
     'about.copied': 'Đã copy',
     'about.badge': '👋 Về chúng tôi',
-    'about.title': 'Chúng tôi tin marketing tốt <span class="grad">nên dễ học</span>',
+    'about.title': 'Chúng tôi tin marketing tốt <span class="hl">nên dễ học</span>',
     'about.lead':
       'Sunz Làm Marketing ra đời với một mục tiêu đơn giản: biến những kiến thức marketing tưởng chừng phức tạp thành thứ ai cũng có thể hiểu và áp dụng — dù bạn là chủ shop online, freelancer hay người mới vào nghề.',
     'about.val1.title': 'Thực chiến, không lý thuyết suông',
@@ -234,7 +234,7 @@ export const ui = {
     // Home - Hero
     'home.badge': '📚 Practical marketing knowledge',
     'home.hero.title':
-      'Understand marketing <span class="grad">right</span>,<br /> do marketing <span class="grad">effectively</span>.',
+      '<span class="hero-kicker"><b>Sunz Làm Marketing</b> helps you</span>Understand marketing <span class="hl">right</span>,<br /> do marketing <span class="hl">effectively</span>.',
     'home.hero.sub':
       'Clear, practical marketing you can apply today.',
     'home.hero.cta1': 'Free marketing resource hub',
@@ -246,7 +246,7 @@ export const ui = {
     // Home - "Who is Sunz Làm Marketing?" section
     'home.me.label': 'Who is Sunz Làm Marketing?',
     'home.me.title':
-      'Hi, I work in Marketing and love <span class="grad">sharing back</span> what I have learned.',
+      'Hi, I work in Marketing and love <span class="hl">sharing back</span> what I have learned.',
     'home.me.p1':
       'There is so much to learn in marketing. But most knowledge out there is either too academic or just scattered "tips" with no foundation — leaving beginners unsure where to start.',
     'home.me.p2':
@@ -292,7 +292,7 @@ export const ui = {
     'about.posts.title': 'Latest articles',
     'about.copied': 'Copied',
     'about.badge': '👋 About us',
-    'about.title': 'We believe good marketing <span class="grad">should be easy to learn</span>',
+    'about.title': 'We believe good marketing <span class="hl">should be easy to learn</span>',
     'about.lead':
       'Sunz Làm Marketing was born with a simple goal: to turn seemingly complex marketing knowledge into something anyone can understand and apply — whether you run an online shop, work as a freelancer, or are just starting out.',
     'about.val1.title': 'Practical, not just theory',
