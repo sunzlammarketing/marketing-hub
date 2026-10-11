@@ -29,7 +29,7 @@ export const ui = {
     // Trang chủ - Hero
     'home.badge': '📚 Kiến thức Marketing thực chiến',
     'home.hero.title':
-      '<span class="hero-kicker"><b>Sunz Làm Marketing</b> giúp bạn</span>Hiểu Marketing <span class="hl">đúng</span>,<br /> làm Marketing <span class="hl">hiệu quả</span>.',
+      '<span class="hero-kicker"><b class="t-blue">Sunz Làm Marketing</b> <span class="t-coral">giúp bạn</span></span><span class="t-coral">Hiểu Marketing</span> <span class="t-blue">đúng,</span><br /> <span class="t-coral">làm Marketing</span> <span class="t-blue">hiệu quả.</span>',
     'home.hero.sub':
       'Kiến thức Marketing dễ hiểu, áp dụng được ngay.',
     'home.hero.cta1': 'Kho tài liệu Marketing miễn phí',
@@ -234,7 +234,7 @@ export const ui = {
     // Home - Hero
     'home.badge': '📚 Practical marketing knowledge',
     'home.hero.title':
-      '<span class="hero-kicker"><b>Sunz Làm Marketing</b> helps you</span><span class="hero-main-en">Understand marketing <span class="hl">right</span>,<br /> do marketing <span class="hl">effectively</span>.</span>',
+      '<span class="hero-kicker"><b class="t-blue">Sunz Làm Marketing</b> <span class="t-coral">helps you</span></span><span class="hero-main-en"><span class="t-coral">Understand marketing</span> <span class="t-blue">right,</span><br /> <span class="t-coral">do marketing</span> <span class="t-blue">effectively.</span></span>',
     'home.hero.sub':
       'Clear, practical marketing you can apply today.',
     'home.hero.cta1': 'Free marketing resource hub',

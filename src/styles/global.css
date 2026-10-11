@@ -388,21 +388,31 @@ img {
   letter-spacing: -0.01em;
   color: var(--ink-soft);
 }
-.hero-kicker b {
+/* Màu chữ thương hiệu (tiêu đề trang chủ): xanh tím #403bd3, cam san hô #ff7759 */
+.t-blue {
   color: #403bd3;
+}
+.t-coral {
+  color: #ff7759;
+}
+:root[data-theme='dark'] .t-blue {
+  color: #8f8bff;
+}
+:root[data-theme='dark'] .t-coral {
+  color: #ff8a70;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .t-blue {
+    color: #8f8bff;
+  }
+  :root:not([data-theme='light']) .t-coral {
+    color: #ff8a70;
+  }
 }
 /* Bản EN: thu nhỏ 2 dòng chính để "Understand marketing right," rộng bằng dòng "Sunz Làm Marketing helps you" */
 .hero-main-en {
   display: block;
   font-size: 0.8em;
-}
-:root[data-theme='dark'] .hero-kicker b {
-  color: #8f8bff;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .hero-kicker b {
-    color: #8f8bff;
-  }
 }
 
 /* Prose (bài viết) */
