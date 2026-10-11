@@ -294,11 +294,12 @@ function sendTestToMe() {
 const esc_ = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const vnd_ = (n) => Number(n).toLocaleString('vi-VN') + ' ₫';
 // Màu cho từng khối tải (xoay vòng): nền nhạt · màu nhãn · nút gradient + màu dự phòng
+// Chỉ dùng 2 màu thương hiệu: xanh tím logo #403bd3 · cam san hô logo #ff7759
 const THEMES = [
-  { bg: '#f5f3ff', label: '#6d28d9', from: '#a78bfa', to: '#6d28d9' },
-  { bg: '#fff5f2', label: '#e2553b', from: '#fb8a63', to: '#e2553b' },
-  { bg: '#f0fdf4', label: '#15803d', from: '#4ade80', to: '#15803d' },
-  { bg: '#eff6ff', label: '#1d4ed8', from: '#60a5fa', to: '#1d4ed8' },
+  { bg: '#eeedfc', label: '#403bd3', from: '#6f6af0', to: '#403bd3' }, // xanh tím
+  { bg: '#fff3ef', label: '#e2553b', from: '#ffa184', to: '#e8573a' }, // cam
+  { bg: '#f6f2fb', label: '#403bd3', from: '#403bd3', to: '#ff7759' }, // xanh tím → cam
+  { bg: '#eeedfc', label: '#2e2a9e', from: '#5d58e6', to: '#2e2a9e' }, // xanh tím đậm
 ];
 const pill_ = (text, color, bg) =>
   '<span style="display:inline-block;padding:6px 14px;border-radius:999px;background:' + bg + ';color:' + color + ';font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase">' + text + '</span>';
@@ -321,7 +322,7 @@ function buildEmail_(o, p, links) {
     })
     .join('');
   return (
-    '<div style="background:#eef2ff;padding:24px 10px;' + F + '">' +
+    '<div style="background:#f1f0fb;padding:24px 10px;' + F + '">' +
     '<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 20px 40px -24px rgba(15,23,42,.35)">' +
     // Header gradient
     '<div style="background:#403bd3;background-image:linear-gradient(135deg,#2e2a9e,#403bd3 55%,#5d58e6);padding:34px 24px 30px;text-align:center;color:#fff">' +
@@ -337,33 +338,33 @@ function buildEmail_(o, p, links) {
     '<div style="color:#64748b;font-size:14px;margin-top:4px">Cảm ơn bạn đã tin tưởng ' + BRAND + '.</div>' +
     '</div>' +
     // Lời chào
-    '<p style="font-size:17px;color:#0f172a;margin:24px 0 6px">Xin chào <b style="color:#2563eb">' + esc_(o.name || 'bạn') + '</b>,</p>' +
+    '<p style="font-size:17px;color:#0f172a;margin:24px 0 6px">Xin chào <b style="color:#403bd3">' + esc_(o.name || 'bạn') + '</b>,</p>' +
     '<p style="font-size:15px;color:#334155;line-height:1.7;margin:0 0 20px">Sunz đã nhận được thanh toán của bạn cho <b>' + esc_(p.name) + '</b>. Dưới đây là thông tin đăng ký và link tải tài liệu.</p>' +
     // Thông tin đăng ký
-    pill_('Thông tin đăng ký', '#2563eb', '#eff6ff') +
+    pill_('Thông tin đăng ký', '#403bd3', '#eeedfc') +
     '<div style="background:#f8fafc;border-radius:18px;padding:6px 20px;margin:12px 0 0">' +
     '<table style="width:100%;border-collapse:collapse">' +
     row('Họ và tên', esc_(o.name || '—')) +
-    row('Email', '<a href="mailto:' + esc_(o.email) + '" style="color:#2563eb">' + esc_(o.email) + '</a>') +
+    row('Email', '<a href="mailto:' + esc_(o.email) + '" style="color:#403bd3">' + esc_(o.email) + '</a>') +
     row('Số điện thoại', esc_(o.phone)) +
     row('Mã đơn', esc_(o.code)) +
-    row('Số tiền', '<span style="color:#2563eb">' + vnd_(o.amount) + '</span>') +
+    row('Số tiền', '<span style="color:#403bd3">' + vnd_(o.amount) + '</span>') +
     row('Trạng thái', '<span style="display:inline-block;padding:5px 12px;border-radius:999px;background:#dcfce7;color:#15803d">Đã thanh toán</span>', true) +
     '</table></div>' +
     // Lưu ý
-    '<div style="background:#f0fdf4;border-radius:14px;padding:14px 16px;margin:16px 0 0;color:#166534;font-size:14px;line-height:1.6">' +
+    '<div style="background:#eeedfc;border-radius:14px;padding:14px 16px;margin:16px 0 0;color:#2e2a9e;font-size:14px;line-height:1.6">' +
     '<b>Lưu ý:</b> Vui lòng lưu email này và đánh dấu quan trọng để tải lại khi cần. Link tải dành riêng cho bạn, dùng trong ' + LINK_DAYS + ' ngày, vui lòng không chia sẻ.' +
     '</div>' +
     // Link tải
-    '<div style="margin:26px 0 12px">' + pill_('Link tải tài liệu', '#6d28d9', '#f5f3ff') + '</div>' +
+    '<div style="margin:26px 0 12px">' + pill_('Link tải tài liệu', '#403bd3', '#eeedfc') + '</div>' +
     files +
     '<p style="text-align:center;color:#64748b;font-size:13px;margin:4px 0 22px">Bấm nút là file tự tải về máy.</p>' +
     // Hỗ trợ
-    pill_('Tài liệu & hỗ trợ', '#e2553b', '#fff5f2') +
+    pill_('Tài liệu & hỗ trợ', '#e2553b', '#fff3ef') +
     '<div style="font-size:15px;line-height:2.1;margin:10px 0 18px">' +
-    '<a href="' + p.page + '" style="color:#2563eb;text-decoration:none">Trang sản phẩm & hướng dẫn sử dụng →</a><br>' +
-    '<a href="' + SUPPORT.messenger + '" style="color:#2563eb;text-decoration:none">Cần hỗ trợ? Nhắn Sunz qua Messenger →</a><br>' +
-    '<a href="' + SUPPORT.tiktok + '" style="color:#2563eb;text-decoration:none">Theo dõi Sunz trên TikTok →</a>' +
+    '<a href="' + p.page + '" style="color:#403bd3;text-decoration:none">Trang sản phẩm & hướng dẫn sử dụng →</a><br>' +
+    '<a href="' + SUPPORT.messenger + '" style="color:#403bd3;text-decoration:none">Cần hỗ trợ? Nhắn Sunz qua Messenger →</a><br>' +
+    '<a href="' + SUPPORT.tiktok + '" style="color:#403bd3;text-decoration:none">Theo dõi Sunz trên TikTok →</a>' +
     '</div>' +
     '<p style="font-size:15px;color:#334155;margin:0 0 24px">Chúc bạn ứng dụng thành công! 💜</p>' +
     '</div>' +
