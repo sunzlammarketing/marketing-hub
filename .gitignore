@@ -17,3 +17,6 @@ node_modules/
 
 # logs
 npm-debug.log*
+
+# Bản Apps Script có ID file Drive thật — không đưa lên repo công khai
+tools/*.local.gs
