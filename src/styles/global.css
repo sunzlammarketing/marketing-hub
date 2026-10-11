@@ -382,8 +382,8 @@ img {
    Để global: tiêu đề được i18n chèn lại bằng innerHTML nên style scoped không áp vào. */
 .hero-kicker {
   display: block;
-  margin-bottom: 10px;
-  font-size: 0.5em;
+  margin-bottom: 6px;
+  font-size: 0.708em; /* = bề ngang dòng "Hiểu Marketing đúng," (đo bằng Inter 900) */
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--ink-soft);
