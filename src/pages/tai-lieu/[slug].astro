@@ -33,11 +33,6 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <section class="container pdx">
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/" data-i18n="nav.home">Trang chủ</a> <span>/</span>
-      <a href="/tai-lieu" data-i18n="nav.resources">Tài liệu</a> <span>/</span>
-      <span data-i18n-vi={p.name.vi} data-i18n-en={p.name.en}>{p.name.vi}</span>
-    </nav>
 
     <div class="pdx-grid">
       <div class="pdx-media-col">
@@ -56,7 +51,6 @@ const jsonLd = {
       </div>
 
       <div class="pdx-info">
-        <span class="pdx-tag" data-i18n-vi={p.tag.vi} data-i18n-en={p.tag.en}>{p.tag.vi}</span>
         <h1 data-i18n-vi={p.name.vi} data-i18n-en={p.name.en}>{p.name.vi}</h1>
         <p class="pdx-desc" data-i18n-vi={p.desc.vi} data-i18n-en={p.desc.en}>{p.desc.vi}</p>
 

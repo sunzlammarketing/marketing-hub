@@ -29,11 +29,6 @@ const t = {
 <BaseLayout title={title} description={description}>
   <article class="post">
     <div class="container post-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">{t.home}</a> <span>/</span>
-        <a href="/blog">{t.blog}</a> <span>/</span>
-        {cat && <a href={`/chu-de/${cat.slug}`}>{catName}</a>}
-      </nav>
       {cat && (
         <a href={`/chu-de/${cat.slug}`} class="cat-chip" style={`--c:${cat.color}`}>
           {cat.icon} {catName}

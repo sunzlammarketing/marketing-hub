@@ -52,7 +52,6 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
 >
   <section class="page-head ab-hero">
     <div class="container">
-      <span class="pill pill-purple" data-i18n-vi="Giới thiệu" data-i18n-en="About">Giới thiệu</span>
       <h1><span data-i18n-vi="Về" data-i18n-en="About">Về</span> <span class="hl">Sunz Làm Marketing</span></h1>
       <p data-i18n="home.me.bio">Chia sẻ kiến thức, tài liệu & công cụ Marketing miễn phí</p>
     </div>
@@ -315,22 +314,16 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
     gap: 12px;
     flex-wrap: wrap;
   }
-  /* Nhãn viên thuốc (giống .pill chung) */
   .ab-label {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 6px 13px;
-    border-radius: 999px;
-    border: 1px solid rgba(99, 102, 241, 0.32);
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--brand-dark);
+    color: var(--ink-faint);
   }
   .ab-section-label {
-    margin-bottom: 14px;
+    display: block;
+    margin-bottom: 12px;
   }
   .ab-copy {
     display: inline-flex;
