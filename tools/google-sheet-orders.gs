@@ -178,17 +178,21 @@ function doGet(e) {
   }
 }
 
-// File → nội dung file; thư mục → nén .zip các file bên trong
+// File → nội dung file; thư mục → nén .zip các file bên trong.
+// Lưu ý: DriveApp.getFileById(<ID thư mục>) KHÔNG báo lỗi mà trả "file" rỗng → phải kiểm tra loại.
 function fileBlob_(id) {
-  try {
-    return DriveApp.getFileById(id).getBlob();
-  } catch (e) {
+  const item = DriveApp.getFileById(id);
+  if (item.getMimeType() === MimeType.FOLDER) {
     const folder = DriveApp.getFolderById(id);
     const blobs = [];
     const it = folder.getFiles();
     while (it.hasNext()) blobs.push(it.next().getBlob());
+    if (!blobs.length) throw new Error('Thư mục trống');
     return Utilities.zip(blobs, folder.getName() + '.zip');
   }
+  const blob = item.getBlob();
+  if (!blob.getBytes().length) throw new Error('File rỗng');
+  return blob;
 }
 
 // Chạy 1 lần để cấp quyền Drive + kiểm tra fileId đúng chưa
