@@ -37,7 +37,7 @@ const ownerRows = [
     <div class="pol-grid">
       <!-- Mục lục bên trái: dính theo khi cuộn, tô mục đang đọc (giống noti.vn) -->
       <aside class="pol-toc" aria-label="Mục lục">
-        <b class="pol-toc-title">📋 Mục lục</b>
+        <b class="pol-toc-title">Mục lục</b>
         <ol>
           {toc.map((t, i) => (
             <li><a href={`#${t.id}`} data-toc={t.id} class={i === 0 ? 'active' : ''}>{t.label}</a></li>
@@ -146,9 +146,18 @@ const ownerRows = [
   .pol-toc-title {
     display: block;
     padding: 0 10px 12px;
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--ink);
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: #403bd3;
+  }
+  :global([data-theme='dark']) .pol-toc-title {
+    color: #8f8bff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .pol-toc-title {
+      color: #8f8bff;
+    }
   }
   .pol-toc ol {
     list-style: none;
