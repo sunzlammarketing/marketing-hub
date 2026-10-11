@@ -14,7 +14,8 @@ const countByCat = (slug: string) =>
 >
   <section class="page-head">
     <div class="container">
-      <h1>Chủ đề Marketing</h1>
+      <span class="pill pill-blue" data-i18n-vi="Chủ đề" data-i18n-en="Topics">Chủ đề</span>
+      <h1><span data-i18n-vi="Chủ đề" data-i18n-en="Marketing">Chủ đề</span> <span class="hl" data-i18n-vi="Marketing" data-i18n-en="topics">Marketing</span></h1>
       <p>Chọn lĩnh vực để đọc các bài viết liên quan.</p>
     </div>
   </section>
@@ -36,22 +37,6 @@ const countByCat = (slug: string) =>
 </BaseLayout>
 
 <style>
-  .page-head {
-    padding-block: var(--space-head-top) var(--space-head-bottom);
-    text-align: center;
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-  }
-  .page-head h1 {
-    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-  }
-  .page-head p {
-    color: var(--ink-soft);
-    margin: 0;
-  }
   .cat-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -63,7 +48,9 @@ const countByCat = (slug: string) =>
     padding: 26px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
+    border-top: 3px solid var(--c);
     background: var(--bg-card);
+    box-shadow: var(--card-shadow);
     transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
   }
   .cat-card:hover {

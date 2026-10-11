@@ -50,9 +50,10 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
   title="Giới thiệu"
   description="Sunz Làm Marketing là nơi chia sẻ kiến thức Marketing thực chiến, dễ hiểu và miễn phí cho người Việt."
 >
-  <section class="ab-hero">
+  <section class="page-head ab-hero">
     <div class="container">
-      <h1 data-i18n="about.hero.title">Về Sunz Làm Marketing</h1>
+      <span class="pill pill-purple" data-i18n-vi="Giới thiệu" data-i18n-en="About">Giới thiệu</span>
+      <h1><span data-i18n-vi="Về" data-i18n-en="About">Về</span> <span class="hl">Sunz Làm Marketing</span></h1>
       <p data-i18n="home.me.bio">Chia sẻ kiến thức, tài liệu & công cụ Marketing miễn phí</p>
     </div>
   </section>
@@ -175,21 +176,6 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
 </BaseLayout>
 
 <style>
-  .ab-hero {
-    text-align: center;
-    /* Gọn hơn các trang khác: phần hồ sơ bên dưới đã đủ nổi bật */
-    padding-block: 32px 24px;
-  }
-  .ab-hero h1 {
-    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 6px;
-  }
-  .ab-hero p {
-    color: var(--ink-soft);
-    margin: 0;
-  }
 
   .ab-grid {
     display: grid;
@@ -315,11 +301,12 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
     min-width: 0;
   }
   .ab-card {
-    padding: 22px 24px;
-    border-radius: 18px;
+    padding: 24px 26px;
+    border-radius: var(--radius);
     border: 1px solid var(--border);
-    background: var(--bg-card);
-    box-shadow: var(--shadow);
+    background: var(--panel);
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(8px);
   }
   .ab-card-head {
     display: flex;
@@ -328,16 +315,22 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
     gap: 12px;
     flex-wrap: wrap;
   }
+  /* Nhãn viên thuốc (giống .pill chung) */
   .ab-label {
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    padding: 6px 13px;
+    border-radius: 999px;
+    border: 1px solid rgba(99, 102, 241, 0.32);
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--brand-dark);
   }
   .ab-section-label {
-    display: block;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .ab-copy {
     display: inline-flex;
@@ -513,9 +506,6 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
     }
   }
   @media (max-width: 560px) {
-    .ab-hero {
-      padding-block: 24px 20px;
-    }
     .ab-values,
     .ab-links,
     .ab-post-grid {

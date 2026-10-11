@@ -15,7 +15,8 @@ const channels = [
   <section class="contact">
     <div class="container contact-grid">
       <div class="contact-left">
-        <h1 data-i18n="contact.title">Kết nối với chúng tôi</h1>
+        <span class="pill pill-green" data-i18n-vi="Liên hệ" data-i18n-en="Contact">Liên hệ</span>
+        <h1><span data-i18n-vi="Kết nối" data-i18n-en="Get in touch">Kết nối</span> <span class="hl" data-i18n-vi="với chúng tôi" data-i18n-en="with us">với chúng tôi</span></h1>
         <p data-i18n="contact.lead">
           Câu hỏi, góp ý hay hợp tác — nhắn cho Sunz nhé!
         </p>
@@ -82,9 +83,10 @@ const channels = [
     align-items: start;
   }
   .contact-left h1 {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    font-size: clamp(2rem, 4.6vw, 3rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
     margin: 16px 0 12px;
   }
   .contact-left > p {
@@ -102,9 +104,10 @@ const channels = [
     align-items: center;
     gap: 14px;
     padding: 16px;
-    border-radius: 12px;
+    border-radius: 18px;
     border: 1px solid var(--border);
     background: var(--bg-card);
+    box-shadow: var(--card-shadow);
     color: var(--ink);
     transition: 0.15s;
   }
@@ -119,7 +122,7 @@ const channels = [
     height: 44px;
     display: grid;
     place-items: center;
-    border-radius: 10px;
+    border-radius: 14px;
     background: var(--brand-soft);
   }
   .ch-svg {
@@ -136,11 +139,12 @@ const channels = [
   }
 
   .contact-right {
-    background: var(--bg-card);
+    background: var(--panel);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 32px;
     padding: 32px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--panel-shadow);
   }
   .field {
     margin-bottom: 18px;

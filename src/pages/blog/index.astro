@@ -15,7 +15,8 @@ const posts = (await getCollection('blog')).sort(
 >
   <section class="page-head">
     <div class="container">
-      <h1 data-i18n-vi="Tất cả bài viết" data-i18n-en="All articles">Tất cả bài viết</h1>
+      <span class="pill pill-blue" data-i18n-vi="Blog" data-i18n-en="Blog">Blog</span>
+      <h1><span data-i18n-vi="Tất cả" data-i18n-en="All">Tất cả</span> <span class="hl" data-i18n-vi="bài viết" data-i18n-en="articles">bài viết</span></h1>
     </div>
   </section>
 
@@ -58,22 +59,6 @@ const posts = (await getCollection('blog')).sort(
 </BaseLayout>
 
 <style>
-  .page-head {
-    padding-block: var(--space-head-top) var(--space-head-bottom);
-    text-align: center;
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-  }
-  .page-head h1 {
-    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-  }
-  .page-head p {
-    color: var(--ink-soft);
-    margin: 0;
-  }
   .filters {
     display: flex;
     flex-wrap: wrap;

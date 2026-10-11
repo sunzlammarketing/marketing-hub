@@ -12,7 +12,8 @@ import { SKILLS, skillUrl } from '../data/skills';
 >
   <section class="page-head">
     <div class="container">
-      <h1 data-i18n-vi="Skill AI cho Marketing" data-i18n-en="AI Skills for Marketing">Skill AI cho Marketing</h1>
+      <span class="pill pill-green"><span data-i18n-vi="Đang mở bán" data-i18n-en="Now available">Đang mở bán</span></span>
+      <h1><span data-i18n-vi="Skill AI" data-i18n-en="AI Skills">Skill AI</span> <span class="hl" data-i18n-vi="cho Marketing" data-i18n-en="for Marketing">cho Marketing</span></h1>
       <p data-i18n-vi="Cài một lần vào Claude, dùng mãi cho công việc Marketing hằng ngày." data-i18n-en="Install once into Claude, use every day for your marketing work.">
         Cài một lần vào Claude, dùng mãi cho công việc Marketing hằng ngày.
       </p>
@@ -28,23 +29,6 @@ import { SKILLS, skillUrl } from '../data/skills';
 </BaseLayout>
 
 <style>
-  .page-head {
-    padding-block: var(--space-head-top) var(--space-head-bottom);
-    text-align: center;
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-  }
-  .page-head h1 {
-    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-  }
-  .page-head p {
-    color: var(--ink-soft);
-    margin: 0 auto;
-    max-width: 720px;
-  }
   .pd-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

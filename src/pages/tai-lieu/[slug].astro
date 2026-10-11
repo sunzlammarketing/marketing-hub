@@ -202,11 +202,14 @@ const jsonLd = {
 
   .pdx-tag {
     display: inline-block;
-    font-size: 0.82rem;
-    font-weight: 600;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: #e2553b;
-    background: color-mix(in srgb, #ff7759 14%, transparent);
-    padding: 5px 12px;
+    background: color-mix(in srgb, #ff7759 12%, transparent);
+    border: 1px solid color-mix(in srgb, #ff7759 35%, transparent);
+    padding: 7px 14px;
     border-radius: 999px;
   }
   .pdx-info h1 {
@@ -312,18 +315,21 @@ const jsonLd = {
     margin-top: 40px;
   }
   .pdx-block {
-    padding: 22px 24px;
-    border-radius: 20px;
+    padding: 28px 30px;
+    border-radius: 28px;
     border: 1px solid var(--border);
-    background: var(--bg-card);
+    background: var(--panel);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--panel-shadow);
   }
   .pdx-wide {
     grid-column: 1 / -1;
   }
   .pdx-block h2 {
-    margin: 0 0 10px;
-    font-size: 1.1rem;
-    font-weight: 800;
+    margin: 0 0 12px;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
   }
   .pdx-block p {
     margin: 0;

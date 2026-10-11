@@ -60,15 +60,8 @@ const posts = (await getCollection('blog'))
 </BaseLayout>
 
 <style>
-  .page-head {
-    padding-block: var(--space-head-top) var(--space-head-bottom);
-    text-align: center;
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--c) 10%, var(--bg)),
-      var(--bg)
-    );
-    border-bottom: 1px solid var(--border);
+  .page-head h1 {
+    color: var(--c);
   }
   .cat-icon {
     display: inline-grid;
@@ -79,19 +72,6 @@ const posts = (await getCollection('blog'))
     border-radius: 16px;
     background: color-mix(in srgb, var(--c) 16%, transparent);
     margin-bottom: 12px;
-  }
-  .page-head h1 {
-    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-    color: var(--c);
-  }
-  .page-head p {
-    color: var(--ink-soft);
-    margin: 0 0 12px;
-    max-width: 720px;
-    margin-inline: auto;
   }
   .count {
     display: inline-block;

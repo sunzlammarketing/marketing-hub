@@ -22,6 +22,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
+        <span class="pill pill-green"><i class="live-dot"></i> <span data-i18n-vi="Kiến thức · Tài liệu · Công cụ" data-i18n-en="Knowledge · Resources · Tools">Kiến thức · Tài liệu · Công cụ</span></span>
         <h1 data-i18n-html="home.hero.title">
           Hiểu Marketing <span class="grad">đúng</span>,<br />
           làm Marketing <span class="grad">hiệu quả</span>.
@@ -96,7 +97,8 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
 
   <!-- Sunz Làm Marketing là ai? -->
   <section class="section me-section" id="sunz-la-ai">
-    <div class="container me-grid">
+    <div class="container">
+    <div class="panel me-grid">
       <div class="me-card">
         <div class="me-avatar"><img src="/logo-mark.png" alt="Logo Sunz Làm Marketing" width="86" height="86" /></div>
         <b class="me-name">Sunz Làm Marketing</b>
@@ -111,7 +113,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
       </div>
 
       <div class="me-text">
-        <span class="me-label" data-i18n="home.me.label">Sunz Làm Marketing là ai?</span>
+        <span class="pill pill-purple me-label" data-i18n="home.me.label">Sunz Làm Marketing là ai?</span>
         <h2 class="me-title" data-i18n-html="home.me.title">
           Chào bạn, mình làm Marketing và thích <span class="grad">chia sẻ lại</span>
           những gì đã học.
@@ -137,11 +139,14 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
         <a href="/gioi-thieu" class="btn btn-ghost me-cta" data-i18n="home.me.cta">Tìm hiểu thêm về Sunz →</a>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- Categories -->
   <section class="section">
     <div class="container">
+      <div class="panel">
+      <span class="pill pill-blue" data-i18n-vi="Chủ đề" data-i18n-en="Topics">Chủ đề</span>
       <h2 class="section-title" data-i18n="home.cat.title">Khám phá theo chủ đề</h2>
       <p class="section-sub" data-i18n="home.cat.sub">
         Chọn lĩnh vực bạn quan tâm và đào sâu vào những bài viết chất lượng.
@@ -155,6 +160,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
           </a>
         ))}
       </div>
+      </div>
     </div>
   </section>
 
@@ -162,6 +168,8 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   {featured.length > 0 && (
     <section class="section featured-section">
       <div class="container">
+        <div class="panel">
+        <span class="pill pill-amber" data-i18n-vi="Nổi bật" data-i18n-en="Featured">Nổi bật</span>
         <h2 class="section-title" data-i18n="home.featured.title">Bài viết nổi bật</h2>
         <p class="section-sub" data-i18n="home.featured.sub">Những bài viết mới nhất, đáng đọc nhất tuần này.</p>
         <div class="grid grid-3">
@@ -177,6 +185,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
             />
           ))}
         </div>
+        </div>
       </div>
     </section>
   )}
@@ -184,8 +193,10 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   <!-- Recent -->
   <section class="section">
     <div class="container">
+      <div class="panel">
       <div class="row-head">
         <div>
+          <span class="pill pill-green" data-i18n-vi="Mới cập nhật" data-i18n-en="Just updated">Mới cập nhật</span>
           <h2 class="section-title" data-i18n="home.recent.title">Bài viết mới nhất</h2>
           <p class="section-sub" style="margin-bottom:0" data-i18n="home.recent.sub">
             Cập nhật kiến thức marketing đều đặn mỗi tuần.
@@ -205,6 +216,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
             lang={p.data.lang}
           />
         ))}
+      </div>
       </div>
     </div>
   </section>
@@ -230,14 +242,6 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     padding-block: var(--space-head-top) var(--space-home);
     overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(50% 60% at 70% 10%, var(--brand-soft), transparent 70%);
-    z-index: -1;
-  }
   .hero-grid {
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
@@ -251,7 +255,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     gap: 22px;
   }
   .hero h1 {
-    font-size: clamp(1.85rem, 3.6vw, 2.85rem);
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
     font-weight: 900;
     letter-spacing: -0.03em;
     line-height: 1.12;
@@ -259,7 +263,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     text-align: left;
   }
   .grad {
-    background: linear-gradient(120deg, var(--brand), var(--accent));
+    background: var(--hl);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -323,8 +327,6 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   }
   /* Mục "Sunz Làm Marketing là ai?" */
   .me-section {
-    background: var(--bg-soft);
-    border-block: 1px solid var(--border);
     scroll-margin-top: 80px;
   }
   .me-grid {
@@ -398,12 +400,6 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     text-decoration: none;
   }
   .me-label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--brand);
     margin-bottom: 14px;
   }
   .me-title {
@@ -445,10 +441,12 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 24px;
+    padding: 22px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
+    border-top: 3px solid var(--c);
     background: var(--bg-card);
+    box-shadow: var(--card-shadow);
     transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
   }
   .cat-card:hover {
@@ -467,7 +465,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     background: color-mix(in srgb, var(--c) 12%, transparent);
   }
   .cat-name {
-    font-weight: 700;
+    font-weight: 800;
     font-size: 1.1rem;
     color: var(--ink);
   }
@@ -476,10 +474,6 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     font-size: 0.92rem;
   }
 
-  .featured-section {
-    background: var(--bg-soft);
-    border-block: 1px solid var(--border);
-  }
 
   .row-head {
     display: flex;
@@ -492,13 +486,18 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   .cta-box {
     text-align: center;
     padding: 56px 24px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, var(--brand), var(--accent));
+    border-radius: 32px;
+    background:
+      radial-gradient(500px 300px at 10% 0%, rgba(255, 119, 89, 0.45), transparent 60%),
+      radial-gradient(600px 360px at 95% 100%, rgba(56, 189, 248, 0.4), transparent 60%),
+      linear-gradient(135deg, #403bd3, #6d28d9);
+    box-shadow: 0 30px 60px -30px rgba(64, 59, 211, 0.7);
     color: #fff;
   }
   .cta-box h2 {
-    font-size: clamp(1.5rem, 3vw, 2.1rem);
-    font-weight: 800;
+    font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
     margin: 0 0 10px;
   }
   .cta-box p {
@@ -508,7 +507,7 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
   }
   .cta-box .btn-primary {
     background: #fff;
-    color: var(--brand-dark);
+    color: #403bd3;
   }
   .cta-box .btn-primary:hover {
     background: #f0f0f0;
@@ -523,5 +522,15 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     .cat-grid {
       grid-template-columns: 1fr;
     }
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  }
+  .hero-illus {
+    box-shadow: 0 30px 60px -28px rgba(64, 59, 211, 0.55);
   }
 </style>

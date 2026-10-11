@@ -17,7 +17,8 @@ const products = [
 >
   <section class="page-head">
     <div class="container">
-      <h1 data-i18n="products.title">Sản phẩm & Dịch vụ</h1>
+      <span class="pill pill-purple" data-i18n-vi="Dịch vụ" data-i18n-en="Services">Dịch vụ</span>
+      <h1><span data-i18n-vi="Dịch vụ" data-i18n-en="Marketing">Dịch vụ</span> <span class="hl" data-i18n-vi="Marketing" data-i18n-en="services">Marketing</span></h1>
       <p data-i18n="products.lead">
         Đồng hành cùng doanh nghiệp từ chiến lược đến triển khai.
       </p>
@@ -42,23 +43,6 @@ const products = [
 </BaseLayout>
 
 <style>
-  .page-head {
-    padding-block: var(--space-head-top) var(--space-head-bottom);
-    text-align: center;
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-  }
-  .page-head h1 {
-    font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-  }
-  .page-head p {
-    color: var(--ink-soft);
-    margin: 0 auto;
-    max-width: 720px;
-  }
   .prod-card {
     position: relative;
     display: flex;
@@ -67,7 +51,9 @@ const products = [
     padding: 28px 24px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
+    border-top: 3px solid var(--c);
     background: var(--bg-card);
+    box-shadow: var(--card-shadow);
     transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
   }
   .prod-card:hover {
