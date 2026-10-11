@@ -29,7 +29,7 @@ export const ui = {
     // Trang chủ - Hero
     'home.badge': '📚 Kiến thức Marketing thực chiến',
     'home.hero.title':
-      '<span class="hero-kicker"><b class="t-blue">Sunz Làm Marketing</b> <span class="t-coral">giúp bạn</span></span><span class="t-coral">Hiểu Marketing</span> <span class="t-blue">đúng,</span><br /> <span class="t-coral">làm Marketing</span> <span class="t-blue">hiệu quả.</span>',
+      '<span class="hero-kicker"><b class="t-blue hx" style="--i:0">Sunz Làm Marketing</b> <span class="t-coral hx" style="--i:1">giúp bạn</span></span><span class="t-coral hx" style="--i:2">Hiểu Marketing</span> <span class="t-blue hx hero-mark" style="--i:3">đúng,</span><br /> <span class="t-coral hx" style="--i:4">làm Marketing</span> <span class="t-blue hx hero-mark" style="--i:5">hiệu quả.</span>',
     'home.hero.sub':
       'Kiến thức Marketing dễ hiểu, áp dụng được ngay.',
     'home.hero.cta1': 'Kho tài liệu Marketing miễn phí',
@@ -234,7 +234,7 @@ export const ui = {
     // Home - Hero
     'home.badge': '📚 Practical marketing knowledge',
     'home.hero.title':
-      '<span class="hero-kicker"><b class="t-blue">Sunz Làm Marketing</b> <span class="t-coral">helps you</span></span><span class="hero-main-en"><span class="t-coral">Understand marketing</span> <span class="t-blue">right,</span><br /> <span class="t-coral">do marketing</span> <span class="t-blue">effectively.</span></span>',
+      '<span class="hero-kicker"><b class="t-blue hx" style="--i:0">Sunz Làm Marketing</b> <span class="t-coral hx" style="--i:1">helps you</span></span><span class="hero-main-en"><span class="t-coral hx" style="--i:2">Understand marketing</span> <span class="t-blue hx hero-mark" style="--i:3">right,</span><br /> <span class="t-coral hx" style="--i:4">do marketing</span> <span class="t-blue hx hero-mark" style="--i:5">effectively.</span></span>',
     'home.hero.sub':
       'Clear, practical marketing you can apply today.',
     'home.hero.cta1': 'Free marketing resource hub',
