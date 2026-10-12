@@ -176,8 +176,15 @@ const jsonLd = {
   <dialog class="pdx-lightbox" aria-label="Xem ảnh tài liệu" data-preview-dialog>
     <button type="button" class="pdx-lightbox-close" data-preview-close aria-label="Đóng">×</button>
     <button type="button" class="pdx-lightbox-prev" data-preview-prev aria-label="Ảnh trước">‹</button>
+    <div class="pdx-zoom-controls">
+      <button type="button" data-zoom-out aria-label="Thu nhỏ ảnh">−</button>
+      <button type="button" data-zoom-reset aria-label="Khôi phục kích thước ảnh" aria-live="polite">100%</button>
+      <button type="button" data-zoom-in aria-label="Phóng to ảnh">+</button>
+    </div>
     <figure>
-      <img data-preview-image alt="" />
+      <div class="pdx-image-viewport" data-image-viewport tabindex="0" aria-label="Ảnh phóng to, cuộn để xem nội dung">
+        <img data-preview-image alt="" />
+      </div>
       <figcaption data-preview-count aria-live="polite"></figcaption>
     </figure>
     <button type="button" class="pdx-lightbox-next" data-preview-next aria-label="Ảnh tiếp theo">›</button>
@@ -191,7 +198,12 @@ const jsonLd = {
   .pdx-lightbox { padding: 56px 64px 24px; border: 0; border-radius: 20px; width: min(1100px, 96vw); max-width: 96vw; height: 92vh; height: 92dvh; max-height: 96dvh; background: #141322; color: #fff; overflow: hidden; box-sizing: border-box; }
   .pdx-lightbox::backdrop { background: rgba(0, 0, 0, .85); }
   .pdx-lightbox figure { margin: 0; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .pdx-lightbox img { display: block; width: 100%; height: 100%; min-height: 0; flex: 1; object-fit: contain; }
+  .pdx-image-viewport { width: 100%; min-height: 0; flex: 1; overflow: auto; overscroll-behavior: contain; }
+  .pdx-lightbox img { display: block; max-width: none; max-height: none; margin: auto; object-fit: contain; }
+  .pdx-zoom-controls { position: absolute; top: 8px; left: 12px; display: flex; gap: 6px; }
+  .pdx-zoom-controls button { position: static !important; font-size: 22px !important; }
+  .pdx-zoom-controls button[data-zoom-reset] { width: 70px; border-radius: 12px; font-size: 15px !important; }
+  .pdx-zoom-controls button:disabled { opacity: .4; cursor: default; }
   .pdx-lightbox figcaption { flex-shrink: 0; font-weight: 700; }
   .pdx-lightbox button { position: absolute; width: 44px; height: 44px; border: 1px solid #ffffff55; border-radius: 50%; background: #343146; color: white; cursor: pointer; font-size: 32px; display: grid; place-items: center; padding: 0; line-height: 1; }
   .pdx-lightbox button[hidden] { display: none; }
@@ -477,11 +489,36 @@ const jsonLd = {
   const close = dialog?.querySelector<HTMLButtonElement>('[data-preview-close]');
   const prev = dialog?.querySelector<HTMLButtonElement>('[data-preview-prev]');
   const next = dialog?.querySelector<HTMLButtonElement>('[data-preview-next]');
-  if (dialog && image && count && close && prev && next && previews.length) {
+  const viewport = dialog?.querySelector<HTMLElement>('[data-image-viewport]');
+  const zoomIn = dialog?.querySelector<HTMLButtonElement>('[data-zoom-in]');
+  const zoomOut = dialog?.querySelector<HTMLButtonElement>('[data-zoom-out]');
+  const zoomReset = dialog?.querySelector<HTMLButtonElement>('[data-zoom-reset]');
+  if (dialog && image && count && close && prev && next && viewport && zoomIn && zoomOut && zoomReset && previews.length) {
+    let zoom = 1;
+    const renderZoom = () => {
+      zoomReset.textContent = `${Math.round(zoom * 100)}%`;
+      zoomOut.disabled = zoom <= 1;
+      zoomIn.disabled = zoom >= 4;
+      if (!image.naturalWidth || !image.naturalHeight || !viewport.clientWidth || !viewport.clientHeight) return;
+      const fit = Math.min(viewport.clientWidth / image.naturalWidth, viewport.clientHeight / image.naturalHeight);
+      image.style.width = `${image.naturalWidth * fit * zoom}px`;
+      image.style.height = `${image.naturalHeight * fit * zoom}px`;
+    };
+    const resetZoom = () => {
+      zoom = 1;
+      renderZoom();
+      viewport.scrollTop = viewport.scrollLeft = 0;
+    };
+    zoomIn.addEventListener('click', () => { zoom = Math.min(4, zoom + .5); renderZoom(); });
+    zoomOut.addEventListener('click', () => { zoom = Math.max(1, zoom - .5); renderZoom(); });
+    zoomReset.addEventListener('click', resetZoom);
+    image.addEventListener('load', renderZoom);
+    new ResizeObserver(() => { if (dialog.open) renderZoom(); }).observe(viewport);
     let index = 0;
     let opener: HTMLButtonElement | null = null;
     let oldOverflow = '';
     const show = (at: number) => {
+      resetZoom();
       index = (at + previews.length) % previews.length;
       image.src = previews[index].dataset.previewSrc || '';
       image.alt = previews[index].dataset.previewAlt || '';
@@ -494,6 +531,7 @@ const jsonLd = {
       oldOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       dialog.showModal();
+      renderZoom();
     }));
     close.addEventListener('click', () => dialog.close());
     prev.addEventListener('click', () => show(index - 1));
