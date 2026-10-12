@@ -31,7 +31,7 @@ export const ui = {
     'home.hero.title':
       '<span class="hero-kicker"><b class="t-blue hx" style="--i:0">Sunz Làm Marketing</b> <span class="t-coral hx" style="--i:1">giúp bạn</span></span><span class="t-coral hx" style="--i:2">Hiểu Marketing</span> <span class="t-blue hx hero-mark" style="--i:3">đúng,</span><br /> <span class="t-coral hx" style="--i:4">làm Marketing</span> <span class="t-blue hx hero-mark" style="--i:5">hiệu quả.</span>',
     'home.hero.sub':
-      'Kiến thức Marketing dễ hiểu, áp dụng được ngay.',
+      'Chia sẻ kiến thức, tài liệu và công cụ Marketing thực tiễn, dễ hiểu, áp dụng được ngay.',
     'home.hero.cta1': 'Kho tài liệu Marketing thực tiễn',
     'home.hero.cta2': 'Sunz Làm Marketing là ai?',
     'home.stat.posts': 'Bài viết',
