@@ -139,9 +139,12 @@ const off = ep.off;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: nowrap;
   }
+  .pd-foot :global(.buy-btn) { flex-shrink: 0; padding: 12px 14px; }
   .pd-price {
+    white-space: nowrap;
     font-size: 1.45rem;
     font-weight: 900;
     color: var(--brand);
@@ -149,6 +152,8 @@ const off = ep.off;
   }
   .pd-prices {
     display: grid;
+    gap: 5px;
+    min-width: 0;
     line-height: 1.15;
   }
   .pd-old {
