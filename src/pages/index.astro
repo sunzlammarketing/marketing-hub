@@ -26,9 +26,10 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
           <span class="hero-kicker"><b class="t-blue hx" style="--i:0">Sunz Làm Marketing</b> <span class="t-coral hx" style="--i:1">giúp bạn</span></span><span class="t-coral hx" style="--i:2">Hiểu Marketing</span> <span class="t-blue hx hero-mark" style="--i:3">đúng,</span><br />
           <span class="t-coral hx" style="--i:4">làm Marketing</span> <span class="t-blue hx hero-mark" style="--i:5">hiệu quả.</span>
         </h1>
-        <p class="hero-sub" data-i18n="home.hero.sub">
-          Chia sẻ kiến thức, tài liệu và công cụ Marketing thực tiễn, dễ hiểu, áp dụng được ngay.
-        </p>
+       <p class="hero-sub" data-i18n-html="home.hero.sub">
+  Chia sẻ kiến thức, tài liệu và công cụ Marketing thực tiễn, dễ hiểu,<br />
+  áp dụng được ngay.
+</p>
         <div class="hero-actions">
           <a href="/tai-lieu" class="btn btn-primary cta-main" data-i18n="home.hero.cta1">
             Kho tài liệu Marketing thực tiễn
@@ -263,11 +264,15 @@ const recent = [...viPosts.slice(3, 6), ...enPosts.slice(3, 6)];
     font-size: min(clamp(2rem, 4.2vw, 3.2rem), 8.2vw);
   }
   .hero-sub {
-    font-size: 1.12rem;
-    color: var(--ink-soft);
-    max-width: 540px;
-    margin: 0;
-  }
+  width: 100%;
+  max-width: none;
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0;
+}
   /* Hai nút xếp dọc: nút chính nổi bật, nút phụ nhẹ hơn */
   .hero-actions {
     display: flex;
