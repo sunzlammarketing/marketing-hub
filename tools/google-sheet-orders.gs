@@ -50,7 +50,7 @@ const PRODUCTS = {
       { label: 'Template chấm điểm', desc: 'File Excel: mở bằng Google Trang tính để chấm điểm tự động cho 10 bài.', button: 'Tải template (Excel)', fileId: '' },
     ],
   },
-  NMM: { name: 'Ebook nhập môn Marketing cho người mới', page: SITE + '/tai-lieu/nhap-mon-marketing', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  NMM: { name: 'Ebook Nhập môn Marketing cho người mới', page: SITE + '/tai-lieu/nhap-mon-marketing', files: [{ label: 'Ebook PDF', desc: 'Ebook 24 trang: 8 chương nền tảng, ví dụ 8 ngành, bài tập và kế hoạch marketing 1 trang.', button: 'Tải ebook (PDF)', fileId: '' }] },
   CNFA: { name: 'Ebook cẩm nang chạy Facebook Ads', page: SITE + '/tai-lieu/cam-nang-facebook-ads', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
   EB50CT: { name: 'Ebook 50 công thức viết content theo tình huống bán hàng', page: SITE + '/tai-lieu/ebook-50-cong-thuc-viet-content', files: [{ label: 'Ebook PDF', desc: 'Ebook 32 trang: 50 công thức, khung mẫu, ví dụ và checklist pháp lý.', button: 'Tải ebook (PDF)', fileId: '' }] },
 };
