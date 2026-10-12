@@ -41,13 +41,17 @@ const jsonLd = {
 
     <div class="pdx-grid">
       <div class="pdx-media-col">
-        <div class="pdx-media">
-          <ProductCover product={p} size="large" />
-        </div>
+        {p.image ? (
+          <button type="button" class="pdx-media pdx-preview" data-preview-src={p.image} aria-label="Phóng to ảnh bìa" data-preview-alt={p.name.vi}>
+            <ProductCover product={p} size="large" />
+          </button>
+        ) : (
+          <div class="pdx-media"><ProductCover product={p} size="large" /></div>
+        )}
         {p.gallery && p.gallery.length > 0 && (
           <div class="pdx-gallery">
             {p.gallery.map((src, i) => (
-              <a href={src} target="_blank" rel="noopener">
+              <button type="button" class="pdx-preview" data-preview-src={src} data-preview-alt={`${p.name.vi}: trang xem trước ${i + 1}`} aria-label={`Phóng to ảnh ${i + 1}`}>
                 {/* Ảnh nhỏ <tên>-thumb.webp (480×360) cho dải xem trước; bấm mở ảnh trang đầy đủ */}
                 <img
                   src={src.endsWith('.webp') ? src.replace(/\.webp$/, '-thumb.webp') : src}
@@ -57,7 +61,7 @@ const jsonLd = {
                   width="480"
                   height="360"
                 />
-              </a>
+              </button>
             ))}
           </div>
         )}
@@ -169,10 +173,38 @@ const jsonLd = {
       </div>
     </section>
   )}
+  <dialog class="pdx-lightbox" aria-label="Xem ảnh tài liệu" data-preview-dialog>
+    <button type="button" class="pdx-lightbox-close" data-preview-close aria-label="Đóng">×</button>
+    <button type="button" class="pdx-lightbox-prev" data-preview-prev aria-label="Ảnh trước">‹</button>
+    <figure>
+      <img data-preview-image alt="" />
+      <figcaption data-preview-count aria-live="polite"></figcaption>
+    </figure>
+    <button type="button" class="pdx-lightbox-next" data-preview-next aria-label="Ảnh tiếp theo">›</button>
+  </dialog>
   <PaymentModal />
 </BaseLayout>
 
 <style>
+  .pdx-preview { display: block; width: 100%; padding: 0; cursor: zoom-in; background: transparent; border: 0; }
+  .pdx-preview:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
+  .pdx-lightbox { padding: 56px 64px 24px; border: 0; border-radius: 20px; width: min(1100px, 96vw); max-width: 96vw; height: 92vh; height: 92dvh; max-height: 96dvh; background: #141322; color: #fff; overflow: hidden; box-sizing: border-box; }
+  .pdx-lightbox::backdrop { background: rgba(0, 0, 0, .85); }
+  .pdx-lightbox figure { margin: 0; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .pdx-lightbox img { display: block; width: 100%; height: 100%; min-height: 0; flex: 1; object-fit: contain; }
+  .pdx-lightbox figcaption { flex-shrink: 0; font-weight: 700; }
+  .pdx-lightbox button { position: absolute; width: 44px; height: 44px; border: 1px solid #ffffff55; border-radius: 50%; background: #343146; color: white; cursor: pointer; font-size: 32px; display: grid; place-items: center; padding: 0; line-height: 1; }
+  .pdx-lightbox button[hidden] { display: none; }
+  .pdx-lightbox button:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 3px; }
+  .pdx-lightbox-close { top: 8px; right: 12px; }
+  .pdx-lightbox-prev { left: 8px; top: calc(50% - 22px); }
+  .pdx-lightbox-next { right: 8px; top: calc(50% - 22px); }
+  @media (max-width: 600px) {
+    .pdx-lightbox { padding: 56px 8px 70px; width: 96vw; }
+    .pdx-lightbox-prev { top: auto; bottom: 12px; left: calc(50% - 60px); }
+    .pdx-lightbox-next { top: auto; bottom: 12px; right: calc(50% - 60px); }
+  }
+
   .pdx {
     padding-top: var(--space-head-top);
   }
@@ -436,3 +468,48 @@ const jsonLd = {
     }
   }
 </style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-preview-dialog]');
+  const previews = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-preview-src]'));
+  const image = dialog?.querySelector<HTMLImageElement>('[data-preview-image]');
+  const count = dialog?.querySelector<HTMLElement>('[data-preview-count]');
+  const close = dialog?.querySelector<HTMLButtonElement>('[data-preview-close]');
+  const prev = dialog?.querySelector<HTMLButtonElement>('[data-preview-prev]');
+  const next = dialog?.querySelector<HTMLButtonElement>('[data-preview-next]');
+  if (dialog && image && count && close && prev && next && previews.length) {
+    let index = 0;
+    let opener: HTMLButtonElement | null = null;
+    let oldOverflow = '';
+    const show = (at: number) => {
+      index = (at + previews.length) % previews.length;
+      image.src = previews[index].dataset.previewSrc || '';
+      image.alt = previews[index].dataset.previewAlt || '';
+      count.textContent = `${index + 1} / ${previews.length}`;
+      prev.hidden = next.hidden = previews.length < 2;
+    };
+    previews.forEach((button, at) => button.addEventListener('click', () => {
+      opener = button;
+      show(at);
+      oldOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      dialog.showModal();
+    }));
+    close.addEventListener('click', () => dialog.close());
+    prev.addEventListener('click', () => show(index - 1));
+    next.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(index + (event.key === 'ArrowLeft' ? -1 : 1));
+      }
+    });
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = oldOverflow;
+      opener?.focus();
+    });
+  }
+</script>
