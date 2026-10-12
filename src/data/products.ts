@@ -183,8 +183,7 @@ export const PRODUCTS: Product[] = [
       vi: '30 prompt AI cho công việc Marketing, kèm ebook hướng dẫn và template để tuỳ chỉnh theo mục tiêu, sản phẩm và khách hàng.',
       en: '30 AI prompts for marketing work, with an ebook and a template to adapt them to your goals, product and customers.',
     },
-    price: 49000,
-    originalPrice: 99000,
+    price: 0,
   },
   {
     slug: 'ke-hoach-content-30-ngay',
@@ -197,8 +196,7 @@ export const PRODUCTS: Product[] = [
       vi: 'Ebook và template hỗ trợ Shop, KOC rà soát nội dung quảng cáo, ghi chú các điểm cần kiểm tra trước khi đăng.',
       en: 'An ebook and a template to help shops and KOCs review advertising content and record the checks needed before publishing.',
     },
-    price: 49000,
-    originalPrice: 99000,
+    price: 0,
   },
   {
     slug: 'checklist-seo-on-page',
@@ -266,7 +264,7 @@ export const productCode = (p: Product) =>
   (p.code || p.slug.split('-').map((w) => (/^\d+$/.test(w) ? w : w[0])).join('')).toUpperCase().slice(0, 8);
 export const productUrl = (p: Product) => `/tai-lieu/${p.slug}`;
 export const buyHref = (p: Product) =>
-  p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn mua sản phẩm: ${p.name.vi}`)}`;
+  p.buyUrl || `${MESSENGER}?text=${encodeURIComponent(`Xin chào Sunz, mình muốn ${p.price === 0 ? 'nhận miễn phí tài liệu' : 'mua sản phẩm'}: ${p.name.vi}`)}`;
 // Giá đang áp dụng tại thời điểm `at` (mặc định lúc build)
 export const effectivePrice = (p: Product, at = Date.now()) => {
   const promoOn = p.promo && at >= Date.parse(p.promo.from) && at <= Date.parse(p.promo.until);

@@ -81,7 +81,9 @@ const jsonLd = {
         <div class="pdx-buy">
           <div>
             <span class="pdx-price-label" data-i18n-vi="Giá" data-i18n-en="Price">Giá</span>
-            {ep.price != null ? (
+            {ep.price === 0 ? (
+              <span class="pdx-price" data-i18n-vi="Miễn phí" data-i18n-en="Free">Miễn phí</span>
+            ) : ep.price != null ? (
               <span class="pdx-price-row" data-price-box data-until={ep.promo?.until} data-regular={p.price != null ? formatVnd(p.price) : undefined}>
                 <span class="pdx-price" data-pnow>{formatVnd(ep.price)}</span>
                 {off && (
@@ -97,6 +99,15 @@ const jsonLd = {
           <BuyButton product={p} size="lg" />
         </div>
 
+        {ep.price === 0 ? (
+          <div class="pdx-how">
+            <b data-i18n-vi="Cách nhận tài liệu" data-i18n-en="How to get it">Cách nhận tài liệu</b>
+            <p data-i18n-vi="Bấm “Nhận ngay” và nhắn Sunz qua Messenger để nhận tài liệu miễn phí."
+               data-i18n-en="Tap “Get it free” and message Sunz on Messenger to request the free resource.">
+              Bấm “Nhận ngay” và nhắn Sunz qua Messenger để nhận tài liệu miễn phí.
+            </p>
+          </div>
+        ) : (
         <div class="pdx-how">
           <b data-i18n-vi="Cách mua" data-i18n-en="How to buy">Cách mua</b>
           <ol>
@@ -111,6 +122,7 @@ const jsonLd = {
             </li>
           </ol>
         </div>
+        )}
       </div>
     </div>
 

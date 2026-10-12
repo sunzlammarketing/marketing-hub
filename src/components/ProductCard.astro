@@ -27,7 +27,9 @@ const off = ep.off;
       <span data-i18n-vi="Xem chi tiết" data-i18n-en="View details">Xem chi tiết</span> →
     </a>
     <div class="pd-foot">
-      {ep.price != null ? (
+      {ep.price === 0 ? (
+              <span class="pd-price" data-i18n-vi="Miễn phí" data-i18n-en="Free">Miễn phí</span>
+            ) : ep.price != null ? (
         <div class="pd-prices" data-price-box data-until={ep.promo?.until} data-regular={p.price != null ? formatVnd(p.price) : undefined}>
           {off && (
             <span class="pd-old" data-pold>

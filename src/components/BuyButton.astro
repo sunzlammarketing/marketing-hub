@@ -1,6 +1,7 @@
 ---
 // Nút "Mua ngay":
-// - Có giá (price) và không có buyUrl → mở cửa sổ QR thanh toán (PaymentModal phải có trên trang).
+// - Miễn phí (price = 0) → link nhận tài liệu hoặc Messenger, không mở QR.
+// - Có giá (price > 0) và không có buyUrl → mở cửa sổ QR thanh toán (PaymentModal phải có trên trang).
 // - Chưa có giá → mở Messenger fanpage kèm tin nhắn soạn sẵn tên sản phẩm (theo ngôn ngữ đang chọn).
 // - Có buyUrl → mở link đó.
 import { buyHref, productCode, effectivePrice, type Product } from '../data/products';
@@ -10,8 +11,9 @@ interface Props {
 }
 const { product: p, size = 'md' } = Astro.props;
 const ep = effectivePrice(p);
-const payQr = ep.price != null && !p.buyUrl;
-const cta = p.cta ?? { vi: 'Mua ngay', en: 'Buy now' };
+const isFree = ep.price === 0;
+const payQr = ep.price != null && ep.price > 0 && !p.buyUrl;
+const cta = p.cta ?? (isFree ? { vi: 'Nhận ngay', en: 'Get it free' } : { vi: 'Mua ngay', en: 'Buy now' });
 ---
 
 {payQr ? (
@@ -26,7 +28,7 @@ const cta = p.cta ?? { vi: 'Mua ngay', en: 'Buy now' };
   data-name-vi={p.name.vi}
   data-name-en={p.name.en}
 >
-  <span aria-hidden="true">🛒</span>
+  <span aria-hidden="true">{isFree ? '🎁' : '🛒'}</span>
   <span data-i18n-vi={cta.vi} data-i18n-en={cta.en}>{cta.vi}</span>
 </button>
 ) : (
@@ -37,9 +39,10 @@ const cta = p.cta ?? { vi: 'Mua ngay', en: 'Buy now' };
   rel="noopener"
   data-name-vi={p.name.vi}
   data-name-en={p.name.en}
+  data-free={isFree ? '1' : undefined}
   data-custom={p.buyUrl ? '1' : undefined}
 >
-  <span aria-hidden="true">🛒</span>
+  <span aria-hidden="true">{isFree ? '🎁' : '🛒'}</span>
   <span data-i18n-vi={cta.vi} data-i18n-en={cta.en}>{cta.vi}</span>
 </a>
 )}
@@ -85,7 +88,9 @@ const cta = p.cta ?? { vi: 'Mua ngay', en: 'Buy now' };
       const lang = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi';
       const name = (lang === 'en' ? a.dataset.nameEn : a.dataset.nameVi) || '';
       const url = new URL(a.href);
-      url.searchParams.set('text', MSG[lang](name));
+      url.searchParams.set('text', a.dataset.free === '1'
+        ? (lang === 'en' ? `Hi Sunz, I'd like to get this free resource: ${name}` : `Xin chào Sunz, mình muốn nhận miễn phí tài liệu: ${name}`)
+        : MSG[lang](name));
       a.href = url.toString();
     });
   });
