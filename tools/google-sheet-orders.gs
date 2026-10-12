@@ -40,7 +40,7 @@ const PRODUCTS = {
       { label: 'Hướng dẫn cài đặt', desc: 'PDF các bước cài trên Claude, Codex, ChatGPT, Gemini.', button: 'Tải hướng dẫn (PDF)', fileId: '' },
     ],
   },
-  KHC30N: { name: 'Template kế hoạch content 30 ngày', page: SITE + '/tai-lieu/ke-hoach-content-30-ngay', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  PLQC26: { name: 'Ebook + Template Check pháp lý quảng cáo 2026 cho Shop & KOC', page: SITE + '/tai-lieu/check-phap-ly-quang-cao-2026', files: [{ label: 'Ebook PDF', desc: '', button: 'Tải ebook (PDF)', fileId: '' }, { label: 'Template', desc: '', button: 'Tải template', fileId: '' }] },
   PMA: { name: 'Template phễu Marketing AARRR', page: SITE + '/tai-lieu/pheu-marketing-aarrr', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
   CSOP: {
     name: 'Checklist 30 điểm tối ưu SEO on-page',
@@ -51,7 +51,7 @@ const PRODUCTS = {
     ],
   },
   NMM: { name: 'Ebook Nhập môn Marketing cho người mới', page: SITE + '/tai-lieu/nhap-mon-marketing', files: [{ label: 'Ebook PDF', desc: 'Ebook 24 trang: 8 chương nền tảng, ví dụ 8 ngành, bài tập và kế hoạch marketing 1 trang.', button: 'Tải ebook (PDF)', fileId: '' }] },
-  CNFA: { name: 'Ebook cẩm nang chạy Facebook Ads', page: SITE + '/tai-lieu/cam-nang-facebook-ads', files: [{ label: 'Tài liệu', desc: '', button: 'Tải tài liệu', fileId: '' }] },
+  PAI30: { name: 'Ebook + Template 30 prompt AI cho Marketer', page: SITE + '/tai-lieu/30-prompt-ai-cho-marketer', files: [{ label: 'Ebook PDF', desc: '', button: 'Tải ebook (PDF)', fileId: '' }, { label: 'Template', desc: '', button: 'Tải template', fileId: '' }] },
   EB50CT: { name: 'Ebook 50 công thức viết content theo tình huống bán hàng', page: SITE + '/tai-lieu/ebook-50-cong-thuc-viet-content', files: [{ label: 'Ebook PDF', desc: 'Ebook 32 trang: 50 công thức, khung mẫu, ví dụ và checklist pháp lý.', button: 'Tải ebook (PDF)', fileId: '' }] },
 };
 

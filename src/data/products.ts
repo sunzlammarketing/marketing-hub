@@ -173,7 +173,8 @@ export const PRODUCTS: Product[] = [
     originalPrice: 99000,
   },
   {
-    slug: 'cam-nang-facebook-ads',
+    slug: '30-prompt-ai-cho-marketer',
+    code: 'PAI30',
     icon: '🤖',
     color: '#dc2626',
     type: { vi: 'PDF + Template', en: 'PDF + Template' },
@@ -186,7 +187,8 @@ export const PRODUCTS: Product[] = [
     price: 0,
   },
   {
-    slug: 'ke-hoach-content-30-ngay',
+    slug: 'check-phap-ly-quang-cao-2026',
+    code: 'PLQC26',
     icon: '⚖️',
     color: '#4f46e5',
     type: { vi: 'PDF + Template', en: 'PDF + Template' },
@@ -259,7 +261,7 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const MESSENGER = 'https://m.me/sunzlammarketing';
-// Mã sản phẩm cho nội dung chuyển khoản: chữ đầu mỗi cụm của slug, giữ nguyên số (vd ke-hoach-content-30-ngay → KHC30N)
+// Mã sản phẩm cho nội dung chuyển khoản: chữ đầu mỗi cụm của slug, giữ nguyên số (vd nhap-mon-marketing → NMM)
 export const productCode = (p: Product) =>
   (p.code || p.slug.split('-').map((w) => (/^\d+$/.test(w) ? w : w[0])).join('')).toUpperCase().slice(0, 8);
 export const productUrl = (p: Product) => `/tai-lieu/${p.slug}`;
