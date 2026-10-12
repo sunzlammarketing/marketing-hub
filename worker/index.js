@@ -16,6 +16,9 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === '/dl') return download(url);
+        if (url.pathname === '/api/order-status') {
+      return orderStatus(request, url);
+    }
     if (url.pathname.startsWith('/api/seo/')) return handleSeoApi(request, env, url);
     return env.ASSETS.fetch(request);
   },
@@ -61,4 +64,72 @@ function page(message, status) {
 <a href="${SUPPORT}" style="display:inline-block;background:#4f46e5;color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:12px">Nhắn Sunz để được hỗ trợ</a>
 </div></body></html>`;
   return new Response(html, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+}
+
+
+async function orderStatus(request, url) {
+  const reply = (data, status = 200) =>
+    new Response(JSON.stringify(data), {
+      status,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'X-Robots-Tag': 'noindex',
+      },
+    });
+
+  if (request.method !== 'GET') {
+    return reply({ ok: false, error: 'method_not_allowed' }, 405);
+  }
+
+  const token = url.searchParams.get('token') || '';
+  const valid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  if (!valid.test(token)) {
+    return reply({ ok: false, error: 'invalid_token' }, 400);
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const res = await fetch(
+      `${APPS_SCRIPT}?action=order-status&token=${encodeURIComponent(token)}`,
+      {
+        redirect: 'follow',
+        signal: controller.signal,
+      }
+    );
+
+    if (!res.ok) throw new Error('upstream_error');
+    const data = await res.json();
+
+    if (!data || !data.ok) {
+      const missing = data?.error === 'not_found';
+      return reply(
+        {
+          ok: false,
+          error: missing ? 'not_found' : 'unavailable',
+        },
+        missing ? 404 : 503
+      );
+    }
+
+    if (
+      !['pending', 'confirmed', 'cancelled'].includes(data.payment) ||
+      !['sent', 'not_sent'].includes(data.delivery)
+    ) {
+      throw new Error('invalid_response');
+    }
+
+    return reply({
+      ok: true,
+      payment: data.payment,
+      delivery: data.delivery,
+    });
+  } catch {
+    return reply({ ok: false, error: 'unavailable' }, 503);
+  } finally {
+    clearTimeout(timer);
+  }
 }
