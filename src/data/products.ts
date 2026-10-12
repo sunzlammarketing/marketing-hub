@@ -29,11 +29,70 @@ export interface Product {
   gallery?: string[];                        // ảnh chụp thêm (public/products/...)
 }
 
-const TEMPLATE = { vi: 'Template - Tài liệu Marketing', en: 'Template - Marketing Resource' };
+const EBOOK_TEMPLATE = { vi: 'Ebook + Template - Tài liệu Marketing', en: 'Ebook + Template - Marketing Resource' };
 const EBOOK = { vi: 'Ebook - Tài liệu Marketing', en: 'Ebook - Marketing Resource' };
-const CHECKLIST = { vi: 'Checklist - Tài liệu Marketing', en: 'Checklist - Marketing Resource' };
 
 export const PRODUCTS: Product[] = [
+  {
+    slug: 'nhap-mon-marketing',
+    code: 'NMM',
+    icon: '📘',
+    color: '#2e2a8c',
+    type: { vi: 'PDF · 24 trang', en: 'PDF · 24 pages' },
+    tag: EBOOK,
+    image: '/products/nhap-mon-marketing/cover.webp',
+    name: { vi: 'Ebook Nhập môn Marketing cho người mới', en: 'Ebook: Marketing basics for beginners' },
+    desc: {
+      vi: 'Nắm chắc nền tảng và cách tư duy của người làm marketing trong 8 chương: giải thích dễ hiểu, ví dụ thực tế từ 8 ngành, bài tập áp dụng ngay cho sản phẩm của bạn.',
+      en: 'Master the foundations and mindset of a marketer in 8 chapters: plain explanations, real examples from 8 industries and exercises you apply to your own product.',
+    },
+    price: 49000,
+    originalPrice: 99000,
+    intro: {
+      vi: 'Mới học marketing, bạn gặp ngay một “cơn bão” thuật ngữ: insight, STP, 4P, funnel, CAC, ROAS… Mỗi nguồn dạy một mảnh nên biết nhiều từ mới mà vẫn không biết bắt đầu từ đâu. Ebook này sắp xếp lại kiến thức nền tảng theo đúng thứ tự một người làm marketing suy nghĩ: hiểu khách hàng → chọn khách hàng → thiết kế giá trị → đưa giá trị đến khách → lập kế hoạch → đo lường. Mỗi chương gồm khái niệm cốt lõi viết bằng lời thường, một tình huống “Trước / Sau” ở một ngành khác nhau (tiệm bánh mì, trung tâm tiếng Anh, phòng tập, quán trà, shop thời trang, nha khoa, homestay, shop mỹ phẩm), sai lầm thường gặp và bài tập nhanh. Làm hết bài tập cho một sản phẩm thật, đến chương 7 bạn ghép lại thành một kế hoạch marketing 1 trang hoàn chỉnh.',
+      en: 'Starting out in marketing, you hit a storm of jargon: insight, STP, 4P, funnel, CAC, ROAS… Every source teaches one piece, so you learn new words but still don’t know where to start. This ebook puts the fundamentals in the order a marketer actually thinks: understand customers → choose customers → design value → deliver value → plan → measure. Each chapter has the core concepts in plain words, a “Before / After” case from a different industry (bakery, English centre, gym, tea shop, fashion shop, dental clinic, homestay, skincare shop), common mistakes and a quick exercise. Do the exercises for one real product and by chapter 7 you combine them into a complete one-page marketing plan.',
+    },
+    includes: {
+      vi: [
+        'Ebook PDF 24 trang, bản 10/2026',
+        '8 chương theo lộ trình Hiểu → Chọn → Triển khai → Đo & tối ưu: Marketing là gì, khách hàng & insight, STP & chân dung khách hàng, Marketing Mix 4P–7P, hành trình & phễu, kênh marketing, kế hoạch 1 trang, đo lường & KPI',
+        '8 tình huống “Trước / Sau” ở 8 ngành, mỗi tình huống rút ra một bài học',
+        'Mẫu dùng ngay: câu định vị, persona, bộ câu hỏi phỏng vấn khách hàng, bảng 7P, khung kế hoạch marketing 1 trang',
+        'Bảng chỉ số cốt lõi kèm công thức (CTR, CR, CPA/CAC, AOV, ROAS, CLV) và ví dụ tính ROAS hoà vốn',
+        'Sai lầm thường gặp + bài tập nhanh cuối mỗi chương',
+        'Tóm tắt cả cuốn trên 1 trang để in, 40 thuật ngữ marketing, lộ trình tự học 30 ngày và checklist sau khi đọc',
+      ],
+      en: [
+        '24-page PDF ebook, October 2026 edition',
+        '8 chapters along the Understand → Choose → Execute → Measure path: what marketing is, customers & insight, STP & personas, the 4P–7P marketing mix, journey & funnel, channels, the one-page plan, metrics & KPIs',
+        '8 “Before / After” cases from 8 industries, each with a takeaway',
+        'Ready-to-use templates: positioning statement, persona, customer interview questions, 7P table, one-page marketing plan',
+        'Core metrics with formulas (CTR, CR, CPA/CAC, AOV, ROAS, CLV) and a break-even ROAS worked example',
+        'Common mistakes + a quick exercise at the end of every chapter',
+        'One-page summary to print, 40 marketing terms, a 30-day self-study plan and a post-reading checklist',
+      ],
+    },
+    forWho: {
+      vi: [
+        'Sinh viên, người mới đi làm muốn theo nghề marketing',
+        'Người trái ngành chuyển sang marketing, cần một “bản đồ” trước khi học sâu',
+        'Chủ shop, chủ doanh nghiệp nhỏ tự làm marketing, muốn chi tiền đúng chỗ',
+        'Nhân viên sales, CSKH, thiết kế muốn hiểu marketing để phối hợp tốt hơn',
+      ],
+      en: [
+        'Students and new graduates who want a career in marketing',
+        'Career switchers who need a map before going deeper',
+        'Shop owners and small businesses doing their own marketing who want to spend wisely',
+        'Sales, customer service and design staff who want to understand marketing to work better together',
+      ],
+    },
+    gallery: [
+      '/products/nhap-mon-marketing/trang-3.webp',
+      '/products/nhap-mon-marketing/trang-9.webp',
+      '/products/nhap-mon-marketing/trang-19.webp',
+      '/products/nhap-mon-marketing/trang-20.webp',
+    ],
+  },
   {
     slug: 'ebook-50-cong-thuc-viet-content',
     code: 'EB50CT',
@@ -100,14 +159,56 @@ export const PRODUCTS: Product[] = [
     ],
   },
   {
+    slug: 'pheu-marketing-aarrr',
+    icon: '🔻',
+    color: '#16a34a',
+    type: { vi: 'PDF + Template', en: 'PDF + Template' },
+    tag: EBOOK_TEMPLATE,
+    name: { vi: 'Ebook + Template Phễu Marketing AARRR', en: 'Ebook + Template: AARRR Marketing Funnel' },
+    desc: {
+      vi: 'Ebook hướng dẫn phễu Marketing AARRR, kèm template giúp bạn vẽ và đo lường hành trình khách hàng qua 5 giai đoạn.',
+      en: 'An ebook on the AARRR marketing funnel, with a template to map and measure the customer journey across five stages.',
+    },
+    price: 49000,
+    originalPrice: 99000,
+  },
+  {
+    slug: 'cam-nang-facebook-ads',
+    icon: '🤖',
+    color: '#dc2626',
+    type: { vi: 'PDF + Template', en: 'PDF + Template' },
+    tag: EBOOK_TEMPLATE,
+    name: { vi: 'Ebook + Template 30 prompt AI cho Marketer', en: 'Ebook + Template: 30 AI Prompts for Marketers' },
+    desc: {
+      vi: '30 prompt AI cho công việc Marketing, kèm ebook hướng dẫn và template để tuỳ chỉnh theo mục tiêu, sản phẩm và khách hàng.',
+      en: '30 AI prompts for marketing work, with an ebook and a template to adapt them to your goals, product and customers.',
+    },
+    price: 49000,
+    originalPrice: 99000,
+  },
+  {
+    slug: 'ke-hoach-content-30-ngay',
+    icon: '⚖️',
+    color: '#4f46e5',
+    type: { vi: 'PDF + Template', en: 'PDF + Template' },
+    tag: EBOOK_TEMPLATE,
+    name: { vi: 'Ebook + Template Check pháp lý quảng cáo 2026 cho Shop & KOC', en: 'Ebook + Template: 2026 Advertising Legal Checks for Shops & KOCs' },
+    desc: {
+      vi: 'Ebook và template hỗ trợ Shop, KOC rà soát nội dung quảng cáo, ghi chú các điểm cần kiểm tra trước khi đăng.',
+      en: 'An ebook and a template to help shops and KOCs review advertising content and record the checks needed before publishing.',
+    },
+    price: 49000,
+    originalPrice: 99000,
+  },
+  {
     slug: 'checklist-seo-on-page',
     code: 'CSOP',
     icon: '✅',
     color: '#272173',
     type: { vi: 'PDF 17 trang + Template', en: '17-page PDF + Template' },
-    tag: EBOOK,
+    tag: EBOOK_TEMPLATE,
     image: '/products/checklist-seo-on-page/cover.webp',
-    name: { vi: 'Checklist 30 điểm tối ưu SEO on-page', en: '30-point on-page SEO checklist' },
+    name: { vi: 'Ebook + Template Checklist 30 điểm tối ưu SEO On-page', en: 'Ebook + Template: 30-point On-page SEO Checklist' },
     desc: {
       vi: 'Kiểm tra từng bài viết chuẩn SEO trước khi bấm “Xuất bản”: 30 điểm chia 6 nhóm, 3 mức ưu tiên, ví dụ đúng/sai, công cụ miễn phí và template chấm điểm Google Sheet.',
       en: 'Check every article for SEO before you hit Publish: 30 points in 6 groups, 3 priority levels, right/wrong examples, free tools and a Google Sheet scoring template.',
@@ -156,108 +257,6 @@ export const PRODUCTS: Product[] = [
       '/products/checklist-seo-on-page/trang-14.webp',
       '/products/checklist-seo-on-page/trang-15.webp',
     ],
-  },
-  {
-    slug: 'nhap-mon-marketing',
-    code: 'NMM',
-    icon: '📘',
-    color: '#2e2a8c',
-    type: { vi: 'PDF · 24 trang', en: 'PDF · 24 pages' },
-    tag: EBOOK,
-    image: '/products/nhap-mon-marketing/cover.webp',
-    name: { vi: 'Ebook Nhập môn Marketing cho người mới', en: 'Ebook: Marketing basics for beginners' },
-    desc: {
-      vi: 'Nắm chắc nền tảng và cách tư duy của người làm marketing trong 8 chương: giải thích dễ hiểu, ví dụ thực tế từ 8 ngành, bài tập áp dụng ngay cho sản phẩm của bạn.',
-      en: 'Master the foundations and mindset of a marketer in 8 chapters: plain explanations, real examples from 8 industries and exercises you apply to your own product.',
-    },
-    price: 49000,
-    originalPrice: 99000,
-    intro: {
-      vi: 'Mới học marketing, bạn gặp ngay một “cơn bão” thuật ngữ: insight, STP, 4P, funnel, CAC, ROAS… Mỗi nguồn dạy một mảnh nên biết nhiều từ mới mà vẫn không biết bắt đầu từ đâu. Ebook này sắp xếp lại kiến thức nền tảng theo đúng thứ tự một người làm marketing suy nghĩ: hiểu khách hàng → chọn khách hàng → thiết kế giá trị → đưa giá trị đến khách → lập kế hoạch → đo lường. Mỗi chương gồm khái niệm cốt lõi viết bằng lời thường, một tình huống “Trước / Sau” ở một ngành khác nhau (tiệm bánh mì, trung tâm tiếng Anh, phòng tập, quán trà, shop thời trang, nha khoa, homestay, shop mỹ phẩm), sai lầm thường gặp và bài tập nhanh. Làm hết bài tập cho một sản phẩm thật, đến chương 7 bạn ghép lại thành một kế hoạch marketing 1 trang hoàn chỉnh.',
-      en: 'Starting out in marketing, you hit a storm of jargon: insight, STP, 4P, funnel, CAC, ROAS… Every source teaches one piece, so you learn new words but still don’t know where to start. This ebook puts the fundamentals in the order a marketer actually thinks: understand customers → choose customers → design value → deliver value → plan → measure. Each chapter has the core concepts in plain words, a “Before / After” case from a different industry (bakery, English centre, gym, tea shop, fashion shop, dental clinic, homestay, skincare shop), common mistakes and a quick exercise. Do the exercises for one real product and by chapter 7 you combine them into a complete one-page marketing plan.',
-    },
-    includes: {
-      vi: [
-        'Ebook PDF 24 trang, bản 10/2026',
-        '8 chương theo lộ trình Hiểu → Chọn → Triển khai → Đo & tối ưu: Marketing là gì, khách hàng & insight, STP & chân dung khách hàng, Marketing Mix 4P–7P, hành trình & phễu, kênh marketing, kế hoạch 1 trang, đo lường & KPI',
-        '8 tình huống “Trước / Sau” ở 8 ngành, mỗi tình huống rút ra một bài học',
-        'Mẫu dùng ngay: câu định vị, persona, bộ câu hỏi phỏng vấn khách hàng, bảng 7P, khung kế hoạch marketing 1 trang',
-        'Bảng chỉ số cốt lõi kèm công thức (CTR, CR, CPA/CAC, AOV, ROAS, CLV) và ví dụ tính ROAS hoà vốn',
-        'Sai lầm thường gặp + bài tập nhanh cuối mỗi chương',
-        'Tóm tắt cả cuốn trên 1 trang để in, 40 thuật ngữ marketing, lộ trình tự học 30 ngày và checklist sau khi đọc',
-      ],
-      en: [
-        '24-page PDF ebook, October 2026 edition',
-        '8 chapters along the Understand → Choose → Execute → Measure path: what marketing is, customers & insight, STP & personas, the 4P–7P marketing mix, journey & funnel, channels, the one-page plan, metrics & KPIs',
-        '8 “Before / After” cases from 8 industries, each with a takeaway',
-        'Ready-to-use templates: positioning statement, persona, customer interview questions, 7P table, one-page marketing plan',
-        'Core metrics with formulas (CTR, CR, CPA/CAC, AOV, ROAS, CLV) and a break-even ROAS worked example',
-        'Common mistakes + a quick exercise at the end of every chapter',
-        'One-page summary to print, 40 marketing terms, a 30-day self-study plan and a post-reading checklist',
-      ],
-    },
-    forWho: {
-      vi: [
-        'Sinh viên, người mới đi làm muốn theo nghề marketing',
-        'Người trái ngành chuyển sang marketing, cần một “bản đồ” trước khi học sâu',
-        'Chủ shop, chủ doanh nghiệp nhỏ tự làm marketing, muốn chi tiền đúng chỗ',
-        'Nhân viên sales, CSKH, thiết kế muốn hiểu marketing để phối hợp tốt hơn',
-      ],
-      en: [
-        'Students and new graduates who want a career in marketing',
-        'Career switchers who need a map before going deeper',
-        'Shop owners and small businesses doing their own marketing who want to spend wisely',
-        'Sales, customer service and design staff who want to understand marketing to work better together',
-      ],
-    },
-    gallery: [
-      '/products/nhap-mon-marketing/trang-3.webp',
-      '/products/nhap-mon-marketing/trang-9.webp',
-      '/products/nhap-mon-marketing/trang-19.webp',
-      '/products/nhap-mon-marketing/trang-20.webp',
-    ],
-  },
-  {
-    slug: 'ke-hoach-content-30-ngay',
-    icon: '🗓️',
-    color: '#4f46e5',
-    type: { vi: 'Google Sheet', en: 'Google Sheet' },
-    tag: TEMPLATE,
-    name: { vi: 'Template kế hoạch content 30 ngày', en: '30-day content plan template' },
-    desc: {
-      vi: 'Mẫu lịch nội dung dựng sẵn cấu trúc, chỉ việc điền chủ đề và triển khai.',
-      en: 'A content calendar template with the structure ready — just add your topics.',
-    },
-    price: 49000,
-    originalPrice: 99000,
-  },
-  {
-    slug: 'pheu-marketing-aarrr',
-    icon: '🔻',
-    color: '#16a34a',
-    type: { vi: 'Google Sheet', en: 'Google Sheet' },
-    tag: TEMPLATE,
-    name: { vi: 'Template phễu Marketing AARRR', en: 'AARRR marketing funnel template' },
-    desc: {
-      vi: 'Khung phễu giúp bạn vẽ và đo lường hành trình khách hàng qua 5 giai đoạn.',
-      en: 'A funnel framework to map and measure the customer journey across 5 stages.',
-    },
-    price: 49000,
-    originalPrice: 99000,
-  },
-  {
-    slug: 'cam-nang-facebook-ads',
-    icon: '📣',
-    color: '#dc2626',
-    type: { vi: 'PDF · 32 trang', en: 'PDF · 32 pages' },
-    tag: EBOOK,
-    name: { vi: 'Ebook cẩm nang chạy Facebook Ads', en: 'Facebook Ads handbook ebook' },
-    desc: {
-      vi: 'Hướng dẫn từ tạo chiến dịch đến tối ưu chi phí, kèm ví dụ thực tế dễ áp dụng.',
-      en: 'From creating campaigns to cutting costs, with practical examples.',
-    },
-    price: 49000,
-    originalPrice: 99000,
   },
 ];
 
