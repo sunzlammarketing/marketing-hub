@@ -1,0 +1,8 @@
+# Cache dài hạn cho file tĩnh ít thay đổi (Cloudflare Workers đọc file này khi phục vụ dist/)
+# Font: đổi file thì đổi tên file. Ảnh sản phẩm: cache 7 ngày.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+/products/*
+  Cache-Control: public, max-age=604800

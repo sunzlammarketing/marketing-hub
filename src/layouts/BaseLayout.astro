@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -58,12 +59,9 @@ const fullTitle = exactTitle || title === 'Sunz Làm Marketing'
     />
     <!-- Thẻ head riêng của từng trang (schema, ...) -->
     <slot name="head" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Font tự lưu trên web (src/styles/fonts.css). Tải trước 2 file Inter dùng ngay đầu trang. -->
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-vietnamese.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Chống nháy: đặt theme & ngôn ngữ trước khi trang vẽ -->
     <script is:inline>
       (function () {
