@@ -32,11 +32,10 @@ export const ui = {
       '<span class="hero-kicker"><b class="t-blue hx" style="--i:0">Sunz Làm Marketing</b> <span class="t-coral hx" style="--i:1">giúp bạn</span></span><span class="t-coral hx" style="--i:2">Hiểu Marketing</span> <span class="t-blue hx hero-mark" style="--i:3">đúng,</span><br /> <span class="t-coral hx" style="--i:4">làm Marketing</span> <span class="t-blue hx hero-mark" style="--i:5">hiệu quả.</span>',
     'home.hero.sub':
       'Kiến thức Marketing dễ hiểu, áp dụng được ngay.',
-    'home.hero.cta1': 'Kho tài liệu Marketing miễn phí',
+    'home.hero.cta1': 'Kho tài liệu Marketing thực tiễn',
     'home.hero.cta2': 'Sunz Làm Marketing là ai?',
     'home.stat.posts': 'Bài viết',
     'home.stat.topics': 'Chủ đề',
-    'home.stat.free': 'Miễn phí',
 
     // Trang chủ - Mục "Sunz Làm Marketing là ai?"
     'home.me.label': 'Sunz Làm Marketing là ai?',
@@ -45,13 +44,13 @@ export const ui = {
     'home.me.p1':
       'Marketing có quá nhiều thứ để học. Nhưng phần lớn kiến thức ngoài kia hoặc quá hàn lâm, hoặc chỉ là những "mẹo" rời rạc thiếu nền tảng — khiến người mới không biết nên bắt đầu từ đâu.',
     'home.me.p2':
-      'Sunz Làm Marketing ra đời để lấp khoảng trống đó. Đây là nơi mình gom lại kiến thức, tài liệu và công cụ đã dùng trong công việc, sắp xếp có hệ thống từ căn bản đến nâng cao, rồi chia sẻ hoàn toàn miễn phí.',
+      'Sunz Làm Marketing ra đời để lấp khoảng trống đó. Đây là nơi mình gom lại kiến thức, tài liệu và công cụ đã dùng trong công việc, sắp xếp có hệ thống từ căn bản đến nâng cao, rồi chia sẻ lại để bạn áp dụng được ngay vào công việc.',
     'home.me.p3':
       'Mình không hứa hẹn "làm giàu sau một đêm". Chỉ có kiến thức nền tảng vững chắc, ví dụ thực tế, và những thứ bạn áp dụng được ngay vào công việc của mình.',
     'home.me.closing':
       'Cùng nhau chuẩn bị hành trang thật tốt trước khi bước ra thương trường nhé!',
     'home.me.cta': 'Tìm hiểu thêm về Sunz →',
-    'home.me.bio': 'Chia sẻ kiến thức, tài liệu & công cụ Marketing miễn phí',
+    'home.me.bio': 'Chia sẻ kiến thức, tài liệu & công cụ Marketing thực tiễn',
 
     // Trang chủ - các mục
     'home.cat.title': 'Khám phá theo chủ đề',
@@ -73,11 +72,11 @@ export const ui = {
 
     // Trang Giới thiệu
     'about.hero.title': 'Về Sunz Làm Marketing',
-    'about.stat': 'bài viết miễn phí',
+    'about.stat': 'bài viết',
     'about.short.label': 'Giới thiệu ngắn gọn',
     'about.short.copy': 'Copy giới thiệu',
     'about.short.text':
-      'Sunz Làm Marketing là nơi chia sẻ kiến thức, tài liệu và công cụ Marketing thực chiến cho người Việt — sắp xếp có hệ thống từ căn bản đến nâng cao, kèm ví dụ thực tế và hoàn toàn miễn phí.',
+      'Sunz Làm Marketing là nơi chia sẻ kiến thức, tài liệu và công cụ Marketing thực chiến cho người Việt — sắp xếp có hệ thống từ căn bản đến nâng cao, kèm ví dụ thực tế, áp dụng được ngay.',
     'about.principle.label': 'Nguyên tắc',
     'about.res.title': 'Tài nguyên thương hiệu, bấm để copy link',
     'about.res.logo': 'Logo Sunz',
@@ -96,9 +95,9 @@ export const ui = {
     'about.val2.title': 'Dành cho người Việt',
     'about.val2.text':
       'Nội dung viết bằng tiếng Việt, phù hợp với bối cảnh thị trường và nền tảng người Việt hay dùng.',
-    'about.val3.title': 'Miễn phí & dễ tiếp cận',
+    'about.val3.title': 'Dễ tiếp cận',
     'about.val3.text':
-      'Kiến thức nên được chia sẻ. Toàn bộ nội dung trên Sunz Làm Marketing đều miễn phí.',
+      'Kiến thức nên được chia sẻ. Bài viết và công cụ trên Sunz Làm Marketing đều miễn phí; tài liệu chuyên sâu có giá vừa phải để ai cũng sở hữu được.',
     'about.val4.title': 'Cập nhật liên tục',
     'about.val4.text':
       'Marketing thay đổi từng ngày. Chúng tôi cập nhật kiến thức mới để bạn không tụt lại.',
@@ -143,8 +142,7 @@ export const ui = {
     'products.p6.price': 'Theo buổi / khóa',
     'products.cta': 'Liên hệ tư vấn',
 
-    // Trang Tài liệu miễn phí
-    'resources.badge': '📂 Tài liệu miễn phí',
+    // Trang Tài liệu
     'resources.title': 'Tài liệu Marketing',
     'resources.lead':
       'Template, ebook và checklist thực chiến — mua về là dùng được ngay.',
@@ -213,7 +211,7 @@ export const ui = {
     'chat.send': 'Gửi',
     'chat.q.topics': 'Website có những chủ đề gì?',
     'chat.q.services': 'Dịch vụ gồm những gì?',
-    'chat.q.resources': 'Tài liệu miễn phí ở đâu?',
+    'chat.q.resources': 'Tài liệu Marketing ở đâu?',
     'chat.q.contact': 'Làm sao để liên hệ?',
   },
 
@@ -237,11 +235,10 @@ export const ui = {
       '<span class="hero-kicker"><b class="t-blue hx" style="--i:0">Sunz Làm Marketing</b> <span class="t-coral hx" style="--i:1">helps you</span></span><span class="hero-main-en"><span class="t-coral hx" style="--i:2">Understand marketing</span> <span class="t-blue hx hero-mark" style="--i:3">right,</span><br /> <span class="t-coral hx" style="--i:4">do marketing</span> <span class="t-blue hx hero-mark" style="--i:5">effectively.</span></span>',
     'home.hero.sub':
       'Clear, practical marketing you can apply today.',
-    'home.hero.cta1': 'Free marketing resource hub',
+    'home.hero.cta1': 'Practical marketing resource hub',
     'home.hero.cta2': 'Who is Sunz Làm Marketing?',
     'home.stat.posts': 'Articles',
     'home.stat.topics': 'Topics',
-    'home.stat.free': 'Free',
 
     // Home - "Who is Sunz Làm Marketing?" section
     'home.me.label': 'Who is Sunz Làm Marketing?',
@@ -250,13 +247,13 @@ export const ui = {
     'home.me.p1':
       'There is so much to learn in marketing. But most knowledge out there is either too academic or just scattered "tips" with no foundation — leaving beginners unsure where to start.',
     'home.me.p2':
-      'Sunz Làm Marketing was born to fill that gap. This is where I gather the knowledge, resources and tools I actually use at work, organize them from basics to advanced, and share them completely free.',
+      'Sunz Làm Marketing was born to fill that gap. This is where I gather the knowledge, resources and tools I actually use at work, organize them from basics to advanced, and share them so you can apply them at work right away.',
     'home.me.p3':
       'No "get rich overnight" promises here. Just solid fundamentals, real examples, and things you can apply to your work right away.',
     'home.me.closing':
       "Let's pack the right gear together before stepping into the market!",
     'home.me.cta': 'More about Sunz →',
-    'home.me.bio': 'Sharing free marketing knowledge, resources & tools',
+    'home.me.bio': 'Sharing practical marketing knowledge, resources & tools',
 
     // Home - sections
     'home.cat.title': 'Explore by topic',
@@ -278,11 +275,11 @@ export const ui = {
 
     // About page
     'about.hero.title': 'About Sunz Làm Marketing',
-    'about.stat': 'free articles',
+    'about.stat': 'articles',
     'about.short.label': 'Short bio',
     'about.short.copy': 'Copy bio',
     'about.short.text':
-      'Sunz Làm Marketing shares practical marketing knowledge, resources and tools for Vietnamese marketers — organized from basics to advanced, with real examples, and completely free.',
+      'Sunz Làm Marketing shares practical marketing knowledge, resources and tools for Vietnamese marketers — organized from basics to advanced, with real examples you can apply right away.',
     'about.principle.label': 'Principle',
     'about.res.title': 'Brand resources, click to copy link',
     'about.res.logo': 'Sunz logo',
@@ -301,9 +298,9 @@ export const ui = {
     'about.val2.title': 'Made for Vietnamese',
     'about.val2.text':
       'Written in Vietnamese, tailored to the local market and the platforms people here actually use.',
-    'about.val3.title': 'Free & accessible',
+    'about.val3.title': 'Accessible',
     'about.val3.text':
-      'Knowledge should be shared. All content on Sunz Làm Marketing is free.',
+      'Knowledge should be shared. All articles and tools on Sunz Làm Marketing are free; in-depth resources are priced so anyone can afford them.',
     'about.val4.title': 'Always up to date',
     'about.val4.text':
       'Marketing changes every day. We keep updating so you never fall behind.',
@@ -348,8 +345,7 @@ export const ui = {
     'products.p6.price': 'Per session / course',
     'products.cta': 'Contact us',
 
-    // Free Resources page
-    'resources.badge': '📂 Free Resources',
+    // Resources page
     'resources.title': 'Marketing Resources',
     'resources.lead':
       'Practical templates, ebooks and checklists — ready to use right away.',
@@ -418,7 +414,7 @@ export const ui = {
     'chat.send': 'Send',
     'chat.q.topics': 'What topics does the site cover?',
     'chat.q.services': 'What services do you offer?',
-    'chat.q.resources': 'Where are the free resources?',
+    'chat.q.resources': 'Where are the marketing resources?',
     'chat.q.contact': 'How do I get in touch?',
   },
 } as const;

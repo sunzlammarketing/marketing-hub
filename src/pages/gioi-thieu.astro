@@ -26,7 +26,7 @@ const links = [
 const values = [
   { k: 'about.val1', icon: '🎯', title: 'Thực chiến, không lý thuyết suông', text: 'Mọi bài viết đều hướng tới việc áp dụng được ngay, kèm ví dụ và bước làm cụ thể.' },
   { k: 'about.val2', icon: '🇻🇳', title: 'Dành cho người Việt', text: 'Nội dung viết bằng tiếng Việt, phù hợp với bối cảnh thị trường và nền tảng người Việt hay dùng.' },
-  { k: 'about.val3', icon: '🆓', title: 'Miễn phí & dễ tiếp cận', text: 'Kiến thức nên được chia sẻ. Toàn bộ nội dung trên Sunz Làm Marketing đều miễn phí.' },
+  { k: 'about.val3', icon: '🤝', title: 'Dễ tiếp cận', text: 'Kiến thức nên được chia sẻ. Bài viết và công cụ trên Sunz Làm Marketing đều miễn phí; tài liệu chuyên sâu có giá vừa phải để ai cũng sở hữu được.' },
   { k: 'about.val4', icon: '📈', title: 'Cập nhật liên tục', text: 'Marketing thay đổi từng ngày. Chúng tôi cập nhật kiến thức mới để bạn không tụt lại.' },
 ];
 
@@ -48,12 +48,12 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
 
 <BaseLayout
   title="Giới thiệu"
-  description="Sunz Làm Marketing là nơi chia sẻ kiến thức Marketing thực chiến, dễ hiểu và miễn phí cho người Việt."
+  description="Sunz Làm Marketing là nơi chia sẻ kiến thức Marketing thực chiến, dễ hiểu và áp dụng được ngay cho người Việt."
 >
   <section class="page-head ab-hero">
     <div class="container">
       <h1><span data-i18n-vi="Về" data-i18n-en="About">Về</span> <span class="hl">Sunz Làm Marketing</span></h1>
-      <p data-i18n="home.me.bio">Chia sẻ kiến thức, tài liệu & công cụ Marketing miễn phí</p>
+      <p data-i18n="home.me.bio">Chia sẻ kiến thức, tài liệu & công cụ Marketing thực tiễn</p>
     </div>
   </section>
 
@@ -85,7 +85,7 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
       </div>
       <div class="ab-stat">
         <b>{viCount}+</b>
-        <span data-i18n="about.stat">bài viết miễn phí</span>
+        <span data-i18n="about.stat">bài viết</span>
       </div>
     </aside>
 
@@ -101,7 +101,7 @@ const viCount = all.filter((p) => p.data.lang === 'vi').length;
         </div>
         <p id="ab-short" class="ab-text" data-i18n="about.short.text">
           Sunz Làm Marketing là nơi chia sẻ kiến thức, tài liệu và công cụ Marketing thực chiến cho người Việt — sắp xếp có
-          hệ thống từ căn bản đến nâng cao, kèm ví dụ thực tế và hoàn toàn miễn phí.
+          hệ thống từ căn bản đến nâng cao, kèm ví dụ thực tế, áp dụng được ngay.
         </p>
       </div>
 
