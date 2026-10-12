@@ -12,6 +12,17 @@ import { MESSENGER } from '../data/products';
     <button type="button" class="pay-x" data-pay-close aria-label="Đóng">✕</button>
     <h2 id="pay-title" data-i18n-vi="Thanh toán chuyển khoản" data-i18n-en="Bank transfer payment">Thanh toán chuyển khoản</h2>
     <p class="pay-product" data-pay-name></p>
+<section
+  class="pay-status"
+  data-pay-status
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+  hidden
+>
+  <h3 data-pay-status-title></h3>
+  <p data-pay-status-text></p>
+</section>
 
     <!-- Bước 1: thông tin liên hệ -->
     <form class="pay-form" data-pay-step="info" novalidate>
@@ -103,6 +114,40 @@ import { MESSENGER } from '../data/products';
 </dialog>
 
 <style>
+  .pay [hidden] {
+    display: none !important;
+  }
+
+  .pay-status {
+    margin: 0 0 18px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+
+  .pay-status h3 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+  }
+
+  .pay-status p {
+    margin: 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .pay-status[data-state="success"] {
+    border-color: #10b981;
+  }
+
+  .pay-status[data-state="success"] h3 {
+    color: #059669;
+  }
+
+  .pay-status[data-state="warning"] {
+    border-color: #f59e0b;
+  }
   .pay {
     width: min(720px, calc(100vw - 24px));
     max-height: calc(100dvh - 24px);
@@ -386,7 +431,13 @@ import { MESSENGER } from '../data/products';
     const $ = <T extends HTMLElement>(s: string) => dlg.querySelector(s) as T;
     const lang = () => (document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'vi');
     const vnd = (n: number) => n.toLocaleString('vi-VN') + ' ₫';
-    let current = { amount: 0, code: '' };
+    let current = {
+  amount: 0,
+  code: '',
+  statusToken: '',
+  email: '',
+  confirmed: false,
+};
     let timer: number | undefined;
 
     const notify = (msg: string) => {
@@ -416,10 +467,159 @@ import { MESSENGER } from '../data/products';
     const errBox = $('[data-pay-err]');
     const sheet = dlg.dataset.sheet || '';
     let product = { amount: 0, pcode: '', name: '' };
+    const statusBox = $('[data-pay-status]');
+    const statusTitle = $('[data-pay-status-title]');
+    const statusText = $('[data-pay-status-text]');
+    let statusTimer: number | undefined;
+    let checkRun = 0;
+    let activeCheck: AbortController | null = null;
 
-    const showStep = (step: 'info' | 'qr') => {
+    const stopTracking = () => {
+      checkRun++;
+      clearTimeout(statusTimer);
+      activeCheck?.abort();
+      activeCheck = null;
+    };
+
+    const setStatus = (
+      title: string,
+      text: string,
+      state = 'waiting'
+    ) => {
+      statusBox.hidden = false;
+      statusBox.dataset.state = state;
+      statusTitle.textContent = title;
+      statusText.textContent = text;
+    };
+
+    const startTracking = () => {
+      stopTracking();
+      const run = checkRun;
+      const token = current.statusToken;
+
+      const check = async () => {
+        if (run !== checkRun || !dlg.open) return;
+
+        if (document.hidden) {
+          statusTimer = window.setTimeout(check, 15000);
+          return;
+        }
+
+        const controller = new AbortController();
+        activeCheck = controller;
+        const timeout = window.setTimeout(
+          () => controller.abort(),
+          15000
+        );
+        let finished = false;
+
+        try {
+          const res = await fetch(
+            `/api/order-status?token=${encodeURIComponent(token)}`,
+            { cache: 'no-store', signal: controller.signal }
+          );
+          const data = await res.json();
+
+          if (run !== checkRun || !dlg.open) return;
+          if (!res.ok || !data.ok) {
+            throw new Error('status_unavailable');
+          }
+
+          const english = lang() === 'en';
+
+          if (data.payment === 'confirmed') {
+            current.confirmed = true;
+            stepInfo.hidden = true;
+            stepQr.hidden = true;
+
+            setStatus(
+              english
+                ? '✅ Payment successful!'
+                : '✅ Thanh toán thành công!',
+              data.delivery === 'sent'
+                ? (english
+                    ? `Your download link has been emailed to ${current.email}. Please also check Spam.`
+                    : `Link tải đã được gửi tới ${current.email}. Bạn kiểm tra cả mục Spam/Thư rác nhé.`)
+                : (english
+                    ? 'Sunz has confirmed your payment. Your download email is being processed.'
+                    : 'Sunz đã xác nhận thanh toán. Email giao tài liệu đang được xử lý.'),
+              'success'
+            );
+
+            finished = data.delivery === 'sent';
+
+          } else if (data.payment === 'cancelled') {
+            stepInfo.hidden = true;
+            stepQr.hidden = true;
+
+            setStatus(
+              english ? 'Order cancelled' : 'Đơn hàng đã huỷ',
+              english
+                ? 'Please contact Sunz if you have already paid.'
+                : 'Nếu đã chuyển khoản, bạn nhắn Sunz để được hỗ trợ.',
+              'warning'
+            );
+
+            finished = true;
+
+          } else if (!current.confirmed) {
+            setStatus(
+              english
+                ? 'Waiting for Sunz to confirm payment'
+                : 'Đang chờ Sunz xác nhận thanh toán',
+              english
+                ? 'After transferring, keep this payment window open. It will update when Sunz confirms your order.'
+                : 'Sau khi chuyển khoản, giữ cửa sổ này mở. Thông báo sẽ cập nhật khi Sunz xác nhận đơn trong Sheet.'
+            );
+          }
+
+        } catch {
+          if (run !== checkRun || !dlg.open) return;
+
+          if (!current.confirmed) {
+            setStatus(
+              lang() === 'en'
+                ? 'Payment has not been confirmed yet'
+                : 'Chưa nhận được xác nhận thanh toán',
+              lang() === 'en'
+                ? 'The website will retry. If you have paid, do not transfer again; contact Sunz.'
+                : 'Web sẽ kiểm tra lại. Nếu đã chuyển khoản, bạn không cần chuyển thêm; hãy nhắn Sunz để kiểm tra đơn.',
+              'warning'
+            );
+          }
+
+        } finally {
+          clearTimeout(timeout);
+          if (activeCheck === controller) activeCheck = null;
+        }
+
+        if (!finished && run === checkRun && dlg.open) {
+          statusTimer = window.setTimeout(check, 15000);
+        }
+      };
+
+      setStatus(
+        lang() === 'en'
+          ? 'Checking your order…'
+          : 'Đang kiểm tra trạng thái đơn…',
+        lang() === 'en'
+          ? 'Sunz will confirm payment after checking the bank transfer.'
+          : 'Sunz sẽ xác nhận thanh toán sau khi kiểm tra tiền chuyển khoản.'
+      );
+
+      void check();
+    };
+
+    dlg.addEventListener('close', stopTracking);
+
+        const showStep = (step: 'info' | 'qr') => {
       stepInfo.hidden = step !== 'info';
       stepQr.hidden = step !== 'qr';
+
+      if (step === 'info') {
+        stopTracking();
+        statusBox.hidden = true;
+      }
     };
     // Gửi đơn lên Google Sheet (không chặn khách nếu lỗi)
     const saveOrder = (data: Record<string, unknown>) => {
@@ -484,9 +684,18 @@ import { MESSENGER } from '../data/products';
       remember({ phone, name, email });
 
       // Nội dung CK: SUNZ + mã sản phẩm + SĐT khách → xem sao kê là biết ai mua gì
-      const code = `SUNZ ${product.pcode} ${phone}`;
+            const statusToken = crypto.randomUUID();
+      const suffix = crypto.randomUUID().slice(0, 8).toUpperCase();
+      const code = `SUNZ ${product.pcode} ${phone} ${suffix}`;
       const amount = product.amount;
-      current = { amount, code };
+
+      current = {
+        amount,
+        code,
+        statusToken,
+        email,
+        confirmed: false,
+      };
 
       const qr =
         `https://img.vietqr.io/image/${dlg.dataset.bin}-${dlg.dataset.account}-compact.png` +
@@ -504,6 +713,7 @@ import { MESSENGER } from '../data/products';
 
       saveOrder({
         code,
+        statusToken,
         product: product.name,
         amount,
         name,
@@ -513,6 +723,7 @@ import { MESSENGER } from '../data/products';
         website: (f.namedItem('website') as HTMLInputElement).value,
       });
       showStep('qr');
+      startTracking();
     });
 
     $('[data-pay-back]').addEventListener('click', () => showStep('info'));
