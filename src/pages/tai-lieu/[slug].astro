@@ -89,12 +89,12 @@ const jsonLd = {
               <span class="pdx-price" data-i18n-vi="Miễn phí" data-i18n-en="Free">Miễn phí</span>
             ) : ep.price != null ? (
               <span class="pdx-price-row" data-price-box data-until={ep.promo?.until} data-regular={p.price != null ? formatVnd(p.price) : undefined}>
-                <span class="pdx-price" data-pnow>{formatVnd(ep.price)}</span>
                 {off && (
                   <span class="pdx-old" data-pold>
                     <s>{formatVnd(ep.old!)}</s> <b class="pdx-off">-{off}%</b>
                   </span>
                 )}
+                <span class="pdx-price" data-pnow>{formatVnd(ep.price)}</span>
               </span>
             ) : (
               <span class="pdx-price pdx-price-ask" data-i18n-vi="Liên hệ" data-i18n-en="Contact us">Liên hệ</span>
@@ -312,7 +312,7 @@ const jsonLd = {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     padding: 18px 20px;
     border-radius: 20px;
     background: color-mix(in srgb, var(--brand) 8%, var(--bg-card));
@@ -331,10 +331,12 @@ const jsonLd = {
   }
   .pdx-price-row {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
+  .pdx-buy > div { min-width: 0; }
+  .pdx-buy :global(.buy-btn) { flex-shrink: 0; padding: 14px 18px; }
   .pdx-old {
     display: inline-flex;
     align-items: center;
@@ -475,9 +477,10 @@ const jsonLd = {
     .pdx-media {
       border-radius: 22px;
     }
-    .pdx-buy :global(.buy-btn) {
-      flex: 1;
-    }
+    .pdx-buy { gap: 10px; padding: 16px 12px; }
+    .pdx-price { font-size: clamp(1.35rem, 5.5vw, 2rem); white-space: nowrap; }
+    .pdx-old { font-size: .9rem; gap: 5px; }
+    .pdx-buy :global(.buy-btn) { padding: 12px; font-size: .94rem; }
   }
 </style>
 
