@@ -185,6 +185,7 @@ export const PRODUCTS: Product[] = [
       en: '30 AI prompts for marketing work, with an ebook and a template to adapt them to your goals, product and customers.',
     },
     price: 0,
+    originalPrice: 49000,
   },
   {
     slug: 'check-phap-ly-quang-cao-2026',
@@ -199,6 +200,7 @@ export const PRODUCTS: Product[] = [
       en: 'An ebook and a template to help shops and KOCs review advertising content and record the checks needed before publishing.',
     },
     price: 0,
+    originalPrice: 49000,
   },
   {
     slug: 'checklist-seo-on-page',
