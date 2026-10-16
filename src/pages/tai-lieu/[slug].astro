@@ -86,7 +86,10 @@ const jsonLd = {
           <div>
             <span class="pdx-price-label" data-i18n-vi="Giá" data-i18n-en="Price">Giá</span>
             {ep.price === 0 ? (
-              <span class="pdx-price" data-i18n-vi="Miễn phí" data-i18n-en="Free">Miễn phí</span>
+              <span class="pdx-price-row">
+                {ep.old && <span class="pdx-old"><s>{formatVnd(ep.old)}</s></span>}
+                <span class="pdx-price" data-i18n-vi="Miễn phí" data-i18n-en="Free">Miễn phí</span>
+              </span>
             ) : ep.price != null ? (
               <span class="pdx-price-row" data-price-box data-until={ep.promo?.until} data-regular={p.price != null ? formatVnd(p.price) : undefined}>
                 {off && (
